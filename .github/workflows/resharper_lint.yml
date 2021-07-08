@@ -11,6 +11,5 @@ jobs:
         uses: actions/checkout@v2
       - name: resharper
         uses: glassechidna/resharper-action@master
-        working-directory: ./TimeSliceNet
         with:
-          solution: TimeSliceNet.sln
+          solution: TimeSliceNet/TimeSliceNet.sln
