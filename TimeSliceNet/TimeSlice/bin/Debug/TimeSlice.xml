@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TimeSlice</name>
+    </assembly>
+    <members>
+        <member name="T:TimeSlice.ITimeSlice">
+            <summary>
+            A time slice is something that has a start and an optional end.
+            </summary>
+        </member>
+        <member name="P:TimeSlice.ITimeSlice.Start">
+            <summary>
+            The inclusive start date
+            </summary>
+        </member>
+        <member name="P:TimeSlice.ITimeSlice.End">
+            <summary>
+            Exclusive end date.
+            </summary>
+            <remarks>null = "open" time slice</remarks>
+        </member>
+        <member name="P:TimeSlice.ITimeSlice.Duration">
+            <summary>
+            The duration describes the length of a time slice.
+            It is null if and only if <see cref="P:TimeSlice.ITimeSlice.End"/> is null. 
+            </summary>
+        </member>
+        <member name="T:TimeSlice.PlainTimeSlice">
+            <summary>
+            A plain time slice is the simplest way to model a time slice.
+            </summary>
+        </member>
+        <member name="P:TimeSlice.PlainTimeSlice.Start">
+            <summary>
+            <inheritdoc cref="P:TimeSlice.ITimeSlice.Start"/>
+            </summary>
+        </member>
+        <member name="P:TimeSlice.PlainTimeSlice.End">
+            <summary>
+            <inheritdoc cref="P:TimeSlice.ITimeSlice.End"/>
+            </summary>
+        </member>
+        <member name="P:TimeSlice.PlainTimeSlice.Duration">
+            <summary>
+            <inheritdoc cref="P:TimeSlice.ITimeSlice.Duration"/>
+            </summary>
+        </member>
+    </members>
+</doc>
