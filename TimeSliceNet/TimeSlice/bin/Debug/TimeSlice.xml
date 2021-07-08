@@ -51,6 +51,13 @@
             A static class with extension methods for objects/classes that implement <see cref="T:TimeSlice.ITimeSlice"/>
             </summary>
         </member>
+        <member name="M:TimeSlice.TimeSliceExtensions.IsOpen(TimeSlice.ITimeSlice)">
+            <summary>
+            A time slice is called "open" if it has either no end or the end is infinity.
+            </summary>
+            <param name="timeSlice"></param>
+            <returns>true if open</returns>
+        </member>
         <member name="M:TimeSlice.TimeSliceExtensions.Overlaps(TimeSlice.ITimeSlice,System.DateTimeOffset)">
             <summary>
             check if a datetime is in side a time slice.
@@ -58,6 +65,14 @@
             <param name="timeSlice">any time slice</param>
             <param name="dt">a datetime</param>
             <returns>true iff <paramref name="dt"/> is inside <paramref name="timeSlice"/></returns>
+        </member>
+        <member name="M:TimeSlice.TimeSliceExtensions.Overlaps(TimeSlice.ITimeSlice,TimeSlice.ITimeSlice)">
+            <summary>
+            check if a time slice overlaps with another time slice
+            </summary>
+            <param name="timeSlice"></param>
+            <param name="other"></param>
+            <returns>true if <paramref name="timeSlice"/> and <paramref name="other"/> share a finite time span</returns>
         </member>
     </members>
 </doc>

@@ -8,6 +8,14 @@ namespace TimeSlice
     public static class TimeSliceExtensions
     {
         /// <summary>
+        /// A time slice is called "open" if it has either no end or the end is infinity.
+        /// </summary>
+        /// <param name="timeSlice"></param>
+        /// <returns>true if open</returns>
+        public static bool IsOpen(this ITimeSlice timeSlice) => !timeSlice.End.HasValue || timeSlice.End.Value == DateTimeOffset.MaxValue;
+
+
+        /// <summary>
         /// check if a datetime is in side a time slice.
         /// </summary>
         /// <param name="timeSlice">any time slice</param>
@@ -15,9 +23,37 @@ namespace TimeSlice
         /// <returns>true iff <paramref name="dt"/> is inside <paramref name="timeSlice"/></returns>
         public static bool Overlaps(this ITimeSlice timeSlice, DateTimeOffset dt)
         {
-            if (!timeSlice.End.HasValue) return timeSlice.Start <= dt;
+            if (timeSlice.IsOpen()) return timeSlice.Start <= dt;
             return timeSlice.Start <= dt && timeSlice.End.Value > dt;
             // remember: the end date is _exclusive_
+        }
+
+        /// <summary>
+        /// check if a time slice overlaps with another time slice
+        /// </summary>
+        /// <param name="timeSlice"></param>
+        /// <param name="other"></param>
+        /// <returns>true if <paramref name="timeSlice"/> and <paramref name="other"/> share a finite time span</returns>
+        public static bool Overlaps(this ITimeSlice timeSlice, ITimeSlice other)
+        {
+            if (timeSlice.IsOpen() && other.IsOpen())
+            {
+                return true; // they overlap in infinity
+            }
+            if (timeSlice.IsOpen())
+            {
+                // [------other---)
+                //    [---time slice----------------
+                return other.End > timeSlice.Start;
+            }
+
+            if (other.IsOpen())
+            {
+                //     [--------other--------
+                //  [---time slice-------)
+                return timeSlice.End > other.Start;
+            }
+            return timeSlice.Start < other.End.Value && other.End.Value > timeSlice.Start;
         }
     }
 }
