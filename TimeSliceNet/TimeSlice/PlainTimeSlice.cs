@@ -16,7 +16,7 @@ namespace TimeSlice
         /// <inheritdoc cref="ITimeSlice.End"/>
         /// </summary>
         public DateTimeOffset? End { get; set; }
-        
+
         /// <summary>
         /// <inheritdoc cref="ITimeSlice.Duration"/>
         /// </summary>
