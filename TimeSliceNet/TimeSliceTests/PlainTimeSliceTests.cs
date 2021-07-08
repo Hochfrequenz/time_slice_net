@@ -13,7 +13,7 @@ namespace TimeSliceTests
         {
             var start = DateTimeOffset.Parse(startString);
             DateTimeOffset? end = string.IsNullOrWhiteSpace(endString) ? null : DateTimeOffset.Parse(endString);
-            var pts = new PlainTimeSlice()
+            var pts = new PlainTimeSlice
             {
                 Start = start,
                 End = end

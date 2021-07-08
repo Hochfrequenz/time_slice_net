@@ -20,6 +20,6 @@ namespace TimeSlice
         /// <summary>
         /// <inheritdoc cref="ITimeSlice.Duration"/>
         /// </summary>
-        public TimeSpan? Duration => End.HasValue ? End - Start : null;
+        public TimeSpan? Duration => End - Start;
     }
 }

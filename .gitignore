@@ -1,0 +1,12 @@
+
+TimeSliceNet/.idea/.idea.TimeSliceNet/.idea/
+
+*.dll
+
+TimeSliceNet/TimeSlice/obj/
+
+TimeSliceNet/TimeSliceTests/obj/
+
+TimeSliceNet/TimeSliceTests/bin/Debug/net5.0/
+
+TimeSliceNet/TimeSlice/bin/Debug/net5.0/
