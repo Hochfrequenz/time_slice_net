@@ -24,11 +24,12 @@ jobs:
         with:
           dotnet-version: 5.0.100
       - name: Install dependencies
+        working-directory: ./TimeSliceNet
         run: dotnet restore
       - name: Install coverlet.msbuild in UnitTests
         working-directory: ./TimeSliceNet/TimeSliceTests
         run: dotnet add package coverlet.msbuild
       - name: Measure Test Coverage
-        working-directory: ./TimeSliceNet/TimeSliceTests
+        working-directory: ./TimeSliceNet
         run: dotnet test /p:Threshold=50 /p:ThresholdType=line /p:CollectCoverage=true /p:SkipAutoProps=true /p:CoverletOutputFormat=lcov --configuration Release
         # ToDo: increase the threshold over time.
