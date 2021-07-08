@@ -4,8 +4,17 @@ using TimeSlice;
 
 namespace TimeSliceTests
 {
+    /// <summary>
+    /// Tests <see cref="PlainTimeSlice"/>
+    /// </summary>
     public class PlainTimeSliceTests
     {
+        /// <summary>
+        /// Tests that the duration of plain time slices is calculated as expected.
+        /// </summary>
+        /// <param name="startString"></param>
+        /// <param name="endString"></param>
+        /// <param name="expectedDurationSeconds"></param>
         [Test]
         [TestCase("2021-07-01T00:00:00Z", " ", null)]
         [TestCase("2021-07-01T00:00:00Z", "2021-07-01T00:01:00Z", 60)]
@@ -19,7 +28,7 @@ namespace TimeSliceTests
                 End = end
             };
             var actualDuration = pts.Duration?.TotalSeconds;
-            Assert.AreEqual(actualDuration, expectedDurationSeconds);
+            Assert.AreEqual(expectedDurationSeconds, actualDuration);
         }
     }
 }

@@ -46,5 +46,18 @@
             <inheritdoc cref="P:TimeSlice.ITimeSlice.Duration"/>
             </summary>
         </member>
+        <member name="T:TimeSlice.TimeSliceExtensions">
+            <summary>
+            A static class with extension methods for objects/classes that implement <see cref="T:TimeSlice.ITimeSlice"/>
+            </summary>
+        </member>
+        <member name="M:TimeSlice.TimeSliceExtensions.Overlaps(TimeSlice.ITimeSlice,System.DateTimeOffset)">
+            <summary>
+            check if a datetime is in side a time slice.
+            </summary>
+            <param name="timeSlice">any time slice</param>
+            <param name="dt">a datetime</param>
+            <returns>true iff <paramref name="dt"/> is inside <paramref name="timeSlice"/></returns>
+        </member>
     </members>
 </doc>
