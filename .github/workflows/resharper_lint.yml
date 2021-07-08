@@ -10,7 +10,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: resharper
-        working-directory: ./TimeSliceNet
         uses: glassechidna/resharper-action@master
+        working-directory: ./TimeSliceNet
         with:
           solution: TimeSliceNet.sln
