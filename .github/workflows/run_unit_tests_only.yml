@@ -12,4 +12,5 @@ jobs:
         with:
           dotnet-version: 5.0.100
       - name: Run Tests
+        working-directory: ./TimeSliceNet
         run: dotnet test --configuration Release
