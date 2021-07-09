@@ -62,7 +62,6 @@ namespace TimeSliceTests
         [TestCase("2021-06-01T00:00:00Z", "2021-07-01T00:00:00Z", "2021-07-01T00:00:00Z", null, false)]
         [TestCase("2021-06-01T00:00:00Z", "2021-08-01T00:00:00Z", "2021-07-01T00:00:00Z", "2021-07-15T00:00:00Z", true)]
         [TestCase("2021-07-01T00:00:00Z", null, "2021-07-01T00:00:00Z", "2021-08-01T00:00:00Z", true)]
-        // todo: much more test cases
         public void TestOverlapsWithOtherTimeSlice(string startStringA, string endStringA, string startStringB, string endStringB, bool expected)
         {
             var startA = DateTimeOffset.Parse(startStringA);

@@ -30,5 +30,28 @@ namespace TimeSlice
         {
             return this.IsOpen() ? $"Open time slice [{Start:O} to infinity" : $"Time slice [{Start:O} - {End:O})";
         }
+
+        /// <summary>
+        /// Two time slices are identical, if <see cref="Start"/> and <see cref="End"/> are the same.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+#pragma warning disable 8632
+        public override bool Equals(object? obj)
+#pragma warning restore 8632
+        {
+            return obj switch
+            {
+                null => false,
+                PlainTimeSlice other => Start.Equals(other.Start) && Nullable.Equals(End, other.End),
+                _ => false
+            };
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Start, End);
+        }
     }
 }
