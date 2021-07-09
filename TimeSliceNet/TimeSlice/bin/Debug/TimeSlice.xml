@@ -46,6 +46,12 @@
             <inheritdoc cref="P:TimeSlice.ITimeSlice.Duration"/>
             </summary>
         </member>
+        <member name="M:TimeSlice.PlainTimeSlice.ToString">
+            <summary>
+            <inheritdoc cref="M:System.Object.ToString"/>
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:TimeSlice.TimeSliceExtensions">
             <summary>
             A static class with extension methods for objects/classes that implement <see cref="T:TimeSlice.ITimeSlice"/>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace TimeSlice
 {
@@ -21,5 +22,14 @@ namespace TimeSlice
         /// <inheritdoc cref="ITimeSlice.Duration"/>
         /// </summary>
         public TimeSpan? Duration => End - Start;
+
+        /// <summary>
+        /// <inheritdoc cref="object.ToString"/>
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return this.IsOpen() ? $"Open time slice [{Start:O} to infinity" : $"Time slice [{Start:O} - {End:O})";
+        }
     }
 }
