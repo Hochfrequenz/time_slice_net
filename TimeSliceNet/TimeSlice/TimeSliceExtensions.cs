@@ -53,7 +53,8 @@ namespace TimeSlice
                 //  [---time slice-------)
                 return timeSlice.End > other.Start;
             }
-            return timeSlice.Start < other.End.Value && other.End.Value > timeSlice.Start;
+            return timeSlice.End != null && other.End != null // <-- to satisfy the linter. It's ensured though, because both timeSlice and other are _not_ open 
+                                         && timeSlice.Start < other.End.Value && timeSlice.End.Value > other.Start;
         }
     }
 }

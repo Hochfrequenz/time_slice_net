@@ -6,7 +6,7 @@ namespace TimeSliceTests
     /// <summary>
     /// Useful methods for unit tests
     /// </summary>
-    internal class TestHelper
+    internal static class TestHelper
     {
         /// <summary>
         /// Create a time slice from two parseable date time strings

@@ -18,7 +18,7 @@ namespace TimeSlice
         public DateTimeOffset? End { get; set; }
 
         /// <summary>
-        /// <inheritdoc cref="ITimeSlice.Duration"/>
+        /// the length of the time slice
         /// </summary>
         public TimeSpan? Duration => End - Start;
 

@@ -10,18 +10,12 @@ namespace TimeSlice
         /// <summary>
         /// The inclusive start date
         /// </summary>
-        public DateTimeOffset Start { get; set; }
+        public DateTimeOffset Start { get; }
 
         /// <summary>
         /// Exclusive end date.
         /// </summary>
         /// <remarks>null = "open" time slice</remarks>
-        public DateTimeOffset? End { get; set; }
-
-        /// <summary>
-        /// The duration describes the length of a time slice.
-        /// It is null if and only if <see cref="End"/> is null. 
-        /// </summary>
-        public TimeSpan? Duration { get; }
+        public DateTimeOffset? End { get; }
     }
 }

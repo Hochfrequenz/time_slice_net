@@ -20,12 +20,6 @@
             </summary>
             <remarks>null = "open" time slice</remarks>
         </member>
-        <member name="P:TimeSlice.ITimeSlice.Duration">
-            <summary>
-            The duration describes the length of a time slice.
-            It is null if and only if <see cref="P:TimeSlice.ITimeSlice.End"/> is null. 
-            </summary>
-        </member>
         <member name="T:TimeSlice.PlainTimeSlice">
             <summary>
             A plain time slice is the simplest way to model a time slice.
@@ -43,7 +37,7 @@
         </member>
         <member name="P:TimeSlice.PlainTimeSlice.Duration">
             <summary>
-            <inheritdoc cref="P:TimeSlice.ITimeSlice.Duration"/>
+            the length of the time slice
             </summary>
         </member>
         <member name="M:TimeSlice.PlainTimeSlice.ToString">
