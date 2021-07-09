@@ -24,7 +24,7 @@ namespace TimeSlice
         public static bool Overlaps(this ITimeSlice timeSlice, DateTimeOffset dt)
         {
             if (timeSlice.IsOpen()) return timeSlice.Start <= dt;
-            return timeSlice.Start <= dt && timeSlice.End.Value > dt;
+            return timeSlice.Start <= dt && timeSlice.End.HasValue && timeSlice.End.Value > dt;
             // remember: the end date is _exclusive_
         }
 

@@ -53,6 +53,9 @@
             <param name="obj"></param>
             <returns></returns>
         </member>
+        <member name="M:TimeSlice.PlainTimeSlice.Equals(TimeSlice.PlainTimeSlice)">
+            <inheritdoc />
+        </member>
         <member name="M:TimeSlice.PlainTimeSlice.GetHashCode">
             <inheritdoc />
         </member>

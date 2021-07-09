@@ -15,11 +15,25 @@ namespace TimeSliceTests
         [Test]
         [TestCase("2021-07-01T00:00:00Z", "2021-07-02T00:00:00Z", false)] // has an end
         [TestCase("2021-07-01T00:00:00Z", null, true)] // has no end
-        public void TestOverlapsWithDateTime(string startString, string endString, bool expected)
+        public void TestIsOpen(string startString, string endString, bool expected)
         {
             var pts = TestHelper.CreateTimeSlice(startString, endString);
             var actual = pts.IsOpen();
             Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Tests <see cref="TimeSliceExtensions.IsOpen"/>
+        /// </summary>
+        [Test]
+        public void TestInfinityIsOpen()
+        {
+            var pts = new PlainTimeSlice
+            {
+                Start = DateTimeOffset.UtcNow,
+                End = DateTimeOffset.MaxValue
+            };
+            Assert.IsTrue(pts.IsOpen());
         }
 
         /// <summary>

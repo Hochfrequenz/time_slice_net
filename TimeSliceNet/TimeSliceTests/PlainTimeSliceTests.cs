@@ -52,6 +52,14 @@ namespace TimeSliceTests
             var actual = ptsA.Equals(ptsB);
             Assert.AreEqual(actual, ptsB.Equals(ptsA)); // if A equals B, then B also equals A
             Assert.AreEqual(expected, actual);
+            if (expected)
+            {
+                Assert.AreEqual(ptsA.GetHashCode(), ptsB.GetHashCode());
+            }
+            else
+            {
+                Assert.AreNotEqual(ptsA.GetHashCode(), ptsB.GetHashCode());
+            }
         }
 
         [Test]
