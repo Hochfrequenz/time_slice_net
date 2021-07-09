@@ -1,3 +1,5 @@
+using System;
+using System.Text;
 using NUnit.Framework;
 using TimeSlice;
 
@@ -50,6 +52,20 @@ namespace TimeSliceTests
             var actual = ptsA.Equals(ptsB);
             Assert.AreEqual(actual, ptsB.Equals(ptsA)); // if A equals B, then B also equals A
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void TestObviouslyFalseEquals()
+        {
+            var pts = new PlainTimeSlice
+            {
+                Start = DateTimeOffset.UtcNow,
+                End = DateTimeOffset.UtcNow + TimeSpan.FromDays(1)
+            };
+            Assert.IsFalse(pts.Equals(null), "Null must not equal any time slice.");
+            // this comparison is supposed to be suspecious ;)
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            Assert.IsFalse(pts.Equals(new StringBuilder()), "Objects that do not implement the time slice interface should not be considered equal.");
         }
     }
 }

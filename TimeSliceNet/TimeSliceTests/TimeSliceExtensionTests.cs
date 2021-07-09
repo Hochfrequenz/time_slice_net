@@ -17,13 +17,7 @@ namespace TimeSliceTests
         [TestCase("2021-07-01T00:00:00Z", null, true)] // has no end
         public void TestOverlapsWithDateTime(string startString, string endString, bool expected)
         {
-            var start = DateTimeOffset.Parse(startString);
-            DateTimeOffset? end = string.IsNullOrWhiteSpace(endString) ? null : DateTimeOffset.Parse(endString);
-            var pts = new PlainTimeSlice
-            {
-                Start = start,
-                End = end
-            };
+            var pts = TestHelper.CreateTimeSlice(startString, endString);
             var actual = pts.IsOpen();
             Assert.AreEqual(expected, actual);
         }
@@ -41,14 +35,8 @@ namespace TimeSliceTests
         [TestCase("2021-07-01T00:00:00Z", "2021-07-02T00:00:00Z", "2021-07-03T00:00:00Z", false)] // after
         public void TestOverlapsWithDateTime(string startString, string endString, string candidateString, bool expected)
         {
-            var start = DateTimeOffset.Parse(startString);
-            DateTimeOffset? end = string.IsNullOrWhiteSpace(endString) ? null : DateTimeOffset.Parse(endString);
             var candidate = DateTimeOffset.Parse(candidateString);
-            var pts = new PlainTimeSlice
-            {
-                Start = start,
-                End = end
-            };
+            var pts = TestHelper.CreateTimeSlice(startString, endString);
             var actual = pts.Overlaps(candidate);
             Assert.AreEqual(expected, actual);
         }
@@ -64,20 +52,8 @@ namespace TimeSliceTests
         [TestCase("2021-07-01T00:00:00Z", null, "2021-07-01T00:00:00Z", "2021-08-01T00:00:00Z", true)]
         public void TestOverlapsWithOtherTimeSlice(string startStringA, string endStringA, string startStringB, string endStringB, bool expected)
         {
-            var startA = DateTimeOffset.Parse(startStringA);
-            DateTimeOffset? endA = string.IsNullOrWhiteSpace(endStringA) ? null : DateTimeOffset.Parse(endStringA);
-            var startB = DateTimeOffset.Parse(startStringB);
-            DateTimeOffset? endB = string.IsNullOrWhiteSpace(endStringB) ? null : DateTimeOffset.Parse(endStringB);
-            var ptsA = new PlainTimeSlice
-            {
-                Start = startA,
-                End = endA
-            };
-            var ptsB = new PlainTimeSlice
-            {
-                Start = startB,
-                End = endB
-            };
+            var ptsA = TestHelper.CreateTimeSlice(startStringA, endStringA);
+            var ptsB = TestHelper.CreateTimeSlice(startStringB, endStringB);
             var actual = ptsA.Overlaps(ptsB);
             Assert.AreEqual(actual, ptsB.Overlaps(ptsA)); // if A overlaps B, then B also overlaps A
             Assert.AreEqual(expected, actual);
