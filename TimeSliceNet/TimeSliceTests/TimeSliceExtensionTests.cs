@@ -80,6 +80,7 @@ namespace TimeSliceTests
                 End = endB
             };
             var actual = ptsA.Overlaps(ptsB);
+            Assert.AreEqual(actual, ptsB.Overlaps(ptsA)); // if A overlaps B, then B also overlaps A
             Assert.AreEqual(expected, actual);
         }
     }
