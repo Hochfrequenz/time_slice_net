@@ -75,5 +75,21 @@ namespace TimeSliceTests
             // ReSharper disable once SuspiciousTypeConversion.Global
             Assert.IsFalse(pts.Equals(new StringBuilder()), "Objects that do not implement the time slice interface should not be considered equal.");
         }
+
+        /// <summary>
+        /// Tests (de)-serialization of <see cref="PlainTimeSlice"/>
+        /// </summary>
+        [Test]
+        public void TestDeserialization()
+        {
+            const string json = "{\"start\":\"2021-07-01T00:00:00Z\",\"end\":\"2021-08-01T00:00:00Z\"}";
+            var pts = System.Text.Json.JsonSerializer.Deserialize<PlainTimeSlice>(json);
+            var expected = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2021, 8, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            Assert.AreEqual(actual: pts, expected: expected);
+        }
     }
 }

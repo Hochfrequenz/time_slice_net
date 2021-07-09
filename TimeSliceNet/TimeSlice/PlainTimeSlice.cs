@@ -10,11 +10,13 @@ namespace TimeSlice
         /// <summary>
         /// <inheritdoc cref="ITimeSlice.Start"/>
         /// </summary>
+        [System.Text.Json.Serialization.JsonPropertyName("start")]
         public DateTimeOffset Start { get; set; }
 
         /// <summary>
         /// <inheritdoc cref="ITimeSlice.End"/>
         /// </summary>
+        [System.Text.Json.Serialization.JsonPropertyName("end")]
         public DateTimeOffset? End { get; set; }
 
         /// <summary>
