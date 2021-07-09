@@ -28,9 +28,9 @@ namespace TimeSlice
         /// <returns></returns>
         public override string ToString()
         {
-            return this.IsOpen() ? $"Open time slice [{Start:O} to infinity" : $"Time slice [{Start:O} - {End:O})";
+            return this.IsOpen() ? $"Open time slice [{Start:O} to infinity" : $"Time slice [{Start:O} - {End:O})"; 
         }
-
+        
         /// <summary>
         /// Two time slices are identical, if <see cref="Start"/> and <see cref="End"/> are the same.
         /// </summary>
