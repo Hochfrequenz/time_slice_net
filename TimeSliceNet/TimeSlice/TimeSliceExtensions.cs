@@ -16,7 +16,7 @@ namespace TimeSlice
 
 
         /// <summary>
-        /// check if a datetime is in side a time slice.
+        /// check if a datetime is inside a time slice.
         /// </summary>
         /// <param name="timeSlice">any time slice</param>
         /// <param name="dt">a datetime</param>
