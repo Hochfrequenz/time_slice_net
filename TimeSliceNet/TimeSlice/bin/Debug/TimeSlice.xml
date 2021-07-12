@@ -48,6 +48,31 @@
         <member name="M:TimeSlice.Converters.NullableEnforceTimeZoneOffsetConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.DateTimeOffset},System.Text.Json.JsonSerializerOptions)">
             <inheritdoc />
         </member>
+        <member name="T:TimeSlice.IParentChildRelationship`2">
+            <summary>
+            A parent child-relationship between one <typeparamref name="TParent"/> that owns / has assigned up to n <typeparamref name="TChild"/>s
+            If combined with <see cref="T:TimeSlice.ITimeSlice"/> this allows to model 1:n time dependent relationships.
+            </summary>
+            <typeparam name="TParent">the parent / owner type</typeparam>
+            <typeparam name="TChild">the child / "owned" type</typeparam>
+        </member>
+        <member name="P:TimeSlice.IParentChildRelationship`2.Discriminator">
+            <summary>
+            There might be more than one relation between <typeparamref name="TParent"/> and <typeparamref name="TChild"/>.
+            The discriminator is a way to distinguish them. 
+            </summary>
+            <remarks>This is thought to be used when persisting relationships on a database where the discriminator might be part of a Primary Key/Unique/Check Constraint</remarks>
+        </member>
+        <member name="P:TimeSlice.IParentChildRelationship`2.Parent">
+            <summary>
+            The entity that "owns" / has assigned <see cref="P:TimeSlice.IParentChildRelationship`2.Child"/>
+            </summary>
+        </member>
+        <member name="P:TimeSlice.IParentChildRelationship`2.Child">
+            <summary>
+            The entity that is owned by / assigned to <see cref="P:TimeSlice.IParentChildRelationship`2.Parent"/>
+            </summary>
+        </member>
         <member name="T:TimeSlice.ITimeSlice">
             <summary>
             A time slice is something that has a start and an optional end.
@@ -102,6 +127,30 @@
         </member>
         <member name="M:TimeSlice.PlainTimeSlice.GetHashCode">
             <inheritdoc />
+        </member>
+        <member name="T:TimeSlice.TimeDependentParentChildRelationship`2">
+            <summary>
+            The simplest implementation of a time dependent parent child relationship.
+            </summary>
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.Start">
+            <inheritdoc />
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.End">
+            <inheritdoc />
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.Discriminator">
+            <inheritdoc />
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.Parent">
+            <summary>
+            The entity that "owns" / has assigned <see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.Child"/> in between [<see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.Start"/> and <see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.End"/>)
+            </summary>
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.Child">
+            <summary>
+            The entity that is owned by / assigned to <see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.Parent"/> in between [<see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.Start"/> and <see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.End"/>)
+            </summary>
         </member>
         <member name="T:TimeSlice.TimeSliceExtensions">
             <summary>
