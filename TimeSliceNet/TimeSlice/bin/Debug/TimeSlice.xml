@@ -14,7 +14,7 @@
             similar to "O" but without the sub seconds
             </summary>
         </member>
-        <member name="M:TimeSlice.Converters.DateTimeOffsetConverterStringExtension.ToUtcDateTime(System.String)">
+        <member name="M:TimeSlice.Converters.DateTimeOffsetConverterStringExtension.ToUtcDateTimeOffset(System.String)">
             <summary>
             converts <paramref name="dateTimeString"/> to a datetime with offset 0
             </summary>

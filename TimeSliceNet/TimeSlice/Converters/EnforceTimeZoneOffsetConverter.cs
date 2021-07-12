@@ -21,7 +21,7 @@ namespace TimeSlice.Converters
         /// <param name="dateTimeString"></param>
         /// <returns>null iff <paramref name="dateTimeString"/> is null</returns>
         /// <exception cref="FormatException">iff <paramref name="dateTimeString"/> is not parseable with an offset</exception>
-        internal static DateTimeOffset? ToUtcDateTime(this string dateTimeString)
+        internal static DateTimeOffset? ToUtcDateTimeOffset(this string dateTimeString)
         {
             if (dateTimeString == null)
             {
@@ -48,7 +48,7 @@ namespace TimeSlice.Converters
         public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var dateTimeString = reader.GetString();
-            var result = dateTimeString.ToUtcDateTime();
+            var result = dateTimeString.ToUtcDateTimeOffset();
             if (result == null)
             {
                 throw new FormatException("The value must not be null.");
@@ -74,7 +74,7 @@ namespace TimeSlice.Converters
         public override DateTimeOffset? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var dateTimeString = reader.GetString();
-            return dateTimeString.ToUtcDateTime();
+            return dateTimeString.ToUtcDateTimeOffset();
         }
 
         /// <inheritdoc />
