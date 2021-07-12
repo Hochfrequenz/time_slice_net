@@ -1,4 +1,5 @@
 ﻿using System;
+using TimeSlice.Converters;
 
 namespace TimeSlice
 {
@@ -10,16 +11,21 @@ namespace TimeSlice
         /// <summary>
         /// <inheritdoc cref="ITimeSlice.Start"/>
         /// </summary>
+        [System.Text.Json.Serialization.JsonPropertyName("start")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(EnforceTimeZoneOffsetConverter))]
         public DateTimeOffset Start { get; set; }
 
         /// <summary>
         /// <inheritdoc cref="ITimeSlice.End"/>
         /// </summary>
+        [System.Text.Json.Serialization.JsonPropertyName("end")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(NullableEnforceTimeZoneOffsetConverter))]
         public DateTimeOffset? End { get; set; }
 
         /// <summary>
         /// the length of the time slice
         /// </summary>
+        [System.Text.Json.Serialization.JsonIgnore]
         public TimeSpan? Duration => End - Start;
 
         /// <summary>
@@ -42,7 +48,7 @@ namespace TimeSlice
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((PlainTimeSlice)obj);
         }
 
