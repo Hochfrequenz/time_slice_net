@@ -16,7 +16,7 @@ namespace TimeSliceTests
             WriteIndented = false,
             Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
-        
+
         /// <summary>
         /// Tests that the duration of plain time slices is calculated as expected.
         /// </summary>
@@ -100,22 +100,17 @@ namespace TimeSliceTests
             };
             Assert.AreEqual(actual: pts, expected: expected);
         }
-        
+
         /// <summary>
         /// Tests round trip (de-)serialization of <see cref="PlainTimeSlice"/>
         /// </summary>
         [Test]
         [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":\"2021-08-01T00:00:00+00:00\"}")]
+        [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":null}")]
         public void TestDeserializationRoundTrip(string json)
         {
             var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
-            var expected = new PlainTimeSlice
-            {
-                Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
-                End = new DateTimeOffset(2021, 8, 1, 0, 0, 0, TimeSpan.Zero)
-            };
-            Assert.AreEqual(actual: pts, expected: expected);
-            var reserializedPts = JsonSerializer.Serialize(pts,_minifyOptions);
+            var reserializedPts = JsonSerializer.Serialize(pts, _minifyOptions);
             Assert.AreEqual(json, reserializedPts);
         }
 
@@ -135,7 +130,7 @@ namespace TimeSliceTests
             };
             Assert.AreEqual(actual: pts, expected: expected);
         }
-        
+
         /// <summary>
         /// Tests that the start date must not be null.
         /// </summary>

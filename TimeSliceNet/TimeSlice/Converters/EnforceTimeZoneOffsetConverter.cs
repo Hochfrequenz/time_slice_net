@@ -14,7 +14,7 @@ namespace TimeSlice.Converters
         /// similar to "O" but without the sub seconds
         /// </summary>
         internal const string TheOneAndOnlyDatetimeformat = "yyyy-MM-ddTHH:mm:sszzzz";
-        
+
         /// <summary>
         /// converts <paramref name="dateTimeString"/> to a datetime with offset 0
         /// </summary>
@@ -36,7 +36,7 @@ namespace TimeSlice.Converters
             return value.UtcDateTime;
         }
     }
-    
+
     /// <summary>
     /// A converter that throws a <see cref="FormatException"/> if the string that should be deserialized to a DateTimeOffset has no offset/timezone information.
     /// We're not guessing.
@@ -55,14 +55,14 @@ namespace TimeSlice.Converters
             }
             return result.Value;
         }
-        
+
         /// <inheritdoc />
         public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)
         {
             writer.WriteStringValue(value.ToString(DateTimeOffsetConverterStringExtension.TheOneAndOnlyDatetimeformat));
         }
     }
-    
+
     /// <summary>
     /// A converter that throws a <see cref="FormatException"/> if the string that should be deserialized to a DateTimeOffset? has no offset/timezone information.
     /// We're not guessing.
