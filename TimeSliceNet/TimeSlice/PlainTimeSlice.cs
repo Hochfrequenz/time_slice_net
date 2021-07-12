@@ -1,4 +1,5 @@
 ﻿using System;
+using TimeSlice.Converters;
 
 namespace TimeSlice
 {
@@ -11,12 +12,14 @@ namespace TimeSlice
         /// <inheritdoc cref="ITimeSlice.Start"/>
         /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("start")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(EnforceTimeZoneOffsetConverter))]
         public DateTimeOffset Start { get; set; }
 
         /// <summary>
         /// <inheritdoc cref="ITimeSlice.End"/>
         /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("end")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(EnforceTimeZoneOffsetConverter))]
         public DateTimeOffset? End { get; set; }
 
         /// <summary>

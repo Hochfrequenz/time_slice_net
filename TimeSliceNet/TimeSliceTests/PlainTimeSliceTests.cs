@@ -80,9 +80,11 @@ namespace TimeSliceTests
         /// Tests (de)-serialization of <see cref="PlainTimeSlice"/>
         /// </summary>
         [Test]
-        public void TestDeserialization()
+        [TestCase("{\"start\":\"2021-07-01T00:00:00Z\",\"end\":\"2021-08-01T00:00:00Z\"}")]
+        [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":\"2021-08-01T00:00:00+00:00\"}")]
+        [TestCase("{\"start\":\"2021-07-01T02:00:00+02:00\",\"end\":\"2021-07-31T22:00:00-02:00\"}")]
+        public void TestDeserialization(string json)
         {
-            const string json = "{\"start\":\"2021-07-01T00:00:00Z\",\"end\":\"2021-08-01T00:00:00Z\"}";
             var pts = System.Text.Json.JsonSerializer.Deserialize<PlainTimeSlice>(json);
             var expected = new PlainTimeSlice
             {
@@ -90,6 +92,20 @@ namespace TimeSliceTests
                 End = new DateTimeOffset(2021, 8, 1, 0, 0, 0, TimeSpan.Zero)
             };
             Assert.AreEqual(actual: pts, expected: expected);
+        }
+
+        /// <summary>
+        /// Tests that the (de)-serialization of <see cref="PlainTimeSlice"/> without a offset or time zone information like "Z" fails with a format exception.
+        /// </summary>
+        /// <remarks>
+        /// If there's a bug, this test might fail on a local computer that "lives" in a culture with a local time with a != ZERO offset from UTC.
+        /// ToDo: Find a way to mock the DateTime Provider such that we can replicate this behaviour also in systems that live in UTC (like the github actions running the test).
+        /// </remarks>
+        [Test]
+        public void TestDeserializationEnforceOffset()
+        {
+            const string json = "{\"start\":\"2021-07-01T00:00:00\",\"end\":\"2021-08-01T00:00:00\"}";
+            Assert.Throws<FormatException>(() => System.Text.Json.JsonSerializer.Deserialize<PlainTimeSlice>(json));
         }
     }
 }
