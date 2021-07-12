@@ -84,10 +84,6 @@ namespace TimeSlice.Converters
             {
                 writer.WriteStringValue(value.Value.ToString(DateTimeOffsetConverterStringExtension.TheOneAndOnlyDatetimeformat));
             }
-            else
-            {
-                writer.WriteStringValue((string)null);
-            }
         }
     }
 }
