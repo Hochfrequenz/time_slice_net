@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Text.Json;
 using NUnit.Framework;
 using TimeSlice;
 
@@ -10,6 +11,12 @@ namespace TimeSliceTests
     /// </summary>
     public class PlainTimeSliceTests
     {
+        private readonly JsonSerializerOptions _minifyOptions = new()
+        {
+            WriteIndented = false,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
+        
         /// <summary>
         /// Tests that the duration of plain time slices is calculated as expected.
         /// </summary>
@@ -77,15 +84,15 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests (de)-serialization of <see cref="PlainTimeSlice"/>
+        /// Tests deserialization of <see cref="PlainTimeSlice"/> and that any datetimeoffset is returned without offset
         /// </summary>
         [Test]
         [TestCase("{\"start\":\"2021-07-01T00:00:00Z\",\"end\":\"2021-08-01T00:00:00Z\"}")]
         [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":\"2021-08-01T00:00:00+00:00\"}")]
         [TestCase("{\"start\":\"2021-07-01T02:00:00+02:00\",\"end\":\"2021-07-31T22:00:00-02:00\"}")]
-        public void TestDeserialization(string json)
+        public void TestDeserializationWithoutOffset(string json)
         {
-            var pts = System.Text.Json.JsonSerializer.Deserialize<PlainTimeSlice>(json);
+            var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
             var expected = new PlainTimeSlice
             {
                 Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
@@ -93,22 +100,51 @@ namespace TimeSliceTests
             };
             Assert.AreEqual(actual: pts, expected: expected);
         }
+        
+        /// <summary>
+        /// Tests round trip (de-)serialization of <see cref="PlainTimeSlice"/>
+        /// </summary>
+        [Test]
+        [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":\"2021-08-01T00:00:00+00:00\"}")]
+        public void TestDeserializationRoundTrip(string json)
+        {
+            var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
+            var expected = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2021, 8, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            Assert.AreEqual(actual: pts, expected: expected);
+            var reserializedPts = JsonSerializer.Serialize(pts,_minifyOptions);
+            Assert.AreEqual(json, reserializedPts);
+        }
 
         /// <summary>
-        /// Tests (de)-serialization of null as end date works
+        /// Tests (de-)serialization of null as end date works
         /// </summary>
         [Test]
         [TestCase("{\"start\":\"2021-07-01T00:00:00Z\",\"end\":null}")]
         [TestCase("{\"start\":\"2021-07-01T00:00:00Z\"}")]
         public void TestNullEndDateDeserialization(string json)
         {
-            var pts = System.Text.Json.JsonSerializer.Deserialize<PlainTimeSlice>(json);
+            var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
             var expected = new PlainTimeSlice
             {
                 Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
                 End = null
             };
             Assert.AreEqual(actual: pts, expected: expected);
+        }
+        
+        /// <summary>
+        /// Tests that the start date must not be null.
+        /// </summary>
+        [Test]
+        [TestCase("{\"start\":null,\"end\":\"2021-08-01T00:00:00\"}")]
+        [TestCase("{\"start\":null\"}")]
+        public void TestNullStartDateDeserialization(string json)
+        {
+            Assert.Throws<FormatException>(() => JsonSerializer.Deserialize<PlainTimeSlice>(json));
         }
 
         /// <summary>
@@ -122,7 +158,7 @@ namespace TimeSliceTests
         public void TestDeserializationEnforceOffset()
         {
             const string json = "{\"start\":\"2021-07-01T00:00:00\",\"end\":\"2021-08-01T00:00:00\"}";
-            Assert.Throws<FormatException>(() => System.Text.Json.JsonSerializer.Deserialize<PlainTimeSlice>(json));
+            Assert.Throws<FormatException>(() => JsonSerializer.Deserialize<PlainTimeSlice>(json));
         }
     }
 }

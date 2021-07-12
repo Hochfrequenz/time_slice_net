@@ -4,6 +4,24 @@
         <name>TimeSlice</name>
     </assembly>
     <members>
+        <member name="T:TimeSlice.Converters.DateTimeOffsetConverterStringExtension">
+            <summary>
+            string extension methods, that are only used internally
+            </summary>
+        </member>
+        <member name="F:TimeSlice.Converters.DateTimeOffsetConverterStringExtension.TheOneAndOnlyDatetimeformat">
+            <summary>
+            similar to "O" but without the sub seconds
+            </summary>
+        </member>
+        <member name="M:TimeSlice.Converters.DateTimeOffsetConverterStringExtension.ToUtcDateTime(System.String)">
+            <summary>
+            converts <paramref name="dateTimeString"/> to a datetime with offset 0
+            </summary>
+            <param name="dateTimeString"></param>
+            <returns>null iff <paramref name="dateTimeString"/> is null</returns>
+            <exception cref="T:System.FormatException">iff <paramref name="dateTimeString"/> is not parseable with an offset</exception>
+        </member>
         <member name="T:TimeSlice.Converters.EnforceTimeZoneOffsetConverter">
             <summary>
             A converter that throws a <see cref="T:System.FormatException"/> if the string that should be deserialized to a DateTimeOffset has no offset/timezone information.
@@ -15,6 +33,19 @@
             <inheritdoc />
         </member>
         <member name="M:TimeSlice.Converters.EnforceTimeZoneOffsetConverter.Write(System.Text.Json.Utf8JsonWriter,System.DateTimeOffset,System.Text.Json.JsonSerializerOptions)">
+            <inheritdoc />
+        </member>
+        <member name="T:TimeSlice.Converters.NullableEnforceTimeZoneOffsetConverter">
+            <summary>
+            A converter that throws a <see cref="T:System.FormatException"/> if the string that should be deserialized to a DateTimeOffset? has no offset/timezone information.
+            We're not guessing.
+            </summary>
+            <remarks>https://docs.microsoft.com/en-us/dotnet/standard/datetime/system-text-json-support</remarks>
+        </member>
+        <member name="M:TimeSlice.Converters.NullableEnforceTimeZoneOffsetConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <inheritdoc />
+        </member>
+        <member name="M:TimeSlice.Converters.NullableEnforceTimeZoneOffsetConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.DateTimeOffset},System.Text.Json.JsonSerializerOptions)">
             <inheritdoc />
         </member>
         <member name="T:TimeSlice.ITimeSlice">
@@ -86,7 +117,7 @@
         </member>
         <member name="M:TimeSlice.TimeSliceExtensions.Overlaps(TimeSlice.ITimeSlice,System.DateTimeOffset)">
             <summary>
-            check if a datetime is in side a time slice.
+            check if a datetime is inside a time slice.
             </summary>
             <param name="timeSlice">any time slice</param>
             <param name="dt">a datetime</param>
