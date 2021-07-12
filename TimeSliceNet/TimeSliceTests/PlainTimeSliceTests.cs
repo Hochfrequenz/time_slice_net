@@ -95,6 +95,23 @@ namespace TimeSliceTests
         }
 
         /// <summary>
+        /// Tests (de)-serialization of null as end date works
+        /// </summary>
+        [Test]
+        [TestCase("{\"start\":\"2021-07-01T00:00:00Z\",\"end\":null}")]
+        [TestCase("{\"start\":\"2021-07-01T00:00:00Z\"}")]
+        public void TestNullEndDateDeserialization(string json)
+        {
+            var pts = System.Text.Json.JsonSerializer.Deserialize<PlainTimeSlice>(json);
+            var expected = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
+                End = null
+            };
+            Assert.AreEqual(actual: pts, expected: expected);
+        }
+
+        /// <summary>
         /// Tests that the (de)-serialization of <see cref="PlainTimeSlice"/> without a offset or time zone information like "Z" fails with a format exception.
         /// </summary>
         /// <remarks>
