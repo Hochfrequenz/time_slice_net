@@ -68,7 +68,7 @@ namespace TimeSlice
                     {
                         var errorMessage =
                             $"The following time slices overlap: {string.Join(", ", overlappingSlices.Select(tuple => $"({tuple.tsA}, {tuple.tsB})"))}";
-                        results.Add(new ValidationResult(errorMessage, new List<string>() { nameof(TimeSlices) }));
+                        results.Add(new ValidationResult(errorMessage, new List<string> { nameof(TimeSlices) }));
                     }
                     // check is ok => no overlaps
                     break;

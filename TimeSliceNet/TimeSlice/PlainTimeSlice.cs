@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using TimeSlice.Converters;
 
 namespace TimeSlice
@@ -46,7 +45,7 @@ namespace TimeSlice
             var results = new List<ValidationResult>();
             if (End < Start)
             {
-                results.Add(new ValidationResult($"The {nameof(End)} ({End:O}) must not be earlier than the {nameof(Start)} ({Start:O})", new List<string>() { nameof(Start), nameof(End) }));
+                results.Add(new ValidationResult($"The {nameof(End)} ({End:O}) must not be earlier than the {nameof(Start)} ({Start:O})", new List<string> { nameof(Start), nameof(End) }));
             }
             if (End.HasValue)
             {
@@ -74,8 +73,7 @@ namespace TimeSlice
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((PlainTimeSlice)obj);
+            return obj.GetType() == GetType() && Equals((PlainTimeSlice)obj);
         }
 
         /// <inheritdoc />
