@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using TimeSlice.Converters;
 
 namespace TimeSlice
@@ -35,6 +38,29 @@ namespace TimeSlice
         public override string ToString()
         {
             return this.IsOpen() ? $"Open time slice [{Start:O} to infinity" : $"Time slice [{Start:O} - {End:O})";
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var results = new List<ValidationResult>();
+            if (End < Start)
+            {
+                results.Add(new ValidationResult($"The {nameof(End)} ({End:O}) must not be earlier than the {nameof(Start)} ({Start:O})", new List<string>() { nameof(Start), nameof(End) }));
+            }
+            if (End.HasValue)
+            {
+                if (End != DateTimeOffset.MaxValue && End.Value.Minute == 59 && End.Value.Second == 59)
+                {
+                    // https://imgflip.com/i/5gbuqi
+                    // Make sure no one tries to use "23:59:59" style pseudo-inclusive end dates.
+                    // This is in fact patronizing but I can't think of any business case in which a time slice that - because of the exclusive character of the end date - does not include the last second of an hour is actually intended.
+                    // The only exception is infinity.
+                    // We better fail early upon validation of an object than to carry around data that without a shared/common understanding.
+                    results.Add(new ValidationResult($"The {nameof(End)} {End.Value:O} has to be exclusive but it seems like it's meant to be inclusive.", new List<string> { nameof(End) }));
+                }
+            }
+            return results;
         }
 
 #pragma warning disable 8632

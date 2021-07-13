@@ -115,6 +115,9 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:TimeSlice.PlainTimeSlice.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <inheritdoc />
+        </member>
         <member name="M:TimeSlice.PlainTimeSlice.Equals(System.Object)">
             <summary>
             Two time slices are identical, if <see cref="P:TimeSlice.PlainTimeSlice.Start"/> and <see cref="P:TimeSlice.PlainTimeSlice.End"/> are the same.
@@ -128,28 +131,58 @@
         <member name="M:TimeSlice.PlainTimeSlice.GetHashCode">
             <inheritdoc />
         </member>
+        <member name="T:TimeSlice.TimeDependentCollectionType">
+            <summary>
+            Describes the possible kinds of time dependent relationships between parents and childs
+            </summary>
+        </member>
+        <member name="F:TimeSlice.TimeDependentCollectionType.AllowOverlaps">
+            <summary>
+            &lt;= 1 child assigned to a parent at a time
+            </summary>
+        </member>
+        <member name="F:TimeSlice.TimeDependentCollectionType.PreventOverlaps">
+            <summary>
+            prevent overlapping time slices (there might be &gt;1 child assigned to a parent at a time
+            </summary>
+        </member>
+        <member name="T:TimeSlice.TimeDependentParentChildCollection`2">
+            <summary>
+            The simplest way to describe a time dependent parent/child collection
+            </summary>
+            <typeparam name="TParent"></typeparam>
+            <typeparam name="TChild"></typeparam>
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildCollection`2.CollectionType">
+            <summary>
+            <inheritdoc cref="T:TimeSlice.TimeDependentCollectionType"/>
+            This has to be set by the inheriting class
+            </summary>
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildCollection`2.TimeSlices">
+            <summary>
+            the single time slices.
+            </summary>
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`2.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <inheritdoc />
+        </member>
         <member name="T:TimeSlice.TimeDependentParentChildRelationship`2">
             <summary>
             The simplest implementation of a time dependent parent child relationship.
             </summary>
-        </member>
-        <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.Start">
-            <inheritdoc />
-        </member>
-        <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.End">
-            <inheritdoc />
         </member>
         <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.Discriminator">
             <inheritdoc />
         </member>
         <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.Parent">
             <summary>
-            The entity that "owns" / has assigned <see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.Child"/> in between [<see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.Start"/> and <see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.End"/>)
+            The entity that "owns" / has assigned <see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.Child"/> in between [<see cref="P:TimeSlice.ITimeSlice.Start"/> and <see cref="P:TimeSlice.ITimeSlice.End"/>)
             </summary>
         </member>
         <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.Child">
             <summary>
-            The entity that is owned by / assigned to <see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.Parent"/> in between [<see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.Start"/> and <see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.End"/>)
+            The entity that is owned by / assigned to <see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.Parent"/> in between [<see cref="P:TimeSlice.ITimeSlice.Start"/> and <see cref="P:TimeSlice.ITimeSlice.End"/>)
             </summary>
         </member>
         <member name="T:TimeSlice.TimeSliceExtensions">

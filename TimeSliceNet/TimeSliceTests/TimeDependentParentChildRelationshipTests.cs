@@ -7,6 +7,6 @@ namespace TimeSliceTests
     /// </summary>
     public class TimeDependentParentChildRelationshipTests
     {
-        
+
     }
 }

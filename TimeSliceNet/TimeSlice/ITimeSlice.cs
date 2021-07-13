@@ -1,11 +1,12 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TimeSlice
 {
     /// <summary>
     /// A time slice is something that has a start and an optional end.
     /// </summary>
-    public interface ITimeSlice
+    public interface ITimeSlice : IValidatableObject
     {
         /// <summary>
         /// The inclusive start date

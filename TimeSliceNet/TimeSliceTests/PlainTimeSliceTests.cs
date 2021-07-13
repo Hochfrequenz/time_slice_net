@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using NUnit.Framework;
@@ -67,6 +68,7 @@ namespace TimeSliceTests
             {
                 Assert.AreNotEqual(ptsA.GetHashCode(), ptsB.GetHashCode());
             }
+            Assert.IsFalse(ptsA.Validate(null).Any()); // check validity
         }
 
         [Test]
@@ -99,6 +101,21 @@ namespace TimeSliceTests
                 End = new DateTimeOffset(2021, 8, 1, 0, 0, 0, TimeSpan.Zero)
             };
             Assert.AreEqual(actual: pts, expected: expected);
+            Assert.IsFalse(pts.Validate(null).Any()); // check validity
+        }
+
+        /// <summary>
+        /// Tests deserialization of <see cref="PlainTimeSlice"/> "wrong"/invalid time slices
+        /// </summary>
+        [Test]
+        [TestCase("{\"start\":\"2021-07-01T00:00:00Z\",\"end\":\"2021-07-31T23:59:59+02:00\"}")] // 23:59:59
+        [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":\"2021-07-31T21:59:59Z\"}")] // similar to 23:59:59 but as UTC
+        [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":\"2020-07-01T00:00:00Z\"}")] // similar to 23:59:59 but as UTC
+        public void TestInvalidTimeSlices(string json)
+        {
+            var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
+            Assert.IsNotNull(pts);
+            Assert.IsTrue(pts.Validate(null).Any());
         }
 
         /// <summary>
@@ -112,6 +129,7 @@ namespace TimeSliceTests
             var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
             var reserializedPts = JsonSerializer.Serialize(pts, _minifyOptions);
             Assert.AreEqual(json, reserializedPts);
+            Assert.IsFalse(pts.Validate(null).Any());
         }
 
         /// <summary>
@@ -129,6 +147,7 @@ namespace TimeSliceTests
                 End = null
             };
             Assert.AreEqual(actual: pts, expected: expected);
+            Assert.IsFalse(pts.Validate(null).Any());
         }
 
         /// <summary>

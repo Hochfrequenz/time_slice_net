@@ -6,16 +6,16 @@
     /// </summary>
     /// <typeparam name="TParent">the parent / owner type</typeparam>
     /// <typeparam name="TChild">the child / "owned" type</typeparam>
-    public interface IParentChildRelationship<TParent, TChild> where TParent:class where TChild:class
+    public interface IParentChildRelationship<TParent, TChild> where TParent : class where TChild : class
     {
-    
+
         /// <summary>
         /// There might be more than one relation between <typeparamref name="TParent"/> and <typeparamref name="TChild"/>.
         /// The discriminator is a way to distinguish them. 
         /// </summary>
         /// <remarks>This is thought to be used when persisting relationships on a database where the discriminator might be part of a Primary Key/Unique/Check Constraint</remarks>
         public string Discriminator { get; }
-        
+
         /// <summary>
         /// The entity that "owns" / has assigned <see cref="Child"/>
         /// </summary>
