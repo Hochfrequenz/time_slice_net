@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using TimeSlice;
 
@@ -9,6 +10,47 @@ namespace TimeSliceTests
     /// </summary>
     public class TimeDependentParentChildCollectionTests
     {
+        /// <summary>
+        /// Test that <see cref="IList{T}"/> is implemented correctly
+        /// </summary>
+        [Test]
+        public void TestIListProperties()
+        {
+            var sharedParent = new Foo();
+            var tsA = new FooBarRelationship
+            {
+                Parent = sharedParent,
+                Child = new Bar(),
+                Start = new DateTimeOffset(2020, 1, 1, 0, 0, 0, TimeSpan.Zero)
+                // open time slice
+            };
+            var tsB = new FooBarRelationship
+            {
+                Parent = sharedParent,
+                Child = new Bar(),
+                Start = new DateTimeOffset(2019, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2021, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            // they overlap in 2020
+            var collection = new RelationshipsWithOverlaps(sharedParent)
+            {
+                tsA,
+                tsB
+            };
+            Assert.AreEqual(collection[0], collection.TimeSlices[0]);
+            Assert.AreEqual(collection.Count, collection.TimeSlices.Count);
+            Assert.AreEqual(collection.GetEnumerator(), collection.TimeSlices.GetEnumerator());
+            Assert.AreEqual(collection.Contains(tsA), collection.TimeSlices.Contains(tsA));
+            collection.Remove(tsB);
+            Assert.AreEqual(1, collection.Count);
+            collection.Insert(1, tsB);
+            Assert.AreEqual(1, collection.IndexOf(tsB));
+            collection.RemoveAt(0);
+            Assert.IsFalse(collection.Contains(tsA));
+            collection.Clear();
+            Assert.AreEqual(0, collection.Count);
+        }
+        
         /// <summary>
         ///     Test that the overlap check works
         /// </summary>

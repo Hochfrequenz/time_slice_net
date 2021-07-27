@@ -154,6 +154,13 @@
             <typeparam name="TChild"></typeparam>
             <typeparam name="TRelationship"></typeparam>
         </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.#ctor(`1)">
+            <summary>
+                the collection may be initialized by providing the parent that is shared among all children.
+            </summary>
+            <param name="commonParent"></param>
+            <exception cref="T:System.ArgumentNullException">iff <paramref name="commonParent" /> is null</exception>
+        </member>
         <member name="P:TimeSlice.TimeDependentParentChildCollection`3.CollectionType">
             <summary>
                 <inheritdoc cref="T:TimeSlice.TimeDependentCollectionType" />
@@ -163,23 +170,14 @@
         </member>
         <member name="P:TimeSlice.TimeDependentParentChildCollection`3.CommonParent">
             <summary>
-            The common parent for this collection that is the same for all slices in <see cref="P:TimeSlice.TimeDependentParentChildCollection`3.TimeSlices"/>
+                The common parent for this collection that is the same for all slices in <see cref="P:TimeSlice.TimeDependentParentChildCollection`3.TimeSlices" />
             </summary>
-        </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.#ctor(`1)">
-            <summary>
-            the collection may be initialized by providing the parent that is shared among all children.
-            </summary>
-            <param name="commonParent"></param>
-            <exception cref="T:System.ArgumentNullException">iff <paramref name="commonParent"/> is null</exception>
         </member>
         <member name="P:TimeSlice.TimeDependentParentChildCollection`3.TimeSlices">
             <summary>
                 the single time slices.
             </summary>
-        </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
-            <inheritdoc />
+            <remarks>We model a list of <typeparamref name="TRelationship"/> instead of <typeparamref name="TChild"/> because each of the items inside this list may still be persisted or serialized on its own without "knowing" about the other items.</remarks>
         </member>
         <member name="M:TimeSlice.TimeDependentParentChildCollection`3.GetEnumerator">
             <inheritdoc />
@@ -215,6 +213,9 @@
             <inheritdoc />
         </member>
         <member name="P:TimeSlice.TimeDependentParentChildCollection`3.Item(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
             <inheritdoc />
         </member>
         <member name="T:TimeSlice.TimeDependentParentChildRelationship`2">
@@ -265,12 +266,12 @@
         </member>
         <member name="T:TimeSlice.ValidatableObjectExtensions">
             <summary>
-            Extension Methods for <see cref="T:System.ComponentModel.DataAnnotations.IValidatableObject"/>
+                Extension Methods for <see cref="T:System.ComponentModel.DataAnnotations.IValidatableObject" />
             </summary>
         </member>
         <member name="M:TimeSlice.ValidatableObjectExtensions.IsValid(System.ComponentModel.DataAnnotations.IValidatableObject)">
             <summary>
-            if the <see cref="M:System.ComponentModel.DataAnnotations.IValidatableObject.Validate(System.ComponentModel.DataAnnotations.ValidationContext)"/> method accepts a null validation context, then this method allows an easily readable access
+                if the <see cref="M:System.ComponentModel.DataAnnotations.IValidatableObject.Validate(System.ComponentModel.DataAnnotations.ValidationContext)" /> method accepts a null validation context, then this method allows an easily readable access
             </summary>
             <param name="validatableObject"></param>
             <returns></returns>
