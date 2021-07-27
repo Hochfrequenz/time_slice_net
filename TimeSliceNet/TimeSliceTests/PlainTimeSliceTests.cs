@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -65,7 +64,7 @@ namespace TimeSliceTests
                 Assert.AreEqual(ptsA.GetHashCode(), ptsB.GetHashCode());
             else
                 Assert.AreNotEqual(ptsA.GetHashCode(), ptsB.GetHashCode());
-            Assert.IsFalse(ptsA.Validate(null).Any()); // check validity
+            Assert.IsTrue(ptsA.IsValid());
         }
 
         [Test]
@@ -99,7 +98,7 @@ namespace TimeSliceTests
             };
             Assert.AreEqual(actual: pts, expected: expected);
             Assert.IsNotNull(pts);
-            Assert.IsFalse(pts.Validate(null).Any()); // check validity
+            Assert.IsTrue(pts.IsValid());
         }
 
         /// <summary>
@@ -113,7 +112,7 @@ namespace TimeSliceTests
         {
             var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
             Assert.IsNotNull(pts);
-            Assert.IsTrue(pts.Validate(null).Any());
+            Assert.IsFalse(pts.IsValid());
         }
 
         /// <summary>
@@ -128,7 +127,7 @@ namespace TimeSliceTests
             var reserializedPts = JsonSerializer.Serialize(pts, _minifyOptions);
             Assert.AreEqual(json, reserializedPts);
             Assert.IsNotNull(pts);
-            Assert.IsFalse(pts.Validate(null).Any());
+            Assert.IsTrue(pts.IsValid());
         }
 
         /// <summary>
@@ -147,7 +146,7 @@ namespace TimeSliceTests
             };
             Assert.AreEqual(actual: pts, expected: expected);
             Assert.IsNotNull(pts);
-            Assert.IsFalse(pts.Validate(null).Any());
+            Assert.IsTrue(pts.IsValid());
         }
 
         /// <summary>
