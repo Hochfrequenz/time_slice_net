@@ -5,12 +5,12 @@ using TimeSlice;
 namespace TimeSliceTests
 {
     /// <summary>
-    /// Tests <see cref="TimeSliceExtensions"/>
+    ///     Tests <see cref="TimeSliceExtensions" />
     /// </summary>
     public class TimeSliceExtensionTests
     {
         /// <summary>
-        /// Tests <see cref="TimeSliceExtensions.IsOpen"/>
+        ///     Tests <see cref="TimeSliceExtensions.IsOpen" />
         /// </summary>
         [Test]
         [TestCase("2021-07-01T00:00:00Z", "2021-07-02T00:00:00Z", false)] // has an end
@@ -23,7 +23,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests <see cref="TimeSliceExtensions.IsOpen"/>
+        ///     Tests <see cref="TimeSliceExtensions.IsOpen" />
         /// </summary>
         [Test]
         public void TestInfinityIsOpen()
@@ -37,7 +37,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests <see cref="TimeSliceExtensions.Overlaps(TimeSlice.ITimeSlice,System.DateTimeOffset)"/>
+        ///     Tests <see cref="TimeSliceExtensions.Overlaps(TimeSlice.ITimeSlice,System.DateTimeOffset)" />
         /// </summary>
         [Test]
         [TestCase("2021-07-01T00:00:00Z", "2021-07-02T00:00:00Z", "2021-06-30T23:59:59Z", false)] // before
@@ -56,7 +56,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests <see cref="TimeSliceExtensions.Overlaps(TimeSlice.ITimeSlice,TimeSlice.ITimeSlice)"/>
+        ///     Tests <see cref="TimeSliceExtensions.Overlaps(TimeSlice.ITimeSlice,TimeSlice.ITimeSlice)" />
         /// </summary>
         [Test]
         [TestCase("2021-07-01T00:00:00Z", null, "2021-07-01T00:00:00Z", null, true)] // 2 open (identical) time slices

@@ -7,37 +7,37 @@ using System.Text.Json.Serialization;
 namespace TimeSlice
 {
     /// <summary>
-    /// Describes the possible kinds of time dependent relationships between parents and children
+    ///     Describes the possible kinds of time dependent relationships between parents and children
     /// </summary>
     public enum TimeDependentCollectionType
     {
         /// <summary>
-        /// &lt;= 1 child assigned to a parent at a time
+        ///     &lt;= 1 child assigned to a parent at a time
         /// </summary>
         [JsonPropertyName("allowOverlaps")] AllowOverlaps,
 
         /// <summary>
-        /// prevent overlapping time slices (there might be &gt;1 child assigned to a parent at a time
+        ///     prevent overlapping time slices (there might be &gt;1 child assigned to a parent at a time
         /// </summary>
         [JsonPropertyName("preventOverlaps")] PreventOverlaps
     }
 
     /// <summary>
-    /// The simplest way to describe a time dependent parent/child collection
+    ///     The simplest way to describe a time dependent parent/child collection
     /// </summary>
     /// <typeparam name="TParent"></typeparam>
     /// <typeparam name="TChild"></typeparam>
     public abstract class TimeDependentParentChildCollection<TParent, TChild> : IValidatableObject where TParent : class where TChild : class
     {
         /// <summary>
-        /// <inheritdoc cref="TimeDependentCollectionType"/>
-        /// This has to be set by the inheriting class
+        ///     <inheritdoc cref="TimeDependentCollectionType" />
+        ///     This has to be set by the inheriting class
         /// </summary>
         /// <remarks>This is also the reason why this class is abstract. It should prevent the user of the library from suddenly changing the Collection Type which is not intended.</remarks>
         public abstract TimeDependentCollectionType CollectionType { get; }
 
         /// <summary>
-        /// the single time slices.
+        ///     the single time slices.
         /// </summary>
         public IList<TimeDependentParentChildRelationship<TParent, TChild>> TimeSlices { get; set; }
 
@@ -45,15 +45,10 @@ namespace TimeSlice
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
-            foreach (var ts in TimeSlices)
-            {
-                results.AddRange(ts.Validate(validationContext));
-            }
+            foreach (var ts in TimeSlices) results.AddRange(ts.Validate(validationContext));
             if (TimeSlices is not { Count: > 1 })
-            {
                 // no further checks required
                 return results;
-            }
             switch (CollectionType)
             {
                 case TimeDependentCollectionType.AllowOverlaps:
@@ -71,6 +66,7 @@ namespace TimeSlice
                             $"The following time slices overlap: {string.Join(", ", overlappingSlices.Select(tuple => $"({tuple.tsA}, {tuple.tsB})"))}";
                         results.Add(new ValidationResult(errorMessage, new List<string> { nameof(TimeSlices) }));
                     }
+
                     // check is ok => no overlaps
                     break;
                 default:

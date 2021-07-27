@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using NUnit.Framework;
 using TimeSlice;
@@ -8,18 +9,18 @@ using TimeSlice;
 namespace TimeSliceTests
 {
     /// <summary>
-    /// Tests <see cref="PlainTimeSlice"/>
+    ///     Tests <see cref="PlainTimeSlice" />
     /// </summary>
     public class PlainTimeSliceTests
     {
         private readonly JsonSerializerOptions _minifyOptions = new()
         {
             WriteIndented = false,
-            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
 
         /// <summary>
-        /// Tests that the duration of plain time slices is calculated as expected.
+        ///     Tests that the duration of plain time slices is calculated as expected.
         /// </summary>
         /// <param name="startString"></param>
         /// <param name="endString"></param>
@@ -45,7 +46,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests <see cref="PlainTimeSlice.Equals(object?)"/>
+        ///     Tests <see cref="PlainTimeSlice.Equals(object?)" />
         /// </summary>
         [Test]
         [TestCase("2021-07-01T00:00:00Z", null, "2021-07-01T00:00:00Z", null, true)]
@@ -61,13 +62,9 @@ namespace TimeSliceTests
             Assert.AreEqual(actual, ptsB.Equals(ptsA)); // if A equals B, then B also equals A
             Assert.AreEqual(expected, actual);
             if (expected)
-            {
                 Assert.AreEqual(ptsA.GetHashCode(), ptsB.GetHashCode());
-            }
             else
-            {
                 Assert.AreNotEqual(ptsA.GetHashCode(), ptsB.GetHashCode());
-            }
             Assert.IsFalse(ptsA.Validate(null).Any()); // check validity
         }
 
@@ -86,7 +83,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests deserialization of <see cref="PlainTimeSlice"/> and that any datetimeoffset is returned without offset
+        ///     Tests deserialization of <see cref="PlainTimeSlice" /> and that any datetimeoffset is returned without offset
         /// </summary>
         [Test]
         [TestCase("{\"start\":\"2021-07-01T00:00:00Z\",\"end\":\"2021-08-01T00:00:00Z\"}")]
@@ -105,7 +102,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests deserialization of <see cref="PlainTimeSlice"/> "wrong"/invalid time slices
+        ///     Tests deserialization of <see cref="PlainTimeSlice" /> "wrong"/invalid time slices
         /// </summary>
         [Test]
         [TestCase("{\"start\":\"2021-07-01T00:00:00Z\",\"end\":\"2021-07-31T23:59:59+02:00\"}")] // 23:59:59
@@ -119,7 +116,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests round trip (de-)serialization of <see cref="PlainTimeSlice"/>
+        ///     Tests round trip (de-)serialization of <see cref="PlainTimeSlice" />
         /// </summary>
         [Test]
         [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":\"2021-08-01T00:00:00+00:00\"}")]
@@ -133,7 +130,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests (de-)serialization of null as end date works
+        ///     Tests (de-)serialization of null as end date works
         /// </summary>
         [Test]
         [TestCase("{\"start\":\"2021-07-01T00:00:00Z\",\"end\":null}")]
@@ -151,7 +148,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests that the start date must not be null.
+        ///     Tests that the start date must not be null.
         /// </summary>
         [Test]
         [TestCase("{\"start\":null,\"end\":\"2021-08-01T00:00:00\"}")]
@@ -162,11 +159,11 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests that the (de)-serialization of <see cref="PlainTimeSlice"/> without a offset or time zone information like "Z" fails with a format exception.
+        ///     Tests that the (de)-serialization of <see cref="PlainTimeSlice" /> without a offset or time zone information like "Z" fails with a format exception.
         /// </summary>
         /// <remarks>
-        /// If there's a bug, this test might fail on a local computer that "lives" in a culture with a local time with a != ZERO offset from UTC.
-        /// ToDo: Find a way to mock the DateTime Provider such that we can replicate this behaviour also in systems that live in UTC (like the github actions running the test).
+        ///     If there's a bug, this test might fail on a local computer that "lives" in a culture with a local time with a != ZERO offset from UTC.
+        ///     ToDo: Find a way to mock the DateTime Provider such that we can replicate this behaviour also in systems that live in UTC (like the github actions running the test).
         /// </remarks>
         [Test]
         public void TestDeserializationEnforceOffset()

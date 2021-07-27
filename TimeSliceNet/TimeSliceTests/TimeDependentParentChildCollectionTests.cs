@@ -7,61 +7,42 @@ using TimeSlice;
 namespace TimeSliceTests
 {
     /// <summary>
-    /// Tests <see cref="TimeDependentParentChildCollection{TParent,TChild}"/>
+    ///     Tests <see cref="TimeDependentParentChildCollection{TParent,TChild}" />
     /// </summary>
     public class TimeDependentParentChildCollectionTests
     {
-        private class Foo
-        {
-        }
-
-        private class Bar
-        {
-        }
-
-        private class RelationshipsWithOverlaps : TimeDependentParentChildCollection<Foo, Bar>
-        {
-            public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.AllowOverlaps;
-        }
-
-        private class RelationshipsWithoutOverlaps : TimeDependentParentChildCollection<Foo, Bar>
-        {
-            public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.PreventOverlaps;
-        }
-
-
         /// <summary>
-        /// Test that the overlap check works
+        ///     Test that the overlap check works
         /// </summary>
         [Test]
         public void TimeDependentParentChildRelationshipOverlapValidation()
         {
-            var tsA = new TimeDependentParentChildRelationship<Foo, Bar>()
+            var tsA = new TimeDependentParentChildRelationship<Foo, Bar>
             {
                 Parent = new Foo(),
                 Child = new Bar(),
-                Start = new DateTimeOffset(2020, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                Start = new DateTimeOffset(2020, 1, 1, 0, 0, 0, TimeSpan.Zero)
                 // open time slice
             };
-            var tsB = new TimeDependentParentChildRelationship<Foo, Bar>()
+            var tsB = new TimeDependentParentChildRelationship<Foo, Bar>
             {
                 Parent = new Foo(),
                 Child = new Bar(),
                 Start = new DateTimeOffset(2019, 1, 1, 0, 0, 0, TimeSpan.Zero),
-                End = new DateTimeOffset(2021, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2021, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
             // they overlap in 2020
-            var relationshipThatAllowsOverlaps = new RelationshipsWithOverlaps()
+            var relationshipThatAllowsOverlaps = new RelationshipsWithOverlaps
             {
-                TimeSlices = new List<TimeDependentParentChildRelationship<Foo, Bar>>()
+                TimeSlices = new List<TimeDependentParentChildRelationship<Foo, Bar>>
                 {
                     tsA
                 }
             };
 
-            var relationshipThatForbisOverlaps = new RelationshipsWithoutOverlaps()
+            var relationshipThatForbisOverlaps = new RelationshipsWithoutOverlaps
             {
-                TimeSlices = new List<TimeDependentParentChildRelationship<Foo, Bar>>()
+                TimeSlices = new List<TimeDependentParentChildRelationship<Foo, Bar>>
                 {
                     tsA
                 }
@@ -79,30 +60,30 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Test that a collection is invalid as soon as at least one element in <see cref="TimeDependentParentChildCollection{TParent,TChild}.TimeSlices"/> is invalid
+        ///     Test that a collection is invalid as soon as at least one element in <see cref="TimeDependentParentChildCollection{TParent,TChild}.TimeSlices" /> is invalid
         /// </summary>
         [Test]
         public void TestValidationErrorsAreForwarded()
         {
-            var validTimeSlice = new TimeDependentParentChildRelationship<Foo, Bar>()
+            var validTimeSlice = new TimeDependentParentChildRelationship<Foo, Bar>
             {
                 Parent = new Foo(),
                 Child = new Bar(),
-                Start = new DateTimeOffset(2020, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                Start = new DateTimeOffset(2020, 1, 1, 0, 0, 0, TimeSpan.Zero)
                 // open time slice
             };
             Assert.IsFalse(validTimeSlice.Validate(null).Any());
-            var invalidTimeSlice = new TimeDependentParentChildRelationship<Foo, Bar>()
+            var invalidTimeSlice = new TimeDependentParentChildRelationship<Foo, Bar>
             {
                 Parent = new Foo(),
                 Child = new Bar(),
                 Start = new DateTimeOffset(2021, 1, 1, 0, 0, 0, TimeSpan.Zero),
-                End = new DateTimeOffset(2019, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2019, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
             Assert.IsTrue(invalidTimeSlice.Validate(null).Any());
-            var relationshipThatAllowsOverlaps = new RelationshipsWithOverlaps()
+            var relationshipThatAllowsOverlaps = new RelationshipsWithOverlaps
             {
-                TimeSlices = new List<TimeDependentParentChildRelationship<Foo, Bar>>()
+                TimeSlices = new List<TimeDependentParentChildRelationship<Foo, Bar>>
                 {
                     validTimeSlice
                 }
@@ -111,14 +92,32 @@ namespace TimeSliceTests
             relationshipThatAllowsOverlaps.TimeSlices.Add(invalidTimeSlice);
             Assert.IsTrue(relationshipThatAllowsOverlaps.Validate(null).Any());
 
-            var initiallyInvalidCollection = new RelationshipsWithOverlaps()
+            var initiallyInvalidCollection = new RelationshipsWithOverlaps
             {
-                TimeSlices = new List<TimeDependentParentChildRelationship<Foo, Bar>>()
+                TimeSlices = new List<TimeDependentParentChildRelationship<Foo, Bar>>
                 {
                     invalidTimeSlice
                 }
             };
             Assert.IsTrue(initiallyInvalidCollection.Validate(null).Any());
+        }
+
+        private class Foo
+        {
+        }
+
+        private class Bar
+        {
+        }
+
+        private class RelationshipsWithOverlaps : TimeDependentParentChildCollection<Foo, Bar>
+        {
+            public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.AllowOverlaps;
+        }
+
+        private class RelationshipsWithoutOverlaps : TimeDependentParentChildCollection<Foo, Bar>
+        {
+            public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.PreventOverlaps;
         }
     }
 }

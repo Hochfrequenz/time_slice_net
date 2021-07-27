@@ -1,24 +1,17 @@
 ﻿using System;
+using System.Text.Json;
 using NUnit.Framework;
 using TimeSlice;
 
 namespace TimeSliceTests
 {
     /// <summary>
-    /// Tests <see cref="TimeDependentParentChildRelationship{TParent,TChild}"/>
+    ///     Tests <see cref="TimeDependentParentChildRelationship{TParent,TChild}" />
     /// </summary>
     public class TimeDependentParentChildRelationshipTests
     {
-        private class Foo
-        {
-        }
-
-        private class Bar
-        {
-        }
-
         /// <summary>
-        /// Tests that if no <see cref="IParentChildRelationship{TParent,TChild}.Discriminator"/> is given, the type name is used as discriminator
+        ///     Tests that if no <see cref="IParentChildRelationship{TParent,TChild}.Discriminator" /> is given, the type name is used as discriminator
         /// </summary>
         [Test]
         [TestCase("")]
@@ -36,7 +29,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests that if <see cref="IParentChildRelationship{TParent,TChild}.Discriminator"/> is given, it is used as discriminator
+        ///     Tests that if <see cref="IParentChildRelationship{TParent,TChild}.Discriminator" /> is given, it is used as discriminator
         /// </summary>
         [Test]
         public void TimeDependentParentChildRelationshipCustomDiscriminator()
@@ -51,7 +44,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Test that (de)serialization works
+        ///     Test that (de)serialization works
         /// </summary>
         [Test]
         public void TimeDependentParentChildRelationshipDeSerialization()
@@ -64,9 +57,17 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
                 End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
-            var json = System.Text.Json.JsonSerializer.Serialize(tdpcr);
-            var deserializedTdpcr = System.Text.Json.JsonSerializer.Deserialize<TimeDependentParentChildRelationship<Foo, Bar>>(json);
+            var json = JsonSerializer.Serialize(tdpcr);
+            var deserializedTdpcr = JsonSerializer.Deserialize<TimeDependentParentChildRelationship<Foo, Bar>>(json);
             Assert.AreEqual(tdpcr, deserializedTdpcr);
+        }
+
+        private class Foo
+        {
+        }
+
+        private class Bar
+        {
         }
     }
 }

@@ -4,12 +4,12 @@ using TimeSlice;
 namespace TimeSliceTests
 {
     /// <summary>
-    /// Useful methods for unit tests
+    ///     Useful methods for unit tests
     /// </summary>
     internal static class TestHelper
     {
         /// <summary>
-        /// Create a time slice from two parseable date time strings
+        ///     Create a time slice from two parseable date time strings
         /// </summary>
         /// <param name="startString">mandatory start</param>
         /// <param name="endString">optional end (can be null)</param>
