@@ -13,7 +13,7 @@ namespace TimeSlice.Converters
         /// <summary>
         ///     similar to "O" but without the sub seconds
         /// </summary>
-        internal const string TheOneAndOnlyDatetimeformat = "yyyy-MM-ddTHH:mm:sszzzz";
+        internal const string TheOneAndOnlyDateTimeFormat = "yyyy-MM-ddTHH:mm:sszzzz";
 
         /// <summary>
         ///     converts <paramref name="dateTimeString" /> to a datetime with offset 0
@@ -26,7 +26,7 @@ namespace TimeSlice.Converters
             if (dateTimeString == null) return null;
             // somehow the datetime format string "O" does not work. but with the workaround below the "Z" is not recognized
             if (dateTimeString.EndsWith("Z")) dateTimeString = dateTimeString.Replace("Z", "+00:00");
-            var value = DateTimeOffset.ParseExact(dateTimeString, TheOneAndOnlyDatetimeformat, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            var value = DateTimeOffset.ParseExact(dateTimeString, TheOneAndOnlyDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
             return value.UtcDateTime;
         }
     }
@@ -50,7 +50,7 @@ namespace TimeSlice.Converters
         /// <inheritdoc />
         public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(value.ToString(DateTimeOffsetConverterStringExtension.TheOneAndOnlyDatetimeformat));
+            writer.WriteStringValue(value.ToString(DateTimeOffsetConverterStringExtension.TheOneAndOnlyDateTimeFormat));
         }
     }
 
@@ -71,7 +71,7 @@ namespace TimeSlice.Converters
         /// <inheritdoc />
         public override void Write(Utf8JsonWriter writer, DateTimeOffset? value, JsonSerializerOptions options)
         {
-            if (value.HasValue) writer.WriteStringValue(value.Value.ToString(DateTimeOffsetConverterStringExtension.TheOneAndOnlyDatetimeformat));
+            if (value.HasValue) writer.WriteStringValue(value.Value.ToString(DateTimeOffsetConverterStringExtension.TheOneAndOnlyDateTimeFormat));
         }
     }
 }

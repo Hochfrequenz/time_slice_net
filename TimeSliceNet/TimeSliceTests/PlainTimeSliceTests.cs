@@ -77,13 +77,13 @@ namespace TimeSliceTests
                 End = DateTimeOffset.UtcNow + TimeSpan.FromDays(1)
             };
             Assert.IsFalse(pts.Equals(null), "Null must not equal any time slice.");
-            // this comparison is supposed to be suspecious ;)
+            // this comparison is supposed to be suspicious ;)
             // ReSharper disable once SuspiciousTypeConversion.Global
             Assert.IsFalse(pts.Equals(new StringBuilder()), "Objects that do not implement the time slice interface should not be considered equal.");
         }
 
         /// <summary>
-        ///     Tests deserialization of <see cref="PlainTimeSlice" /> and that any datetimeoffset is returned without offset
+        ///     Tests deserialization of <see cref="PlainTimeSlice" /> and that any DateTimeOffset is returned without offset
         /// </summary>
         [Test]
         [TestCase("{\"start\":\"2021-07-01T00:00:00Z\",\"end\":\"2021-08-01T00:00:00Z\"}")]
@@ -98,6 +98,7 @@ namespace TimeSliceTests
                 End = new DateTimeOffset(2021, 8, 1, 0, 0, 0, TimeSpan.Zero)
             };
             Assert.AreEqual(actual: pts, expected: expected);
+            Assert.IsNotNull(pts);
             Assert.IsFalse(pts.Validate(null).Any()); // check validity
         }
 
@@ -126,6 +127,7 @@ namespace TimeSliceTests
             var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
             var reserializedPts = JsonSerializer.Serialize(pts, _minifyOptions);
             Assert.AreEqual(json, reserializedPts);
+            Assert.IsNotNull(pts);
             Assert.IsFalse(pts.Validate(null).Any());
         }
 
@@ -144,6 +146,7 @@ namespace TimeSliceTests
                 End = null
             };
             Assert.AreEqual(actual: pts, expected: expected);
+            Assert.IsNotNull(pts);
             Assert.IsFalse(pts.Validate(null).Any());
         }
 

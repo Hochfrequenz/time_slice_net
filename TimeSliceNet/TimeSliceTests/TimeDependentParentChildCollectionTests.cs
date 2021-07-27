@@ -40,7 +40,7 @@ namespace TimeSliceTests
                 }
             };
 
-            var relationshipThatForbisOverlaps = new RelationshipsWithoutOverlaps
+            var relationshipThatForbidsOverlaps = new RelationshipsWithoutOverlaps
             {
                 TimeSlices = new List<TimeDependentParentChildRelationship<Foo, Bar>>
                 {
@@ -48,15 +48,15 @@ namespace TimeSliceTests
                 }
             };
             // with only one slice, both kinds are valid
-            Assert.IsFalse(relationshipThatForbisOverlaps.Validate(null).Any());
+            Assert.IsFalse(relationshipThatForbidsOverlaps.Validate(null).Any());
             Assert.IsFalse(relationshipThatAllowsOverlaps.Validate(null).Any());
 
-            relationshipThatForbisOverlaps.TimeSlices.Add(tsB);
+            relationshipThatForbidsOverlaps.TimeSlices.Add(tsB);
             relationshipThatAllowsOverlaps.TimeSlices.Add(tsB);
 
             // but as soon as there is an overlap, only the one with the correct kind is ok
             Assert.IsFalse(relationshipThatAllowsOverlaps.Validate(null).Any());
-            Assert.IsTrue(relationshipThatForbisOverlaps.Validate(null).Any());
+            Assert.IsTrue(relationshipThatForbidsOverlaps.Validate(null).Any());
         }
 
         /// <summary>
