@@ -50,7 +50,7 @@ namespace TimeSliceTests
             collection.Clear();
             Assert.AreEqual(0, collection.Count);
         }
-        
+
         /// <summary>
         ///     Test that the overlap check works
         /// </summary>
