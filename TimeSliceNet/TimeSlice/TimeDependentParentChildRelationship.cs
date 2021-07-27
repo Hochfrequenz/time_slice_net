@@ -12,7 +12,7 @@
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
         public string Discriminator
         {
-            get => _discriminator ?? $"{typeof(TimeDependentParentChildRelationship<TParent,TChild>).FullName}";
+            get => _discriminator ?? $"{typeof(TimeDependentParentChildRelationship<TParent, TChild>).FullName}";
             set
             {
                 if (!string.IsNullOrWhiteSpace(value))

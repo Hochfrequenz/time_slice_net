@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using TimeSlice;
 
 namespace TimeSliceTests
@@ -35,7 +36,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        /// Tests that if <see cref="IParentChildRelationship{TParent,TChild}.Discriminator"/> is given, it is used as discrimintor
+        /// Tests that if <see cref="IParentChildRelationship{TParent,TChild}.Discriminator"/> is given, it is used as discriminator
         /// </summary>
         [Test]
         public void TimeDependentParentChildRelationshipCustomDiscriminator()
@@ -47,6 +48,25 @@ namespace TimeSliceTests
                 Discriminator = "foo_parent_bar_child"
             };
             Assert.AreEqual("foo_parent_bar_child", tdpcr.Discriminator);
+        }
+
+        /// <summary>
+        /// Test that (de)serialization works
+        /// </summary>
+        [Test]
+        public void TimeDependentParentChildRelationshipDeSerialization()
+        {
+            var tdpcr = new TimeDependentParentChildRelationship<Foo, Bar>
+            {
+                Child = new Bar(),
+                Parent = new Foo(),
+                Discriminator = "foo_parent_bar_child",
+                Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            var json = System.Text.Json.JsonSerializer.Serialize(tdpcr);
+            var deserializedTdpcr = System.Text.Json.JsonSerializer.Deserialize<TimeDependentParentChildRelationship<Foo, Bar>>(json);
+            Assert.AreEqual(tdpcr, deserializedTdpcr);
         }
     }
 }
