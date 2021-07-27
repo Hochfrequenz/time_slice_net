@@ -60,6 +60,7 @@ namespace TimeSlice
         /// <summary>
         ///     the single time slices.
         /// </summary>
+        /// <remarks>We model a list of <typeparamref name="TRelationship"/> instead of <typeparamref name="TChild"/> because each of the items inside this list may still be persisted or serialized on its own without "knowing" about the other items.</remarks>
         public IList<TRelationship> TimeSlices { get; protected set; }
 
         /// <inheritdoc />
