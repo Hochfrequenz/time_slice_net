@@ -37,11 +37,13 @@ namespace TimeSliceTests
                 Child = otherCar // but different car
             };
             // collections are initialized by providing the common parent (the "1" in the 1:n cardinality)
-            var collection = new ParkingLotAllocationCollection(superMarketParkingLot);
-            collection.TimeSlices.Add(myParkingLotAllocation); // this describes, that my car uses the super market parking lot
-            collection.TimeSlices.Add(anotherParkingLotAllocation); // another car may use the same parking lot at a different time
+            var collection = new ParkingLotAllocationCollection(superMarketParkingLot)
+            {
+                myParkingLotAllocation, // this describes, that my car uses the super market parking lot
+                anotherParkingLotAllocation // another car may use the same parking lot at a different time
+            };
             // ...12:00....12:30..12:45.....13:15. ....... (time) --->
-            // .....|........|.....|..........|...........
+            // .....|XXXXXXXX|.....|XXXXXXXXXX|........... (parking lot is occupied)
             //      [ my car )
             //                     [other car)
             Assert.IsTrue(collection.IsValid()); // collections, that don't allow overlaps are valid if there are no overlaps
@@ -54,7 +56,7 @@ namespace TimeSliceTests
                 Parent = superMarketParkingLot, // same parking lot
                 Child = new Car()
             };
-            collection.TimeSlices.Add(conflictingParkingLotAllocation);
+            collection.Add(conflictingParkingLotAllocation);
             Assert.IsFalse(collection.IsValid());
         }
 

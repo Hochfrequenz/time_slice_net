@@ -88,8 +88,8 @@ namespace TimeSliceTests
             Assert.IsTrue(relationshipThatForbidsOverlaps.IsValid());
             Assert.IsTrue(relationshipThatAllowsOverlaps.IsValid());
 
-            relationshipThatForbidsOverlaps.TimeSlices.Add(tsB);
-            relationshipThatAllowsOverlaps.TimeSlices.Add(tsB);
+            relationshipThatForbidsOverlaps.Add(tsB);
+            relationshipThatAllowsOverlaps.Add(tsB);
 
             // but as soon as there is an overlap, only the one with the correct kind is ok
             Assert.IsTrue(relationshipThatAllowsOverlaps.IsValid());
