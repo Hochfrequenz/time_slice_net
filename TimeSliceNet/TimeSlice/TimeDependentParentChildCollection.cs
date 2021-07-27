@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 namespace TimeSlice
 {
     /// <summary>
-    /// Describes the possible kinds of time dependent relationships between parents and childs
+    /// Describes the possible kinds of time dependent relationships between parents and children
     /// </summary>
     public enum TimeDependentCollectionType
     {
@@ -33,6 +33,7 @@ namespace TimeSlice
         /// <inheritdoc cref="TimeDependentCollectionType"/>
         /// This has to be set by the inheriting class
         /// </summary>
+        /// <remarks>This is also the reason why this class is abstract. It should prevent the user of the library from suddenly changing the Collection Type which is not intended.</remarks>
         public abstract TimeDependentCollectionType CollectionType { get; }
 
         /// <summary>

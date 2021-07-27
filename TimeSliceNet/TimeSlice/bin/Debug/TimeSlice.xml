@@ -133,7 +133,7 @@
         </member>
         <member name="T:TimeSlice.TimeDependentCollectionType">
             <summary>
-            Describes the possible kinds of time dependent relationships between parents and childs
+            Describes the possible kinds of time dependent relationships between parents and children
             </summary>
         </member>
         <member name="F:TimeSlice.TimeDependentCollectionType.AllowOverlaps">
@@ -158,6 +158,7 @@
             <inheritdoc cref="T:TimeSlice.TimeDependentCollectionType"/>
             This has to be set by the inheriting class
             </summary>
+            <remarks>This is also the reason why this class is abstract. It should prevent the user of the library from suddenly changing the Collection Type which is not intended.</remarks>
         </member>
         <member name="P:TimeSlice.TimeDependentParentChildCollection`2.TimeSlices">
             <summary>
