@@ -41,10 +41,12 @@ namespace TimeSliceTests
             Assert.AreEqual(collection.Count, collection.TimeSlices.Count);
             Assert.AreEqual(collection.GetEnumerator(), collection.TimeSlices.GetEnumerator());
             Assert.AreEqual(collection.Contains(tsA), collection.TimeSlices.Contains(tsA));
+            Assert.AreEqual(collection.IsReadOnly, collection.TimeSlices.IsReadOnly);
             collection.Remove(tsB);
             Assert.AreEqual(1, collection.Count);
             collection.Insert(1, tsB);
             Assert.AreEqual(1, collection.IndexOf(tsB));
+            collection[1] = tsB;
             collection.RemoveAt(0);
             Assert.IsFalse(collection.Contains(tsA));
             collection.Clear();
