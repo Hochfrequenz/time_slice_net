@@ -6,9 +6,21 @@
     public class TimeDependentParentChildRelationship<TParent, TChild> : PlainTimeSlice,
         IParentChildRelationship<TParent, TChild> where TParent : class where TChild : class
     {
+        private string _discriminator;
+
         /// <inheritdoc />
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
-        public string Discriminator { get; set; }
+        public string Discriminator
+        {
+            get => _discriminator ?? $"{typeof(TimeDependentParentChildRelationship<TParent,TChild>).FullName}";
+            set
+            {
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    _discriminator = value;
+                }
+            }
+        }
 
         /// <summary>
         /// The entity that "owns" / has assigned <see cref="Child"/> in between [<see cref="ITimeSlice.Start"/> and <see cref="ITimeSlice.End"/>)
