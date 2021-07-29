@@ -61,13 +61,5 @@ namespace TimeSliceTests
             var deserializedTdpcr = JsonSerializer.Deserialize<TimeDependentParentChildRelationship<Foo, Bar>>(json);
             Assert.AreEqual(tdpcr, deserializedTdpcr);
         }
-
-        private class Foo
-        {
-        }
-
-        private class Bar
-        {
-        }
     }
 }

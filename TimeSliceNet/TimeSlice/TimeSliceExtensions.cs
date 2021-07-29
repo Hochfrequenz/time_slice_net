@@ -1,4 +1,5 @@
 ﻿using System;
+using TimeSlice.Converters;
 
 namespace TimeSlice
 {
@@ -14,7 +15,7 @@ namespace TimeSlice
         /// <returns>true if open</returns>
         public static bool IsOpen(this ITimeSlice timeSlice)
         {
-            return !timeSlice.End.HasValue || timeSlice.End.Value == DateTimeOffset.MaxValue;
+            return !timeSlice.End.HasValue || timeSlice.End.Value == DateTimeOffset.MaxValue || timeSlice.End.Value == DateTimeOffset.MaxValue.StripSubSecond();
         }
 
 

@@ -37,18 +37,18 @@ namespace TimeSlice.Converters
     internal static class DateTimeOffsetExtensions
     {
         /// <summary>
-        ///     removes any <see cref="DateTimeOffset.Millisecond" /> (by setting them to 0)
+        ///     removes any <see cref="DateTimeOffset.Millisecond" /> and ticks from <paramref name="dto" />
         /// </summary>
         /// <param name="dto"></param>
-        internal static DateTimeOffset? StripMilliseconds(this DateTimeOffset? dto)
+        internal static DateTimeOffset? StripSubSecond(this DateTimeOffset? dto)
         {
-            var result = dto?.Subtract(TimeSpan.FromMilliseconds(dto.Value.Millisecond));
+            var result = dto?.Subtract(TimeSpan.FromTicks(dto.Value.Ticks % TimeSpan.TicksPerSecond));
             return result;
         }
 
-        internal static DateTimeOffset StripMilliseconds(this DateTimeOffset dto)
+        internal static DateTimeOffset StripSubSecond(this DateTimeOffset dto)
         {
-            var result = dto.Subtract(TimeSpan.FromMilliseconds(dto.Millisecond));
+            var result = dto.Subtract(TimeSpan.FromTicks(dto.Ticks % TimeSpan.TicksPerSecond));
             return result;
         }
     }

@@ -36,7 +36,7 @@ namespace TimeSlice
         public DateTimeOffset Start
         {
             get => _start;
-            set => _start = value.StripMilliseconds();
+            set => _start = value.StripSubSecond();
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace TimeSlice
         public DateTimeOffset? End
         {
             get => _end;
-            set => _end = value.StripMilliseconds();
+            set => _end = value.StripSubSecond();
         }
 
         /// <inheritdoc />

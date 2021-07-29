@@ -188,22 +188,28 @@ namespace TimeSliceTests
             Assert.AreEqual(collection, deserializedCollection);
         }
 
-
-        private class Foo
+        private class FooBarRelationship : TimeDependentParentChildRelationship<Foo, Bar>, IEquatable<FooBarRelationship>
         {
-            public string FooName { get; set; }
+            public bool Equals(FooBarRelationship other)
+            {
+                return base.Equals(other);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != GetType()) return false;
+                return Equals((FooBarRelationship)obj);
+            }
+
+            public override int GetHashCode()
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        private class Bar
-        {
-            public string BarName { get; set; }
-        }
-
-        private class FooBarRelationship : TimeDependentParentChildRelationship<Foo, Bar>
-        {
-        }
-
-        private class RelationshipsWithOverlaps : TimeDependentParentChildCollection<FooBarRelationship, Foo, Bar>
+        private class RelationshipsWithOverlaps : TimeDependentParentChildCollection<FooBarRelationship, Foo, Bar>, IEquatable<RelationshipsWithOverlaps>
         {
             public RelationshipsWithOverlaps(Foo commonParent, IEnumerable<FooBarRelationship> relationships = null) : base(commonParent, relationships)
             {
@@ -214,6 +220,24 @@ namespace TimeSliceTests
             }
 
             public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.AllowOverlaps;
+
+            public bool Equals(RelationshipsWithOverlaps other)
+            {
+                return base.Equals(other);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != GetType()) return false;
+                return Equals((RelationshipsWithOverlaps)obj);
+            }
+
+            public override int GetHashCode()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private class RelationshipsWithoutOverlaps : TimeDependentParentChildCollection<FooBarRelationship, Foo, Bar>
@@ -223,6 +247,56 @@ namespace TimeSliceTests
             }
 
             public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.PreventOverlaps;
+        }
+    }
+
+    internal class Foo : IEquatable<Foo>
+    {
+        public string FooName { get; set; }
+
+        public bool Equals(Foo other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return FooName == other.FooName;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((Foo)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return FooName != null ? FooName.GetHashCode() : 0;
+        }
+    }
+
+    internal class Bar : IEquatable<Bar>
+    {
+        public string BarName { get; set; }
+
+        public bool Equals(Bar other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return BarName == other.BarName;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((Bar)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return BarName != null ? BarName.GetHashCode() : 0;
         }
     }
 }

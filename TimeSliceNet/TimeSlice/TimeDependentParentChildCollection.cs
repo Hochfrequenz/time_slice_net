@@ -29,8 +29,9 @@ namespace TimeSlice
     /// <typeparam name="TParent"></typeparam>
     /// <typeparam name="TChild"></typeparam>
     /// <typeparam name="TRelationship"></typeparam>
-    public abstract class TimeDependentParentChildCollection<TRelationship, TParent, TChild> : IValidatableObject
-        where TRelationship : IParentChildRelationship<TParent, TChild>, ITimeSlice, IValidatableObject
+    public abstract class TimeDependentParentChildCollection<TRelationship, TParent, TChild> : IEquatable<TimeDependentParentChildCollection<TRelationship, TParent, TChild>>,
+        IValidatableObject
+        where TRelationship : IParentChildRelationship<TParent, TChild>, ITimeSlice, IValidatableObject // IEquatable<TRelationship>
         where TParent : class
         where TChild : class
     {
@@ -83,11 +84,21 @@ namespace TimeSlice
         ///     returns a list of all children time slices as list that is sorted by start and end
         /// </summary>
         /// <returns></returns>
+        [JsonIgnore]
         public List<TRelationship> TimeSliceList => TimeSlices.OrderBy(ts => (ts.Start, ts.End ?? DateTimeOffset.MaxValue)).ToList();
 
 
         /// <inheritdoc cref="ICollection.Count" />
         public int Count => TimeSlices.Count;
+
+        /// <inheritdoc />
+        public bool Equals(TimeDependentParentChildCollection<TRelationship, TParent, TChild> other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return CollectionType == other.CollectionType && EqualityComparer<TParent>.Default.Equals(CommonParent, other.CommonParent) &&
+                   TimeSlices.SequenceEqual(other.TimeSlices);
+        }
 
         /// <inheritdoc />
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -165,6 +176,21 @@ namespace TimeSlice
         public int IndexOf(TRelationship item)
         {
             return TimeSlices.IndexOf(item);
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((TimeDependentParentChildCollection<TRelationship, TParent, TChild>)obj);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return HashCode.Combine((int)CollectionType, CommonParent, TimeSlices);
         }
     }
 }
