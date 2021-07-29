@@ -11,7 +11,7 @@ namespace TimeSliceTests
     public class TimeDependentParentChildCollectionTests
     {
         /// <summary>
-        /// Test that <see cref="IList{T}"/> is implemented correctly
+        ///     Test that <see cref="IList{T}" /> is implemented correctly
         /// </summary>
         [Test]
         public void TestIListProperties()
@@ -21,15 +21,15 @@ namespace TimeSliceTests
             {
                 Parent = sharedParent,
                 Child = new Bar(),
-                Start = new DateTimeOffset(2020, 1, 1, 0, 0, 0, TimeSpan.Zero)
-                // open time slice
+                Start = new DateTimeOffset(2020, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2021, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
             var tsB = new FooBarRelationship
             {
                 Parent = sharedParent,
                 Child = new Bar(),
-                Start = new DateTimeOffset(2019, 1, 1, 0, 0, 0, TimeSpan.Zero),
-                End = new DateTimeOffset(2021, 1, 1, 0, 0, 0, TimeSpan.Zero)
+                Start = new DateTimeOffset(2019, 1, 1, 0, 0, 0, TimeSpan.Zero)
+                // open time slice
             };
             // they overlap in 2020
             var collection = new RelationshipsWithOverlaps(sharedParent)
@@ -37,16 +37,16 @@ namespace TimeSliceTests
                 tsA,
                 tsB
             };
-            Assert.AreEqual(collection[0], collection.TimeSlices[0]);
-            Assert.AreEqual(collection.Count, collection.TimeSlices.Count);
-            Assert.AreEqual(collection.GetEnumerator(), collection.TimeSlices.GetEnumerator());
-            Assert.AreEqual(collection.Contains(tsA), collection.TimeSlices.Contains(tsA));
-            Assert.AreEqual(collection.IsReadOnly, collection.TimeSlices.IsReadOnly);
+            Assert.AreEqual(collection[0], tsA);
+            Assert.AreEqual(collection.Count, collection.ToTimeSliceList().Count);
+            Assert.IsNotNull(collection.GetEnumerator());
+            Assert.AreEqual(collection.Contains(tsA), collection.ToTimeSliceList().Contains(tsA));
+            Assert.AreEqual(collection.IsReadOnly, false);
             collection.Remove(tsB);
             Assert.AreEqual(1, collection.Count);
             collection.Insert(1, tsB);
             Assert.AreEqual(1, collection.IndexOf(tsB));
-            collection[1] = tsB;
+            Assert.Throws<NotImplementedException>(() => collection[1] = tsB);
             collection.RemoveAt(0);
             Assert.IsFalse(collection.Contains(tsA));
             collection.Clear();
@@ -124,7 +124,7 @@ namespace TimeSliceTests
                 validTimeSlice
             };
             Assert.IsTrue(relationshipThatAllowsOverlaps.IsValid());
-            relationshipThatAllowsOverlaps.TimeSlices.Add(invalidTimeSlice);
+            relationshipThatAllowsOverlaps.Add(invalidTimeSlice);
             Assert.IsFalse(relationshipThatAllowsOverlaps.IsValid());
 
             var initiallyInvalidCollection = new RelationshipsWithOverlaps(sharedParent)

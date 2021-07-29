@@ -177,7 +177,16 @@
             <summary>
                 the single time slices.
             </summary>
-            <remarks>We model a list of <typeparamref name="TRelationship"/> instead of <typeparamref name="TChild"/> because each of the items inside this list may still be persisted or serialized on its own without "knowing" about the other items.</remarks>
+            <remarks>
+                We model a list of <typeparamref name="TRelationship" /> instead of <typeparamref name="TChild" /> because each of the items inside this list may still be persisted or
+                serialized on its own without "knowing" about the other items.
+            </remarks>
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.ToTimeSliceList">
+            <summary>
+            returns a list of all children time slices as list that is sorted by start and end
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:TimeSlice.TimeDependentParentChildCollection`3.GetEnumerator">
             <inheritdoc />

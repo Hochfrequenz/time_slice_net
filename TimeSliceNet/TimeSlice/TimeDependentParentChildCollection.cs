@@ -60,8 +60,11 @@ namespace TimeSlice
         /// <summary>
         ///     the single time slices.
         /// </summary>
-        /// <remarks>We model a list of <typeparamref name="TRelationship"/> instead of <typeparamref name="TChild"/> because each of the items inside this list may still be persisted or serialized on its own without "knowing" about the other items.</remarks>
-        public IList<TRelationship> TimeSlices { get; protected set; }
+        /// <remarks>
+        ///     We model a list of <typeparamref name="TRelationship" /> instead of <typeparamref name="TChild" /> because each of the items inside this list may still be persisted or
+        ///     serialized on its own without "knowing" about the other items.
+        /// </remarks>
+        protected IList<TRelationship> TimeSlices { get; set; }
 
         /// <inheritdoc />
         public IEnumerator<TRelationship> GetEnumerator()
@@ -143,7 +146,7 @@ namespace TimeSlice
         public TRelationship this[int index]
         {
             get => TimeSlices[index];
-            set => TimeSlices[index] = value;
+            set => throw new NotImplementedException($"Use method {nameof(Add)} instead.");
         }
 
         /// <inheritdoc />
@@ -179,6 +182,15 @@ namespace TimeSlice
             }
 
             return results;
+        }
+
+        /// <summary>
+        ///     returns a list of all children time slices as list that is sorted by start and end
+        /// </summary>
+        /// <returns></returns>
+        public List<TRelationship> ToTimeSliceList()
+        {
+            return TimeSlices.OrderBy(ts => (ts.Start, ts.End ?? DateTimeOffset.MaxValue)).ToList();
         }
     }
 }
