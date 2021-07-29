@@ -37,28 +37,28 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        ///     a car needs gasoline which it gets from a <see cref="GasolinePump"/>
+        ///     a car needs gasoline which it gets from a <see cref="GasolinePump" />
         /// </summary>
         internal class Car
         {
         }
 
         /// <summary>
-        ///     a gasoline pump can be used by only one <see cref="Car"/> at a time
+        ///     a gasoline pump can be used by only one <see cref="Car" /> at a time
         /// </summary>
         internal class GasolinePump
         {
         }
 
         /// <summary>
-        ///     The allocation/usage of a <see cref="GasolinePump"/> by a <see cref="Car"/> for a specific time frame is called "allocation".
+        ///     The allocation/usage of a <see cref="GasolinePump" /> by a <see cref="Car" /> for a specific time frame is called "allocation".
         /// </summary>
         internal class GasolinePumpAllocation : TimeDependentParentChildRelationship<GasolinePump, Car>
         {
             // add properties as you like
-            
+
             /// <summary>
-            /// just an example property 
+            ///     just an example property
             /// </summary>
             public decimal LitersPumped { get; set; }
         }

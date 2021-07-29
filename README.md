@@ -62,9 +62,10 @@ In many business cases these relations vary over time; children are assigned and
 We call these assignments "time dependent parent child relationship collection".
 There are two main kinds:
 
-- overlaps are allowed (any number of children per point in time)
-- overlaps are forbidden (max. 1 child per point in time)
+- overlaps are allowed = any number of children per point in time (easy to handle)
+- overlaps are forbidden = max. 1 child per point in time (harder to handle)
 
-For a minimal, easy to understand example of collections of non-overlapping children see the [parking lot ⬌ car collection tests](TimeSliceNet/TimeSliceTests/GasolinePumpCarCollectionExampleTests.cs).
 
-For a minimal, easy to understand example of collections with overlapping children see the [musician ⬌ listener tests]().
+For a minimal, easy to understand example of collections with overlapping children see the [concert tests](TimeSliceNet/TimeSliceTests/ConcertOverlappingExampleTests.cs).
+
+For a minimal, easy to understand example of collections of non-overlapping children see the [gasoline pump ⬌ car (non overlapping) collection tests](TimeSliceNet/TimeSliceTests/GasolinePumpCarNonOverlappingExampleTests.cs).

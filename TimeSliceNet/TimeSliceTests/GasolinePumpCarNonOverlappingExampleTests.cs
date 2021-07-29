@@ -10,10 +10,10 @@ namespace TimeSliceTests
     ///     In this test class we cover <see cref="TimeDependentParentChildCollection{TRelationship, TParent,TChild}" />s.
     /// </summary>
     /// <remarks>To understand these tests, first have a look at <seealso cref="GasolinePumpCarRelationshipExampleTests" /></remarks>
-    public class GasolinePumpCarCollectionExampleTests
+    public class GasolinePumpCarNonOverlappingExampleTests
     {
         /// <summary>
-        ///     demonstrates the use of the <see cref="TimeDependentParentChildCollection{TRelationship,TParent,TChild}" />
+        ///     demonstrates the use of the <see cref="TimeDependentParentChildCollection{TRelationship,TParent,TChild}" /> with <see cref="TimeDependentCollectionType.PreventOverlaps" />
         /// </summary>
         [Test]
         public void TestMultipleCarsAtOneGasolinePump()
@@ -39,8 +39,8 @@ namespace TimeSliceTests
             // collections are initialized by providing the common parent (the "1" in the 1:n cardinality)
             var collection = new GasolinePumpAllocationCollection(theSinglePump)
             {
-                myGasolinePumpAllocation, // this describes, that my car uses the super market parking lot
-                anotherGasolinePumpAllocation // another car may use the same parking lot at a different time
+                myGasolinePumpAllocation, // this describes, that my car uses the gasoline pump
+                anotherGasolinePumpAllocation // another car may use the same gasoline pump but only at a different time
             };
             // ...12:00....12:05..12:10.....12:20. ....... (time) --->
             // .....|XXXXXXXX|.....|XXXXXXXXXX|........... (gasoline pump is occupied)
