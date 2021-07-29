@@ -11,6 +11,10 @@ namespace TimeSlice
     /// </summary>
     public class PlainTimeSlice : ITimeSlice, IEquatable<PlainTimeSlice>
     {
+        private DateTimeOffset? _end;
+
+        private DateTimeOffset _start;
+
         /// <summary>
         ///     the length of the time slice
         /// </summary>
@@ -28,16 +32,22 @@ namespace TimeSlice
         /// <summary>
         ///     <inheritdoc cref="ITimeSlice.Start" />
         /// </summary>
-        [JsonPropertyName("start")]
         [JsonConverter(typeof(EnforceTimeZoneOffsetConverter))]
-        public DateTimeOffset Start { get; set; }
+        public DateTimeOffset Start
+        {
+            get => _start;
+            set => _start = value.StripMilliseconds();
+        }
 
         /// <summary>
         ///     <inheritdoc cref="ITimeSlice.End" />
         /// </summary>
-        [JsonPropertyName("end")]
         [JsonConverter(typeof(NullableEnforceTimeZoneOffsetConverter))]
-        public DateTimeOffset? End { get; set; }
+        public DateTimeOffset? End
+        {
+            get => _end;
+            set => _end = value.StripMilliseconds();
+        }
 
         /// <inheritdoc />
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

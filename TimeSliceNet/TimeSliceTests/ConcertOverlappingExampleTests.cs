@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using TimeSlice;
@@ -40,11 +41,8 @@ namespace TimeSliceTests
                 ListeningType = ListeningType.Live
             };
             // collections are initialized by providing the common parent (the "1" in the 1:n cardinality)
-            var liveAtWembley = new Concert(freddyMercury)
-            {
-                aliceAtWembley,
-                bobAtWembley
-            };
+            var liveAtWembley = new Concert(freddyMercury, new[] { aliceAtWembley, bobAtWembley });
+
             //   17   18  19  20  21  22  23  24     (time) ---->
             // ...|...|...|...|...|...|...|...|..
             //   [ bob listens to freddy  )
@@ -54,8 +52,8 @@ namespace TimeSliceTests
             // it's easier to model and validate than collections that are exclusive
 
             var peopleThatCouldHaveMetAtWembley =
-                from attendanceA in liveAtWembley
-                from attendanceB in liveAtWembley
+                from attendanceA in liveAtWembley.TimeSliceList
+                from attendanceB in liveAtWembley.TimeSliceList
                 where !ReferenceEquals(attendanceA, attendanceB)
                       && attendanceA.Overlaps(attendanceB)
                       && attendanceA.ListeningType == ListeningType.Live && attendanceB.ListeningType == ListeningType.Live
@@ -68,7 +66,7 @@ namespace TimeSliceTests
         /// </summary>
         internal class Concert : TimeDependentParentChildCollection<ListeningExperience, Musician, Listener>
         {
-            public Concert(Musician artist) : base(artist)
+            public Concert(Musician artist, IEnumerable<ListeningExperience> experiences = null) : base(artist, experiences)
             {
             }
 

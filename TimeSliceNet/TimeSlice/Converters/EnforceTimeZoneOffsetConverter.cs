@@ -32,6 +32,28 @@ namespace TimeSlice.Converters
     }
 
     /// <summary>
+    ///     extensions for <see cref="DateTimeOffset" />
+    /// </summary>
+    internal static class DateTimeOffsetExtensions
+    {
+        /// <summary>
+        ///     removes any <see cref="DateTimeOffset.Millisecond" /> (by setting them to 0)
+        /// </summary>
+        /// <param name="dto"></param>
+        internal static DateTimeOffset? StripMilliseconds(this DateTimeOffset? dto)
+        {
+            var result = dto?.Subtract(TimeSpan.FromMilliseconds(dto.Value.Millisecond));
+            return result;
+        }
+
+        internal static DateTimeOffset StripMilliseconds(this DateTimeOffset dto)
+        {
+            var result = dto.Subtract(TimeSpan.FromMilliseconds(dto.Millisecond));
+            return result;
+        }
+    }
+
+    /// <summary>
     ///     A converter that throws a <see cref="FormatException" /> if the string that should be deserialized to a DateTimeOffset has no offset/timezone information.
     ///     We're not guessing.
     /// </summary>
@@ -43,7 +65,7 @@ namespace TimeSlice.Converters
         {
             var dateTimeString = reader.GetString();
             var result = dateTimeString.ToUtcDateTimeOffset();
-            if (result == null) throw new FormatException("The value must not be null.");
+            if (!result.HasValue) throw new FormatException("The value must not be null.");
             return result.Value;
         }
 

@@ -22,6 +22,17 @@
             <returns>null iff <paramref name="dateTimeString" /> is null</returns>
             <exception cref="T:System.FormatException">iff <paramref name="dateTimeString" /> is not parseable with an offset</exception>
         </member>
+        <member name="T:TimeSlice.Converters.DateTimeOffsetExtensions">
+            <summary>
+            extensions for <see cref="T:System.DateTimeOffset"/>
+            </summary>
+        </member>
+        <member name="M:TimeSlice.Converters.DateTimeOffsetExtensions.StripMilliseconds(System.Nullable{System.DateTimeOffset})">
+            <summary>
+            removes any <see cref="P:System.DateTimeOffset.Millisecond"/> (by setting them to 0)
+            </summary>
+            <param name="dto"></param>
+        </member>
         <member name="T:TimeSlice.Converters.EnforceTimeZoneOffsetConverter">
             <summary>
                 A converter that throws a <see cref="T:System.FormatException" /> if the string that should be deserialized to a DateTimeOffset has no offset/timezone information.
@@ -154,12 +165,18 @@
             <typeparam name="TChild"></typeparam>
             <typeparam name="TRelationship"></typeparam>
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.#ctor(`1)">
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.#ctor(`1,System.Collections.Generic.IEnumerable{`0})">
             <summary>
                 the collection may be initialized by providing the parent that is shared among all children.
             </summary>
             <param name="commonParent"></param>
+            <param name="relationships">optional relationships to be added on construction</param>
             <exception cref="T:System.ArgumentNullException">iff <paramref name="commonParent" /> is null</exception>
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.#ctor">
+            <summary>
+                A parameterless constructor is required for deserializing
+            </summary>
         </member>
         <member name="P:TimeSlice.TimeDependentParentChildCollection`3.CollectionType">
             <summary>
@@ -182,50 +199,37 @@
                 serialized on its own without "knowing" about the other items.
             </remarks>
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.ToTimeSliceList">
+        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.TimeSliceList">
             <summary>
-            returns a list of all children time slices as list that is sorted by start and end
+                returns a list of all children time slices as list that is sorted by start and end
             </summary>
             <returns></returns>
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.GetEnumerator">
-            <inheritdoc />
-        </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Add(`0)">
-            <inheritdoc />
-        </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Clear">
-            <inheritdoc />
-        </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Contains(`0)">
-            <inheritdoc />
-        </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.CopyTo(`0[],System.Int32)">
-            <inheritdoc />
-        </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Remove(`0)">
-            <inheritdoc />
-        </member>
         <member name="P:TimeSlice.TimeDependentParentChildCollection`3.Count">
-            <inheritdoc />
-        </member>
-        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.IsReadOnly">
-            <inheritdoc />
-        </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.IndexOf(`0)">
-            <inheritdoc />
-        </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Insert(System.Int32,`0)">
-            <inheritdoc />
-        </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.RemoveAt(System.Int32)">
-            <inheritdoc />
-        </member>
-        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.Item(System.Int32)">
-            <inheritdoc />
+            <inheritdoc cref="P:System.Collections.ICollection.Count" />
         </member>
         <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
             <inheritdoc />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Add(`0)">
+            <summary>
+                Add an item to the children
+            </summary>
+            <param name="item"></param>
+            <exception cref="T:System.ArgumentNullException">iff <paramref name="item" /> is null</exception>
+            <exception cref="T:System.ArgumentException">if the parent of <paramref name="item" /> is not the same as <see cref="P:TimeSlice.TimeDependentParentChildCollection`3.CommonParent" /></exception>
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Clear">
+            <inheritdoc cref="M:System.Collections.IList.Clear" />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Contains(`0)">
+            <inheritdoc cref="M:System.Collections.IList.Contains(System.Object)" />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Remove(`0)">
+            <inheritdoc cref="M:System.Collections.IList.Remove(System.Object)" />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.IndexOf(`0)">
+            <inheritdoc cref="M:System.Collections.IList.IndexOf(System.Object)" />
         </member>
         <member name="T:TimeSlice.TimeDependentParentChildRelationship`2">
             <summary>

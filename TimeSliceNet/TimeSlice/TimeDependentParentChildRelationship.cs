@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TimeSlice
+﻿namespace TimeSlice
 {
     /// <summary>
     ///     The simplest implementation of a time dependent parent child relationship.
@@ -11,7 +9,6 @@ namespace TimeSlice
         private string _discriminator;
 
         /// <inheritdoc />
-        [JsonPropertyName("discriminator")]
         public string Discriminator
         {
             get => _discriminator ?? $"{typeof(TimeDependentParentChildRelationship<TParent, TChild>).FullName}";
@@ -24,13 +21,11 @@ namespace TimeSlice
         /// <summary>
         ///     The entity that "owns" / has assigned <see cref="Child" /> in between [<see cref="ITimeSlice.Start" /> and <see cref="ITimeSlice.End" />)
         /// </summary>
-        [JsonPropertyName("parent")]
         public TParent Parent { get; set; }
 
         /// <summary>
         ///     The entity that is owned by / assigned to <see cref="Parent" /> in between [<see cref="ITimeSlice.Start" /> and <see cref="ITimeSlice.End" />)
         /// </summary>
-        [JsonPropertyName("child")]
         public TChild Child { get; set; }
     }
 }

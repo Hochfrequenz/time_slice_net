@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using NUnit.Framework;
 using TimeSlice;
 
@@ -32,24 +33,16 @@ namespace TimeSliceTests
                 // open time slice
             };
             // they overlap in 2020
-            var collection = new RelationshipsWithOverlaps(sharedParent)
-            {
-                tsA,
-                tsB
-            };
-            Assert.AreEqual(collection[0], tsA);
-            Assert.AreEqual(collection.Count, collection.ToTimeSliceList().Count);
-            Assert.IsNotNull(collection.GetEnumerator());
-            Assert.AreEqual(collection.Contains(tsA), collection.ToTimeSliceList().Contains(tsA));
-            Assert.AreEqual(collection.IsReadOnly, false);
+            var collection = new RelationshipsWithOverlaps(sharedParent);
+            collection.Add(tsA);
+            collection.Add(tsB);
+            Assert.AreEqual(collection.Count, collection.TimeSliceList.Count);
+            Assert.AreEqual(collection.Contains(tsA), collection.TimeSliceList.Contains(tsA));
+            Assert.AreEqual(1, collection.IndexOf(tsB));
             collection.Remove(tsB);
             Assert.AreEqual(1, collection.Count);
-            collection.Insert(1, tsB);
-            Assert.AreEqual(1, collection.IndexOf(tsB));
-            Assert.Throws<NotImplementedException>(() => collection[1] = tsB);
-            collection.RemoveAt(0);
-            Assert.IsFalse(collection.Contains(tsA));
             collection.Clear();
+            Assert.IsFalse(collection.Contains(tsA));
             Assert.AreEqual(0, collection.Count);
         }
 
@@ -75,15 +68,8 @@ namespace TimeSliceTests
                 End = new DateTimeOffset(2021, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
             // they overlap in 2020
-            var relationshipThatAllowsOverlaps = new RelationshipsWithOverlaps(sharedParent)
-            {
-                tsA
-            };
-
-            var relationshipThatForbidsOverlaps = new RelationshipsWithoutOverlaps(sharedParent)
-            {
-                tsA
-            };
+            var relationshipThatAllowsOverlaps = new RelationshipsWithOverlaps(sharedParent, new[] { tsA });
+            var relationshipThatForbidsOverlaps = new RelationshipsWithoutOverlaps(sharedParent, new[] { tsA });
             // with only one slice, both kinds are valid
             Assert.IsTrue(relationshipThatForbidsOverlaps.IsValid());
             Assert.IsTrue(relationshipThatAllowsOverlaps.IsValid());
@@ -97,7 +83,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        ///     Test that a collection is invalid as soon as at least one element in <see cref="TimeDependentParentChildCollection{TRelationship, TParent,TChild}.TimeSlices" /> is invalid
+        ///     Test that a collection is invalid as soon as at least one element in <see cref="TimeDependentParentChildCollection{TRelationship,TParent,TChild}.TimeSlices" /> is invalid
         /// </summary>
         [Test]
         public void TestValidationErrorsAreForwarded()
@@ -119,19 +105,13 @@ namespace TimeSliceTests
                 End = new DateTimeOffset(2019, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
             Assert.IsFalse(invalidTimeSlice.IsValid());
-            var relationshipThatAllowsOverlaps = new RelationshipsWithOverlaps(sharedParent)
-            {
-                validTimeSlice
-            };
+            var relationshipThatAllowsOverlaps = new RelationshipsWithOverlaps(sharedParent, new[] { validTimeSlice });
+
             Assert.IsTrue(relationshipThatAllowsOverlaps.IsValid());
             relationshipThatAllowsOverlaps.Add(invalidTimeSlice);
             Assert.IsFalse(relationshipThatAllowsOverlaps.IsValid());
 
-            var initiallyInvalidCollection = new RelationshipsWithOverlaps(sharedParent)
-            {
-                invalidTimeSlice
-            };
-
+            var initiallyInvalidCollection = new RelationshipsWithOverlaps(sharedParent, new[] { invalidTimeSlice });
             Assert.False(initiallyInvalidCollection.IsValid());
         }
 
@@ -151,10 +131,8 @@ namespace TimeSliceTests
         [Test]
         public void TestChildMustNotBeNull()
         {
-            Assert.Throws<ArgumentNullException>(() => _ = new RelationshipsWithOverlaps(new Foo())
-            {
-                null
-            });
+            var rs = new RelationshipsWithOverlaps(new Foo());
+            Assert.Throws<ArgumentNullException>(() => rs.Add(null));
         }
 
         /// <summary>
@@ -174,12 +152,51 @@ namespace TimeSliceTests
             Assert.Throws<ArgumentException>(() => collection.Add(sliceWithWrongParent));
         }
 
+        /// <summary>
+        ///     Test, that collections serialize and deserialize easily
+        /// </summary>
+        [Test]
+        public void TestCollectionDeserialization()
+        {
+            var foo = new Foo
+            {
+                FooName = "asd"
+            };
+            var collection = new RelationshipsWithOverlaps(foo);
+            collection.Add(new FooBarRelationship
+            {
+                Parent = foo,
+                Child = new Bar
+                {
+                    BarName = "qwe"
+                },
+                Start = DateTimeOffset.UtcNow,
+                End = DateTimeOffset.UtcNow.AddHours(2)
+            });
+            collection.Add(new FooBarRelationship
+            {
+                Parent = foo,
+                Child = new Bar
+                {
+                    BarName = "rtz"
+                },
+                Start = DateTimeOffset.UtcNow.AddHours(1),
+                End = DateTimeOffset.UtcNow.AddHours(3)
+            });
+            var json = JsonSerializer.Serialize(collection);
+            var deserializedCollection = JsonSerializer.Deserialize<RelationshipsWithOverlaps>(json);
+            Assert.AreEqual(collection, deserializedCollection);
+        }
+
+
         private class Foo
         {
+            public string FooName { get; set; }
         }
 
         private class Bar
         {
+            public string BarName { get; set; }
         }
 
         private class FooBarRelationship : TimeDependentParentChildRelationship<Foo, Bar>
@@ -188,7 +205,11 @@ namespace TimeSliceTests
 
         private class RelationshipsWithOverlaps : TimeDependentParentChildCollection<FooBarRelationship, Foo, Bar>
         {
-            public RelationshipsWithOverlaps(Foo commonParent) : base(commonParent)
+            public RelationshipsWithOverlaps(Foo commonParent, IEnumerable<FooBarRelationship> relationships = null) : base(commonParent, relationships)
+            {
+            }
+
+            public RelationshipsWithOverlaps()
             {
             }
 
@@ -197,7 +218,7 @@ namespace TimeSliceTests
 
         private class RelationshipsWithoutOverlaps : TimeDependentParentChildCollection<FooBarRelationship, Foo, Bar>
         {
-            public RelationshipsWithoutOverlaps(Foo commonParent) : base(commonParent)
+            public RelationshipsWithoutOverlaps(Foo commonParent, IEnumerable<FooBarRelationship> relationships = null) : base(commonParent, relationships)
             {
             }
 
