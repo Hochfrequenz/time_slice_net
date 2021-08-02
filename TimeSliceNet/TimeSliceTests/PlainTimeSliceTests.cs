@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -207,6 +208,7 @@ namespace TimeSliceTests
             Assert.AreNotEqual(pts, null);
             Assert.IsFalse(pts.Equals(null));
         }
+
         [Test]
         public void TestNoPlainTimeSliceIsNotEqualToTimeSlice()
         {
@@ -218,6 +220,28 @@ namespace TimeSliceTests
             Assert.AreNotEqual(pts, "asdasd");
             // ReSharper disable once SuspiciousTypeConversion.Global
             Assert.IsFalse(pts.Equals("asdasd"));
+        }
+
+        [Test]
+        public void TestSameTimeSliceHasSameHashCode()
+        {
+            var ptsA = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
+                End = null
+            };
+            var ptsB = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
+                End = null
+            };
+            Assert.AreEqual(ptsA, ptsB);
+            var set = new HashSet<PlainTimeSlice>
+            {
+                ptsA, // adding a equal time slice
+                ptsB // twice
+            };
+            Assert.AreEqual(1, set.Count); // but we'll keep only one
         }
     }
 }
