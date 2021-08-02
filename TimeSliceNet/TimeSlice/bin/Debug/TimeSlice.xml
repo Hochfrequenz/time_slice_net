@@ -245,7 +245,7 @@
                 The simplest implementation of a time dependent parent child relationship.
             </summary>
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildRelationship`2.Equals(TimeSlice.TimeDependentParentChildRelationship{`0,`1})">
+        <member name="M:TimeSlice.TimeDependentParentChildRelationship`2.Equals(TimeSlice.IParentChildRelationship{`0,`1})">
             <inheritdoc />
         </member>
         <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.Discriminator">

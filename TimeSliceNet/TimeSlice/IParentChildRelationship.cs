@@ -1,4 +1,6 @@
-﻿namespace TimeSlice
+﻿using System;
+
+namespace TimeSlice
 {
     /// <summary>
     ///     A parent child-relationship between one <typeparamref name="TParent" /> that owns / has assigned up to n <typeparamref name="TChild" />s
@@ -6,7 +8,7 @@
     /// </summary>
     /// <typeparam name="TParent">the parent / owner type</typeparam>
     /// <typeparam name="TChild">the child / "owned" type</typeparam>
-    public interface IParentChildRelationship<out TParent, out TChild> where TParent : class where TChild : class
+    public interface IParentChildRelationship<TParent, TChild> : IEquatable<IParentChildRelationship<TParent, TChild>> where TParent : class where TChild : class
     {
         /// <summary>
         ///     There might be more than one relation between <typeparamref name="TParent" /> and <typeparamref name="TChild" />.

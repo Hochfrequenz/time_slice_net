@@ -6,13 +6,13 @@ namespace TimeSlice
     /// <summary>
     ///     The simplest implementation of a time dependent parent child relationship.
     /// </summary>
-    public class TimeDependentParentChildRelationship<TParent, TChild> : PlainTimeSlice, IEquatable<TimeDependentParentChildRelationship<TParent, TChild>>,
+    public class TimeDependentParentChildRelationship<TParent, TChild> : PlainTimeSlice,
         IParentChildRelationship<TParent, TChild> where TParent : class where TChild : class
     {
         private string _discriminator;
 
         /// <inheritdoc />
-        public bool Equals(TimeDependentParentChildRelationship<TParent, TChild> other)
+        public bool Equals(IParentChildRelationship<TParent, TChild> other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
