@@ -32,7 +32,7 @@ namespace TimeSliceEntityFrameworkExtensions
             if (keyExpression != null)
                 etb.HasKey(keyExpression);
             else
-                etb.HasNoKey();
+                etb.HasNoKey(); // todo: test this path
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace TimeSliceEntityFrameworkExtensions
             if (keyExpression != null)
                 etb.HasKey(keyExpression);
             else
-                etb.HasNoKey();
+                etb.HasNoKey(); // todo: test this path
         }
     }
 }
