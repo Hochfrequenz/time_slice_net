@@ -22,17 +22,6 @@
             <returns>null iff <paramref name="dateTimeString" /> is null</returns>
             <exception cref="T:System.FormatException">iff <paramref name="dateTimeString" /> is not parseable with an offset</exception>
         </member>
-        <member name="T:TimeSlice.Converters.DateTimeOffsetExtensions">
-            <summary>
-                extensions for <see cref="T:System.DateTimeOffset" />
-            </summary>
-        </member>
-        <member name="M:TimeSlice.Converters.DateTimeOffsetExtensions.StripSubSecond(System.Nullable{System.DateTimeOffset})">
-            <summary>
-                removes any <see cref="P:System.DateTimeOffset.Millisecond" /> and ticks from <paramref name="dto" />
-            </summary>
-            <param name="dto"></param>
-        </member>
         <member name="T:TimeSlice.Converters.EnforceTimeZoneOffsetConverter">
             <summary>
                 A converter that throws a <see cref="T:System.FormatException" /> if the string that should be deserialized to a DateTimeOffset has no offset/timezone information.
@@ -58,6 +47,17 @@
         </member>
         <member name="M:TimeSlice.Converters.NullableEnforceTimeZoneOffsetConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.DateTimeOffset},System.Text.Json.JsonSerializerOptions)">
             <inheritdoc />
+        </member>
+        <member name="T:TimeSlice.DateTimeOffsetExtensions">
+            <summary>
+                extensions for <see cref="T:System.DateTimeOffset" />
+            </summary>
+        </member>
+        <member name="M:TimeSlice.DateTimeOffsetExtensions.StripSubSecond(System.Nullable{System.DateTimeOffset})">
+            <summary>
+                removes any <see cref="P:System.DateTimeOffset.Millisecond" /> and ticks from <paramref name="dto" />
+            </summary>
+            <param name="dto"></param>
         </member>
         <member name="T:TimeSlice.IParentChildRelationship`2">
             <summary>
