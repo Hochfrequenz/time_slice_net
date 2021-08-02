@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using ExampleClasses.Music;
 using NUnit.Framework;
 using TimeSlice;
-using static TimeSliceTests.MusicianListenerRelationshipExampleTests;
 
 namespace TimeSliceTests
 {
@@ -20,6 +19,7 @@ namespace TimeSliceTests
         [Test]
         public void TestMultipleListenersAtTheSameConcert()
         {
+            // The listener and musician class are imported from the ExampleClasses project -> Concert namespace
             var alice = new Listener();
             var bob = new Listener();
             var freddyMercury = new Musician();
@@ -59,21 +59,6 @@ namespace TimeSliceTests
                       && attendanceA.ListeningType == ListeningType.Live && attendanceB.ListeningType == ListeningType.Live
                 select (attendanceA.Child, attendanceB.Child);
             Assert.Contains((alice, bob), peopleThatCouldHaveMetAtWembley.ToList());
-        }
-
-        /// <summary>
-        ///     multiple allocations that vary over time are modeled as a "collection".
-        /// </summary>
-        internal class Concert : TimeDependentParentChildCollection<ListeningExperience, Musician, Listener>
-        {
-            public Concert(Musician artist, IEnumerable<ListeningExperience> experiences = null) : base(artist, experiences)
-            {
-            }
-
-            /// <summary>
-            ///     At a concert multiple listeners can enjoy the same musician at the same time
-            /// </summary>
-            public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.AllowOverlaps;
         }
     }
 }

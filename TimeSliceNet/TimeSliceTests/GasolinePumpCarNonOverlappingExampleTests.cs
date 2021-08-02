@@ -1,7 +1,7 @@
 ﻿using System;
+using ExampleClasses.GasStation;
 using NUnit.Framework;
 using TimeSlice;
-using static TimeSliceTests.GasolinePumpCarRelationshipExampleTests;
 
 namespace TimeSliceTests
 {
@@ -57,21 +57,6 @@ namespace TimeSliceTests
             collection.Add(conflictingAllocation);
             Assert.IsFalse(collection.IsValid());
             // => if you always check for validity (e.g. before saving a collection or in some kind of middleware), you'll be fine
-        }
-
-        /// <summary>
-        ///     multiple allocations that vary over time are modeled as a "collection".
-        /// </summary>
-        internal class GasolinePumpAllocationCollection : TimeDependentParentChildCollection<GasolinePumpAllocation, GasolinePump, Car>
-        {
-            public GasolinePumpAllocationCollection(GasolinePump commonParent) : base(commonParent)
-            {
-            }
-
-            /// <summary>
-            ///     one gasoline station can only be used by one car at a time => temporal overlaps are not allowed.
-            /// </summary>
-            public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.PreventOverlaps;
         }
     }
 }

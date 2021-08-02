@@ -78,7 +78,7 @@ namespace TimeSlice
         ///     serialized on its own without "knowing" about the other items.
         /// </remarks>
         [JsonInclude]
-        public IList<TRelationship> TimeSlices { get; protected set; }
+        public List<TRelationship> TimeSlices { get; protected set; }
 
         /// <summary>
         ///     returns a list of all children time slices as list that is sorted by start and end

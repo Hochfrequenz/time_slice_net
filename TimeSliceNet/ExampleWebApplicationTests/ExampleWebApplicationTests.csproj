@@ -13,8 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ExampleClasses\ExampleClasses.csproj" />
-      <ProjectReference Include="..\TimeSlice\TimeSlice.csproj" />
+      <ProjectReference Include="..\ExampleWebApplication\ExampleWebApplication.csproj" />
     </ItemGroup>
 
 </Project>
