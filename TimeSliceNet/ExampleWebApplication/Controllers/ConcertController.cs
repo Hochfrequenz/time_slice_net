@@ -24,7 +24,7 @@ namespace ExampleWebApplication.Controllers
 
             var result = await _context.Concerts
                 .Include(r => r.CommonParent)
-                .Include(c => c.TimeSlices).ThenInclude(ts => ts.Child)
+                .Include(c => c.TimeSlices)
                 .Where(c => c.Location == location.ToLower())
                 .ToListAsync();
             return new OkObjectResult(result);

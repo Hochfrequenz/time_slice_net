@@ -59,7 +59,7 @@ namespace TimeSliceEntityFrameworkExtensions
             etb.UsePropertyAccessMode(PropertyAccessMode.PreferProperty); // required for the discriminator to be not null
             etb.HasOne(x => x.Parent);
             etb.HasOne(x => x.Child);
-            etb.HasKey(keyExpression ?? (x => new { x.Start, x.End, x.Parent, x.Child, x.Discriminator }));
+            etb.HasKey(keyExpression ?? (x => new { x.Start, x.End, x.Discriminator }));
         }
     }
 }
