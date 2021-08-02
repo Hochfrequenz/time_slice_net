@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using NUnit.Framework;
 
-namespace ExampleWebApplicationTests
+namespace TimeSliceTests.EntityFrameworkExtensionTests
 {
     public class ConcertControllerTests : ControllerTest, IDisposable
     {

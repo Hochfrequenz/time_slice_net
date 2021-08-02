@@ -7,7 +7,7 @@ using TimeSlice;
 namespace TimeSliceEntityFrameWorkExtensions
 {
     /// <summary>
-    /// Extensions to specify a key for <see cref="IParentChildRelationship{TParent,TChild}"/> and <see cref="TimeDependentParentChildCollection{TRelationship,TParent,TChild}"/>
+    ///     Extensions to specify a key for <see cref="IParentChildRelationship{TParent,TChild}" /> and <see cref="TimeDependentParentChildCollection{TRelationship,TParent,TChild}" />
     /// </summary>
     public static class HasDefaultKeyExtensions
     {
@@ -36,10 +36,10 @@ namespace TimeSliceEntityFrameWorkExtensions
         }
 
         /// <summary>
-        /// Adds default keys for a
-        /// <typeparamref name="TRelationship" />
-        /// using
-        /// <see cref="EntityTypeBuilder.HasKey" />
+        ///     Adds default keys for a
+        ///     <typeparamref name="TRelationship" />
+        ///     using
+        ///     <see cref="EntityTypeBuilder.HasKey" />
         /// </summary>
         /// <param name="etb"></param>
         /// <param name="keyExpression">optional key if defined</param>

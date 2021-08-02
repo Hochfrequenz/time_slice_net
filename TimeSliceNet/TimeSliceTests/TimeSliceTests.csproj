@@ -14,6 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ExampleClasses\ExampleClasses.csproj" />
+      <ProjectReference Include="..\ExampleWebApplication\ExampleWebApplication.csproj" />
       <ProjectReference Include="..\TimeSlice\TimeSlice.csproj" />
     </ItemGroup>
 

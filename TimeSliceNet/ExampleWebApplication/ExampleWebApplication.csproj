@@ -5,8 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ExampleClasses\ExampleClasses.csproj" />
       <ProjectReference Include="..\TimeSliceEntityFrameWorkExtensions\TimeSliceEntityFrameWorkExtensions.csproj" />
-      <ProjectReference Include="..\TimeSliceTests\TimeSliceTests.csproj" />
       <ProjectReference Include="..\TimeSlice\TimeSlice.csproj" />
     </ItemGroup>
 

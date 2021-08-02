@@ -1,7 +1,7 @@
 using ExampleWebApplication;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExampleWebApplicationTests
+namespace TimeSliceTests.EntityFrameworkExtensionTests
 {
     public abstract class ControllerTest
     {
