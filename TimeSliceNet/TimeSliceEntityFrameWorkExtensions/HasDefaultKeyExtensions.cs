@@ -32,7 +32,7 @@ namespace TimeSliceEntityFrameWorkExtensions
                 etb.HasNoKey();
         }
 
-        // <summary>
+        /// <summary>
         /// Adds default keys for a
         /// <typeparamref name="TRelationship" />
         /// using

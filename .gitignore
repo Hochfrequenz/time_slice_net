@@ -30,3 +30,5 @@ TimeSliceNet/ExampleWebApplication/obj/project.packagespec.json
 TimeSliceNet/ExampleWebApplication/obj/
 
 TimeSliceNet/ExampleClasses/obj/
+
+*.pdb
