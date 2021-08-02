@@ -45,7 +45,7 @@ namespace TimeSlice
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((TimeDependentParentChildRelationship<TParent, TChild>)obj);
+            return obj.GetType() == GetType() && Equals((IParentChildRelationship<TParent, TChild>)obj);
         }
 
         /// <inheritdoc />

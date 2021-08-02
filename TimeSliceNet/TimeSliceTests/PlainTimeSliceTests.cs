@@ -195,5 +195,29 @@ namespace TimeSliceTests
             const string json = "{\"Start\":\"2021-07-01T00:00:00\",\"End\":\"2021-08-01T00:00:00\"}";
             Assert.Throws<FormatException>(() => JsonSerializer.Deserialize<PlainTimeSlice>(json));
         }
+
+        [Test]
+        public void TestNullIsNotEqualToTimeSlice()
+        {
+            var pts = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
+                End = null
+            };
+            Assert.AreNotEqual(pts, null);
+            Assert.IsFalse(pts.Equals(null));
+        }
+        [Test]
+        public void TestNoPlainTimeSliceIsNotEqualToTimeSlice()
+        {
+            var pts = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
+                End = null
+            };
+            Assert.AreNotEqual(pts, "asdasd");
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            Assert.IsFalse(pts.Equals("asdasd"));
+        }
     }
 }

@@ -61,5 +61,35 @@ namespace TimeSliceTests
             var deserializedTdpcr = JsonSerializer.Deserialize<TimeDependentParentChildRelationship<Foo, Bar>>(json);
             Assert.AreEqual(tdpcr, deserializedTdpcr);
         }
+
+        [Test]
+        public void TestNullIsNotEqualToRelation()
+        {
+            var tdpcr = new TimeDependentParentChildRelationship<Foo, Bar>
+            {
+                Child = new Bar(),
+                Parent = new Foo(),
+                Discriminator = "foo_parent_bar_child",
+                Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            Assert.AreNotEqual(tdpcr, null);
+            Assert.IsFalse(tdpcr.Equals(null));
+        }
+
+        [Test]
+        public void TestSomethingElseIsNotEqualToRelation()
+        {
+            var tdpcr = new TimeDependentParentChildRelationship<Foo, Bar>
+            {
+                Child = new Bar(),
+                Parent = new Foo(),
+                Discriminator = "foo_parent_bar_child",
+                Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            Assert.AreNotEqual(tdpcr, "asdasd");
+            Assert.IsFalse(tdpcr.Equals("asdasd"));
+        }
     }
 }
