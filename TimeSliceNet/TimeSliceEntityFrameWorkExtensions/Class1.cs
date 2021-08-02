@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TimeSlice;
 
@@ -54,6 +55,7 @@ namespace TimeSliceEntityFrameWorkExtensions
             where TChild : class
         {
             etb.HasDiscriminator(x => x.Discriminator);
+            etb.UsePropertyAccessMode(PropertyAccessMode.PreferProperty); // required for the discriminator to be not null
             etb.HasOne(x => x.Parent);
             etb.HasOne(x => x.Child);
             if (keyExpression != null)
