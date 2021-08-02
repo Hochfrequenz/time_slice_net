@@ -16,7 +16,7 @@ namespace TimeSlice
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && _discriminator == other._discriminator && EqualityComparer<TParent>.Default.Equals(Parent, other.Parent) &&
+            return base.Equals(other) && Discriminator == other.Discriminator && EqualityComparer<TParent>.Default.Equals(Parent, other.Parent) &&
                    EqualityComparer<TChild>.Default.Equals(Child, other.Child);
         }
 

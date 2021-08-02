@@ -185,6 +185,12 @@ namespace TimeSliceTests
             });
             var json = JsonSerializer.Serialize(collection);
             var deserializedCollection = JsonSerializer.Deserialize<RelationshipsWithOverlaps>(json);
+            Assert.IsNotNull(deserializedCollection);
+            Assert.AreEqual(collection.CollectionType, deserializedCollection.CollectionType);
+            Assert.AreEqual(collection.Count, deserializedCollection.Count);
+            Assert.AreEqual(collection.CommonParent, deserializedCollection.CommonParent);
+            Assert.AreEqual(collection.TimeSlices[0], deserializedCollection.TimeSlices[0]);
+            Assert.AreEqual(collection.TimeSlices[1], deserializedCollection.TimeSlices[1]);
             Assert.AreEqual(collection, deserializedCollection);
         }
 
