@@ -193,7 +193,8 @@ namespace TimeSliceTests
             Assert.AreEqual(collection.TimeSlices[1], deserializedCollection.TimeSlices[1]);
             Assert.AreEqual(collection, deserializedCollection);
 
-            Assert.AreEqual(collection.GetHashCode(), deserializedCollection.GetHashCode());
+            Assert.AreNotEqual(collection.TimeSlices.GetHashCode(), deserializedCollection.TimeSlices.GetHashCode());
+            Assert.AreNotEqual(collection.GetHashCode(), deserializedCollection.GetHashCode());
         }
 
         private class FooBarRelationship : TimeDependentParentChildRelationship<Foo, Bar>, IEquatable<FooBarRelationship>
@@ -212,7 +213,7 @@ namespace TimeSliceTests
 
             public override int GetHashCode()
             {
-                throw new NotImplementedException();
+                return base.GetHashCode();
             }
         }
 
@@ -242,7 +243,7 @@ namespace TimeSliceTests
 
             public override int GetHashCode()
             {
-                throw new NotImplementedException();
+                return base.GetHashCode();
             }
         }
 
