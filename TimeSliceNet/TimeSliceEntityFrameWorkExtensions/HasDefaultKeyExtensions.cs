@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TimeSlice;
 
-namespace TimeSliceEntityFrameWorkExtensions
+namespace TimeSliceEntityFrameworkExtensions
 {
     /// <summary>
     ///     Extensions to specify a key for <see cref="IParentChildRelationship{TParent,TChild}" /> and <see cref="TimeDependentParentChildCollection{TRelationship,TParent,TChild}" />

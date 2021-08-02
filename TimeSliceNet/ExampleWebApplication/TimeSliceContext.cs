@@ -1,6 +1,6 @@
 ﻿using ExampleClasses.Music;
 using Microsoft.EntityFrameworkCore;
-using TimeSliceEntityFrameWorkExtensions;
+using TimeSliceEntityFrameworkExtensions;
 
 namespace ExampleWebApplication
 {
