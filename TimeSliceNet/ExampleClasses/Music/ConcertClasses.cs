@@ -58,16 +58,22 @@ namespace ExampleClasses.Music
         public virtual ListeningType ListeningType { get; set; }
     }
 
+    /// <summary>
+    /// a fan (<see cref="Listener"/>) can visit a concert of a <see cref="Musician"/>
+    /// </summary>
     [ExcludeFromCodeCoverage]
     public class ConcertVisit : ListeningExperience
     {
         public override ListeningType ListeningType => ListeningType.Live;
     }
 
+    /// <summary>
+    /// a fan (<see cref="Listener"/>) can meet a <see cref="Musician"/> backstage.
+    /// </summary>
     [ExcludeFromCodeCoverage]
-    public class Streaming : ListeningExperience
+    public class OneOnOneWithAStar : ListeningExperience
     {
-        public override ListeningType ListeningType => ListeningType.Record;
+        public override ListeningType ListeningType => ListeningType.Live;
     }
 
     /// <summary>
@@ -99,5 +105,31 @@ namespace ExampleClasses.Music
         ///     At a concert multiple listeners can enjoy the same musician at the same time
         /// </summary>
         public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.AllowOverlaps;
+    }
+    
+    /// <summary>
+    ///     A musician can meet one listener at a time in a backstage meeting.
+    /// </summary>
+    [ExcludeFromCodeCoverage]
+    public class BackstageMeetings : TimeDependentParentChildCollection<OneOnOneWithAStar, Musician, Listener>
+    {
+        public BackstageMeetings(Musician artist, IEnumerable<OneOnOneWithAStar> experiences = null) : base(artist, experiences)
+        {
+        }
+
+        public BackstageMeetings()
+        {
+        }
+
+        /// <summary>
+        ///     unique ID of this backstage meeting
+        /// </summary>
+        public Guid Guid { get; set; }
+        
+
+        /// <summary>
+        ///     At a concert multiple listeners can enjoy the same musician at the same time
+        /// </summary>
+        public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.PreventOverlaps;
     }
 }

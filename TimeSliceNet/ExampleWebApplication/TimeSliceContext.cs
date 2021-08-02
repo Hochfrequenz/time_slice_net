@@ -20,16 +20,18 @@ namespace ExampleWebApplication
 
         // two db sets using the same base type must not interfere
         public DbSet<Concert> Concerts { get; set; }
+        public DbSet<BackstageMeetings> BackstageMeetings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Musician>().HasKey(m => m.Name);
             modelBuilder.Entity<Listener>().HasKey(l => l.Name);
-
-            // modelBuilder.Entity<Streaming>().HasDefaultKeys<Streaming, Musician, Listener>(); // can autogenerate key
+            
             modelBuilder.Entity<ListeningExperience>().HasDefaultKeys<ListeningExperience, Musician, Listener>(); // can autogenerate key
             modelBuilder.Entity<Concert>().HasDefaultKeys<Concert, ConcertVisit, Musician, Listener>(c => c.Guid);
+            modelBuilder.Entity<BackstageMeetings>().HasDefaultKeys<BackstageMeetings, OneOnOneWithAStar, Musician, Listener>(c => c.Guid);
             modelBuilder.Entity<Concert>().ToTable("Concerts");
+            modelBuilder.Entity<BackstageMeetings>().ToTable("BackstageMeetings");
         }
     }
 }

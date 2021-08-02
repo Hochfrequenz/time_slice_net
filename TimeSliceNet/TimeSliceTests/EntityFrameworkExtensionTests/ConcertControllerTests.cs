@@ -86,6 +86,11 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                 {
                     Location = "tokyo"
                 });
+            await context.BackstageMeetings.AddRangeAsync(
+                new BackstageMeetings()
+                {
+                    
+                });
             await context.SaveChangesAsync();
             var controller = new ConcertController(context);
             var response = await controller.GetAllConcerts("rio");
