@@ -6,7 +6,7 @@ using TimeSlice;
 
 namespace TimeSliceEntityFrameWorkExtensions
 {
-    public static class ParentChildRelationshipExtensions
+    public static class HasDefaultKeyExtensions
     {
         /// <summary>
         ///     Adds default keys for a <typeparamref name="TRelationship" /> using <see cref="EntityTypeBuilder.HasKey" />
