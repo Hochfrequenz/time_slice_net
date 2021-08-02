@@ -6,26 +6,26 @@
     <members>
         <member name="T:TimeSlice.Converters.DateTimeOffsetConverterStringExtension">
             <summary>
-            string extension methods, that are only used internally
+                string extension methods, that are only used internally
             </summary>
         </member>
-        <member name="F:TimeSlice.Converters.DateTimeOffsetConverterStringExtension.TheOneAndOnlyDatetimeformat">
+        <member name="F:TimeSlice.Converters.DateTimeOffsetConverterStringExtension.TheOneAndOnlyDateTimeFormat">
             <summary>
-            similar to "O" but without the sub seconds
+                similar to "O" but without the sub seconds
             </summary>
         </member>
         <member name="M:TimeSlice.Converters.DateTimeOffsetConverterStringExtension.ToUtcDateTimeOffset(System.String)">
             <summary>
-            converts <paramref name="dateTimeString"/> to a datetime with offset 0
+                converts <paramref name="dateTimeString" /> to a datetime with offset 0
             </summary>
             <param name="dateTimeString"></param>
-            <returns>null iff <paramref name="dateTimeString"/> is null</returns>
-            <exception cref="T:System.FormatException">iff <paramref name="dateTimeString"/> is not parseable with an offset</exception>
+            <returns>null iff <paramref name="dateTimeString" /> is null</returns>
+            <exception cref="T:System.FormatException">iff <paramref name="dateTimeString" /> is not parseable with an offset</exception>
         </member>
         <member name="T:TimeSlice.Converters.EnforceTimeZoneOffsetConverter">
             <summary>
-            A converter that throws a <see cref="T:System.FormatException"/> if the string that should be deserialized to a DateTimeOffset has no offset/timezone information.
-            We're not guessing.
+                A converter that throws a <see cref="T:System.FormatException" /> if the string that should be deserialized to a DateTimeOffset has no offset/timezone information.
+                We're not guessing.
             </summary>
             <remarks>https://docs.microsoft.com/en-us/dotnet/standard/datetime/system-text-json-support</remarks>
         </member>
@@ -37,8 +37,8 @@
         </member>
         <member name="T:TimeSlice.Converters.NullableEnforceTimeZoneOffsetConverter">
             <summary>
-            A converter that throws a <see cref="T:System.FormatException"/> if the string that should be deserialized to a DateTimeOffset? has no offset/timezone information.
-            We're not guessing.
+                A converter that throws a <see cref="T:System.FormatException" /> if the string that should be deserialized to a DateTimeOffset? has no offset/timezone information.
+                We're not guessing.
             </summary>
             <remarks>https://docs.microsoft.com/en-us/dotnet/standard/datetime/system-text-json-support</remarks>
         </member>
@@ -48,88 +48,264 @@
         <member name="M:TimeSlice.Converters.NullableEnforceTimeZoneOffsetConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.DateTimeOffset},System.Text.Json.JsonSerializerOptions)">
             <inheritdoc />
         </member>
+        <member name="T:TimeSlice.DateTimeOffsetExtensions">
+            <summary>
+                extensions for <see cref="T:System.DateTimeOffset" />
+            </summary>
+        </member>
+        <member name="M:TimeSlice.DateTimeOffsetExtensions.StripSubSecond(System.Nullable{System.DateTimeOffset})">
+            <summary>
+                removes any <see cref="P:System.DateTimeOffset.Millisecond" /> and ticks from <paramref name="dto" />
+            </summary>
+            <param name="dto"></param>
+        </member>
+        <member name="T:TimeSlice.IParentChildRelationship`2">
+            <summary>
+                A parent child-relationship between one <typeparamref name="TParent" /> that owns / has assigned up to n <typeparamref name="TChild" />s
+                If combined with <see cref="T:TimeSlice.ITimeSlice" /> this allows to model 1:n time dependent relationships.
+            </summary>
+            <typeparam name="TParent">the parent / owner type</typeparam>
+            <typeparam name="TChild">the child / "owned" type</typeparam>
+        </member>
+        <member name="P:TimeSlice.IParentChildRelationship`2.Discriminator">
+            <summary>
+                There might be more than one relation between <typeparamref name="TParent" /> and <typeparamref name="TChild" />.
+                The discriminator is a way to distinguish them.
+            </summary>
+            <remarks>This is thought to be used when persisting relationships on a database where the discriminator might be part of a Primary Key/Unique/Check Constraint</remarks>
+        </member>
+        <member name="P:TimeSlice.IParentChildRelationship`2.Parent">
+            <summary>
+                The entity that "owns" / has assigned <see cref="P:TimeSlice.IParentChildRelationship`2.Child" />
+            </summary>
+        </member>
+        <member name="P:TimeSlice.IParentChildRelationship`2.Child">
+            <summary>
+                The entity that is owned by / assigned to <see cref="P:TimeSlice.IParentChildRelationship`2.Parent" />
+            </summary>
+        </member>
         <member name="T:TimeSlice.ITimeSlice">
             <summary>
-            A time slice is something that has a start and an optional end.
+                A time slice is something that has a start and an optional end.
             </summary>
         </member>
         <member name="P:TimeSlice.ITimeSlice.Start">
             <summary>
-            The inclusive start date
+                The inclusive start date
             </summary>
         </member>
         <member name="P:TimeSlice.ITimeSlice.End">
             <summary>
-            Exclusive end date.
+                Exclusive end date.
             </summary>
             <remarks>null = "open" time slice</remarks>
         </member>
         <member name="T:TimeSlice.PlainTimeSlice">
             <summary>
-            A plain time slice is the simplest way to model a time slice.
-            </summary>
-        </member>
-        <member name="P:TimeSlice.PlainTimeSlice.Start">
-            <summary>
-            <inheritdoc cref="P:TimeSlice.ITimeSlice.Start"/>
-            </summary>
-        </member>
-        <member name="P:TimeSlice.PlainTimeSlice.End">
-            <summary>
-            <inheritdoc cref="P:TimeSlice.ITimeSlice.End"/>
+                A plain time slice is the simplest way to model a time slice.
             </summary>
         </member>
         <member name="P:TimeSlice.PlainTimeSlice.Duration">
             <summary>
-            the length of the time slice
+                the length of the time slice
             </summary>
+        </member>
+        <member name="M:TimeSlice.PlainTimeSlice.Equals(TimeSlice.PlainTimeSlice)">
+            <inheritdoc />
+        </member>
+        <member name="P:TimeSlice.PlainTimeSlice.Start">
+            <summary>
+                <inheritdoc cref="P:TimeSlice.ITimeSlice.Start" />
+            </summary>
+        </member>
+        <member name="P:TimeSlice.PlainTimeSlice.End">
+            <summary>
+                <inheritdoc cref="P:TimeSlice.ITimeSlice.End" />
+            </summary>
+        </member>
+        <member name="M:TimeSlice.PlainTimeSlice.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <inheritdoc />
         </member>
         <member name="M:TimeSlice.PlainTimeSlice.ToString">
             <summary>
-            <inheritdoc cref="M:System.Object.ToString"/>
+                <inheritdoc cref="M:System.Object.ToString" />
             </summary>
             <returns></returns>
         </member>
         <member name="M:TimeSlice.PlainTimeSlice.Equals(System.Object)">
             <summary>
-            Two time slices are identical, if <see cref="P:TimeSlice.PlainTimeSlice.Start"/> and <see cref="P:TimeSlice.PlainTimeSlice.End"/> are the same.
+                Two time slices are identical, if <see cref="P:TimeSlice.PlainTimeSlice.Start" /> and <see cref="P:TimeSlice.PlainTimeSlice.End" /> are the same.
             </summary>
             <param name="obj"></param>
             <returns></returns>
         </member>
-        <member name="M:TimeSlice.PlainTimeSlice.Equals(TimeSlice.PlainTimeSlice)">
+        <member name="M:TimeSlice.PlainTimeSlice.GetHashCode">
             <inheritdoc />
         </member>
-        <member name="M:TimeSlice.PlainTimeSlice.GetHashCode">
+        <member name="T:TimeSlice.TimeDependentCollectionType">
+            <summary>
+                Describes the possible kinds of time dependent relationships between parents and children
+            </summary>
+        </member>
+        <member name="F:TimeSlice.TimeDependentCollectionType.AllowOverlaps">
+            <summary>
+                &lt;= 1 child assigned to a parent at a time
+            </summary>
+        </member>
+        <member name="F:TimeSlice.TimeDependentCollectionType.PreventOverlaps">
+            <summary>
+                prevent overlapping time slices (there might be &gt;1 child assigned to a parent at a time
+            </summary>
+        </member>
+        <member name="T:TimeSlice.TimeDependentParentChildCollection`3">
+            <summary>
+                The simplest way to describe a time dependent parent/child collection
+            </summary>
+            <typeparam name="TParent"></typeparam>
+            <typeparam name="TChild"></typeparam>
+            <typeparam name="TRelationship"></typeparam>
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.#ctor(`1,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+                the collection may be initialized by providing the parent that is shared among all children.
+            </summary>
+            <param name="commonParent"></param>
+            <param name="relationships">optional relationships to be added on construction</param>
+            <exception cref="T:System.ArgumentNullException">iff <paramref name="commonParent" /> is null</exception>
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.#ctor">
+            <summary>
+                A parameterless constructor is required for deserializing
+            </summary>
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.CollectionType">
+            <summary>
+                <inheritdoc cref="T:TimeSlice.TimeDependentCollectionType" />
+                This has to be set by the inheriting class
+            </summary>
+            <remarks>This is also the reason why this class is abstract. It should prevent the user of the library from suddenly changing the Collection Type which is not intended.</remarks>
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.CommonParent">
+            <summary>
+                The common parent for this collection that is the same for all slices in <see cref="P:TimeSlice.TimeDependentParentChildCollection`3.TimeSlices" />
+            </summary>
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.TimeSlices">
+            <summary>
+                the single time slices.
+            </summary>
+            <remarks>
+                We model a list of <typeparamref name="TRelationship" /> instead of <typeparamref name="TChild" /> because each of the items inside this list may still be persisted or
+                serialized on its own without "knowing" about the other items.
+            </remarks>
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.TimeSliceList">
+            <summary>
+                returns a list of all children time slices as list that is sorted by start and end
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.Count">
+            <inheritdoc cref="P:System.Collections.ICollection.Count" />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Equals(TimeSlice.TimeDependentParentChildCollection{`0,`1,`2})">
+            <inheritdoc />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <inheritdoc />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Add(`0)">
+            <summary>
+                Add an item to the children
+            </summary>
+            <param name="item"></param>
+            <exception cref="T:System.ArgumentNullException">iff <paramref name="item" /> is null</exception>
+            <exception cref="T:System.ArgumentException">if the parent of <paramref name="item" /> is not the same as <see cref="P:TimeSlice.TimeDependentParentChildCollection`3.CommonParent" /></exception>
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Clear">
+            <inheritdoc cref="M:System.Collections.IList.Clear" />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Contains(`0)">
+            <inheritdoc cref="M:System.Collections.IList.Contains(System.Object)" />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Remove(`0)">
+            <inheritdoc cref="M:System.Collections.IList.Remove(System.Object)" />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.IndexOf(`0)">
+            <inheritdoc cref="M:System.Collections.IList.IndexOf(System.Object)" />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="T:TimeSlice.TimeDependentParentChildRelationship`2">
+            <summary>
+                The simplest implementation of a time dependent parent child relationship.
+            </summary>
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildRelationship`2.Equals(TimeSlice.IParentChildRelationship{`0,`1})">
+            <inheritdoc />
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.Discriminator">
+            <inheritdoc />
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.Parent">
+            <summary>
+                The entity that "owns" / has assigned <see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.Child" /> in between [<see cref="P:TimeSlice.ITimeSlice.Start" /> and <see cref="P:TimeSlice.ITimeSlice.End" />)
+            </summary>
+        </member>
+        <member name="P:TimeSlice.TimeDependentParentChildRelationship`2.Child">
+            <summary>
+                The entity that is owned by / assigned to <see cref="P:TimeSlice.TimeDependentParentChildRelationship`2.Parent" /> in between [<see cref="P:TimeSlice.ITimeSlice.Start" /> and <see cref="P:TimeSlice.ITimeSlice.End" />)
+            </summary>
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildRelationship`2.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:TimeSlice.TimeDependentParentChildRelationship`2.GetHashCode">
             <inheritdoc />
         </member>
         <member name="T:TimeSlice.TimeSliceExtensions">
             <summary>
-            A static class with extension methods for objects/classes that implement <see cref="T:TimeSlice.ITimeSlice"/>
+                A static class with extension methods for objects/classes that implement <see cref="T:TimeSlice.ITimeSlice" />
             </summary>
         </member>
         <member name="M:TimeSlice.TimeSliceExtensions.IsOpen(TimeSlice.ITimeSlice)">
             <summary>
-            A time slice is called "open" if it has either no end or the end is infinity.
+                A time slice is called "open" if it has either no end or the end is infinity.
             </summary>
             <param name="timeSlice"></param>
             <returns>true if open</returns>
         </member>
         <member name="M:TimeSlice.TimeSliceExtensions.Overlaps(TimeSlice.ITimeSlice,System.DateTimeOffset)">
             <summary>
-            check if a datetime is inside a time slice.
+                check if a datetime is inside a time slice.
             </summary>
             <param name="timeSlice">any time slice</param>
             <param name="dt">a datetime</param>
-            <returns>true iff <paramref name="dt"/> is inside <paramref name="timeSlice"/></returns>
+            <returns>true iff <paramref name="dt" /> is inside <paramref name="timeSlice" /></returns>
         </member>
         <member name="M:TimeSlice.TimeSliceExtensions.Overlaps(TimeSlice.ITimeSlice,TimeSlice.ITimeSlice)">
             <summary>
-            check if a time slice overlaps with another time slice
+                check if a time slice overlaps with another time slice
             </summary>
             <param name="timeSlice"></param>
             <param name="other"></param>
-            <returns>true if <paramref name="timeSlice"/> and <paramref name="other"/> share a finite time span</returns>
+            <returns>true if <paramref name="timeSlice" /> and <paramref name="other" /> share a finite time span</returns>
+        </member>
+        <member name="T:TimeSlice.ValidatableObjectExtensions">
+            <summary>
+                Extension Methods for <see cref="T:System.ComponentModel.DataAnnotations.IValidatableObject" />
+            </summary>
+        </member>
+        <member name="M:TimeSlice.ValidatableObjectExtensions.IsValid(System.ComponentModel.DataAnnotations.IValidatableObject)">
+            <summary>
+                if the <see cref="M:System.ComponentModel.DataAnnotations.IValidatableObject.Validate(System.ComponentModel.DataAnnotations.ValidationContext)" /> method accepts a null validation context, then this method allows an easily readable access
+            </summary>
+            <param name="validatableObject"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>
