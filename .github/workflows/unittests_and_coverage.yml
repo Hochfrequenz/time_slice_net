@@ -29,9 +29,6 @@ jobs:
       - name: Install coverlet.msbuild in TimeSliceTests
         working-directory: ./TimeSliceNet/TimeSliceTests
         run: dotnet add package coverlet.msbuild
-      - name: Install coverlet.msbuild in WebApplicationTests
-        working-directory: ./TimeSliceNet/ExampleWebApplicationTests
-        run: dotnet add package coverlet.msbuild
       - name: Measure Test Coverage
         working-directory: ./TimeSliceNet
         run: dotnet test /p:Threshold=95 /p:Include=\"[*]TimeSlice.*,[*]TimeSliceEntityFrameworkExtensions.*\" /p:ThresholdType=line /p:CollectCoverage=true /p:SkipAutoProps=true /p:CoverletOutputFormat=lcov --configuration Release
