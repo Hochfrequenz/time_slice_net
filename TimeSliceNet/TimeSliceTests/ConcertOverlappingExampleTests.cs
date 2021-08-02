@@ -24,21 +24,19 @@ namespace TimeSliceTests
             var bob = new Listener();
             var freddyMercury = new Musician();
             // if alice listens to freddy mercury at a concert it looks like this
-            var aliceAtWembley = new ListeningExperience
+            var aliceAtWembley = new ConcertVisit
             {
                 Start = new DateTimeOffset(1986, 7, 12, 19, 0, 0, TimeSpan.Zero), // alice just entered wembley stadium when the concert began
                 End = new DateTimeOffset(1986, 7, 13, 0, 0, 0, TimeSpan.Zero),
                 Parent = freddyMercury,
-                Child = alice,
-                ListeningType = ListeningType.Live
+                Child = alice
             };
-            var bobAtWembley = new ListeningExperience
+            var bobAtWembley = new ConcertVisit
             {
                 Start = new DateTimeOffset(1986, 7, 12, 17, 0, 0, TimeSpan.Zero), // bob arrived super early
                 End = new DateTimeOffset(1986, 7, 12, 23, 0, 0, TimeSpan.Zero), // but had to leave early
                 Parent = freddyMercury, // same musician
                 Child = bob,
-                ListeningType = ListeningType.Live
             };
             // collections are initialized by providing the common parent (the "1" in the 1:n cardinality)
             var liveAtWembley = new Concert(freddyMercury, new[] { aliceAtWembley, bobAtWembley });

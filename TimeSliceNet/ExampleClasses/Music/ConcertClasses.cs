@@ -68,9 +68,9 @@ namespace ExampleClasses.Music
     ///     multiple allocations that vary over time are modeled as a "collection".
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class Concert : TimeDependentParentChildCollection<ListeningExperience, Musician, Listener>
+    public class Concert : TimeDependentParentChildCollection<ConcertVisit, Musician, Listener>
     {
-        public Concert(Musician artist, IEnumerable<ListeningExperience> experiences = null) : base(artist, experiences)
+        public Concert(Musician artist, IEnumerable<ConcertVisit> experiences = null) : base(artist, experiences)
         {
         }
 
