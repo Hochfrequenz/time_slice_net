@@ -48,7 +48,7 @@ namespace ExampleClasses.Music
     ///     That a <see cref="Listener" /> listens to music by a <see cref="Musician" /> is modelled as a Musician Listener Relationship
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class ListeningExperience : TimeDependentParentChildRelationship<Musician, Listener>
+    public abstract class ListeningExperience : TimeDependentParentChildRelationship<Musician, Listener>
     {
         // add properties as you like
 

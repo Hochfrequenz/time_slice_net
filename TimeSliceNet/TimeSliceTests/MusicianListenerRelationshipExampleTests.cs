@@ -25,13 +25,12 @@ namespace TimeSliceTests
             var me = new Listener();
             var myFavouriteArtist = new Musician();
             // if I stayed at the gasoline pump for five minutes, the allocation looks like this:
-            var relationship = new ListeningExperience
+            var relationship = new ConcertVisit
             {
                 Start = new DateTimeOffset(2021, 8, 1, 20, 0, 0, TimeSpan.Zero),
                 End = new DateTimeOffset(2021, 8, 1, 22, 0, 0, TimeSpan.Zero),
                 Parent = myFavouriteArtist,
-                Child = me,
-                ListeningType = ListeningType.Live
+                Child = me
             };
             Assert.AreEqual(TimeSpan.FromMinutes(120), relationship.Duration);
             var iAmAtMyFavouriteArtistsConcert = relationship.Overlaps(DateTimeOffset.Parse(dateTimeString)) && relationship.ListeningType == ListeningType.Live;
