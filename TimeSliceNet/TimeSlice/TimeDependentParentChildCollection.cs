@@ -44,9 +44,9 @@ namespace TimeSlice
         protected TimeDependentParentChildCollection(TParent commonParent, IEnumerable<TRelationship> relationships = null) : this()
         {
             CommonParent = commonParent ?? throw new ArgumentNullException(nameof(commonParent));
-            if (relationships != null)
-                foreach (var r in relationships)
-                    TimeSlices.Add(r);
+            if (relationships == null) return;
+            foreach (var r in relationships)
+                TimeSlices.Add(r);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace TimeSlice
         /// <summary>
         ///     The common parent for this collection that is the same for all slices in <see cref="TimeSlices" />
         /// </summary>
-        public TParent CommonParent { get; set; }
+        public TParent CommonParent { get; init; }
 
         /// <summary>
         ///     the single time slices.
@@ -183,8 +183,7 @@ namespace TimeSlice
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((TimeDependentParentChildCollection<TRelationship, TParent, TChild>)obj);
+            return obj.GetType() == GetType() && Equals((TimeDependentParentChildCollection<TRelationship, TParent, TChild>)obj);
         }
 
         /// <inheritdoc />

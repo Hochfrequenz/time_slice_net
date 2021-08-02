@@ -205,8 +205,7 @@ namespace TimeSliceTests
             {
                 if (ReferenceEquals(null, obj)) return false;
                 if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != GetType()) return false;
-                return Equals((FooBarRelationship)obj);
+                return obj.GetType() == GetType() && Equals((FooBarRelationship)obj);
             }
 
             public override int GetHashCode()
@@ -258,7 +257,7 @@ namespace TimeSliceTests
 
     internal class Foo : IEquatable<Foo>
     {
-        public string FooName { get; set; }
+        public string FooName { get; init; }
 
         public bool Equals(Foo other)
         {
@@ -271,8 +270,7 @@ namespace TimeSliceTests
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((Foo)obj);
+            return obj.GetType() == GetType() && Equals((Foo)obj);
         }
 
         public override int GetHashCode()
@@ -296,8 +294,7 @@ namespace TimeSliceTests
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((Bar)obj);
+            return obj.GetType() == GetType() && Equals((Bar)obj);
         }
 
         public override int GetHashCode()
