@@ -17,7 +17,6 @@ namespace ExampleWebApplication
         // example classes from musician <-> listener example
         public DbSet<Musician> Musicians { get; set; }
         public DbSet<Listener> Listeners { get; set; }
-        public DbSet<ListeningExperience> ListeningExperiences { get; set; }
 
         // two db sets using the same base type must not interfere
         public DbSet<Concert> Concerts { get; set; }
@@ -27,7 +26,8 @@ namespace ExampleWebApplication
             modelBuilder.Entity<Musician>().HasKey(m => m.Name);
             modelBuilder.Entity<Listener>().HasKey(l => l.Name);
 
-            modelBuilder.Entity<ConcertVisit>().HasDefaultKeys<ConcertVisit, Musician, Listener>(); // can autogenerate key
+            // modelBuilder.Entity<Streaming>().HasDefaultKeys<Streaming, Musician, Listener>(); // can autogenerate key
+            modelBuilder.Entity<ListeningExperience>().HasDefaultKeys<ListeningExperience, Musician, Listener>(); // can autogenerate key
             modelBuilder.Entity<Concert>().HasDefaultKeys<Concert, ConcertVisit, Musician, Listener>(c => c.Guid);
             modelBuilder.Entity<Concert>().ToTable("Concerts");
         }

@@ -63,6 +63,12 @@ namespace ExampleClasses.Music
     {
         public override ListeningType ListeningType => ListeningType.Live;
     }
+    
+    [ExcludeFromCodeCoverage]
+    public class Streaming : ListeningExperience
+    {
+        public override ListeningType ListeningType => ListeningType.Record;
+    }
 
     /// <summary>
     ///     multiple allocations that vary over time are modeled as a "collection".
