@@ -1,10 +1,13 @@
-﻿using TimeSlice;
+﻿using System.Diagnostics.CodeAnalysis;
+using TimeSlice;
 
 namespace ExampleClasses.GasStation
 {
+    
     /// <summary>
     ///     a car needs gasoline which it gets from a <see cref="GasolinePump" />
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class Car
     {
     }
@@ -12,6 +15,7 @@ namespace ExampleClasses.GasStation
     /// <summary>
     ///     a gasoline pump can be used by only one <see cref="Car" /> at a time
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class GasolinePump
     {
     }
@@ -19,6 +23,7 @@ namespace ExampleClasses.GasStation
     /// <summary>
     ///     The allocation/usage of a <see cref="GasolinePump" /> by a <see cref="Car" /> for a specific time frame is called "allocation".
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class GasolinePumpAllocation : TimeDependentParentChildRelationship<GasolinePump, Car>
     {
         // add properties as you like
@@ -32,6 +37,7 @@ namespace ExampleClasses.GasStation
     /// <summary>
     ///     multiple allocations that vary over time are modeled as a "collection".
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class GasolinePumpAllocationCollection : TimeDependentParentChildCollection<GasolinePumpAllocation, GasolinePump, Car>
     {
         public GasolinePumpAllocationCollection(GasolinePump commonParent) : base(commonParent)

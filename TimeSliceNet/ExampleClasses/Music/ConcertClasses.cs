@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using TimeSlice;
 
 namespace ExampleClasses.Music
@@ -7,6 +8,7 @@ namespace ExampleClasses.Music
     /// <summary>
     ///     a musician is someone who makes music
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class Musician
     {
         /// <summary>
@@ -19,6 +21,7 @@ namespace ExampleClasses.Music
     /// <summary>
     ///     a listener is someone who listens to music, made e.g. by <see cref="Musician" />s
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class Listener
     {
         /// <summary>
@@ -27,7 +30,7 @@ namespace ExampleClasses.Music
         /// <example>John Doe</example>
         public string Name { get; set; }
     }
-
+    
     public enum ListeningType
     {
         /// <summary>
@@ -44,6 +47,7 @@ namespace ExampleClasses.Music
     /// <summary>
     ///     That a <see cref="Listener" /> listens to music by a <see cref="Musician" /> is modelled as a Musician Listener Relationship
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class ListeningExperience : TimeDependentParentChildRelationship<Musician, Listener>
     {
         // add properties as you like
@@ -59,6 +63,7 @@ namespace ExampleClasses.Music
         public Guid Guid { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class ConcertVisit : ListeningExperience
     {
         public override ListeningType ListeningType => ListeningType.Live;
@@ -67,6 +72,7 @@ namespace ExampleClasses.Music
     /// <summary>
     ///     multiple allocations that vary over time are modeled as a "collection".
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class Concert : TimeDependentParentChildCollection<ListeningExperience, Musician, Listener>
     {
         public Concert(Musician artist, IEnumerable<ListeningExperience> experiences = null) : base(artist, experiences)

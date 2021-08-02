@@ -54,7 +54,7 @@ namespace ExampleWebApplicationTests
             {
                 Name = "Patricia"
             };
-            using var context = new TimeSliceContext(ContextOptions);
+            await using var context = new TimeSliceContext(ContextOptions);
             await context.Concerts.AddRangeAsync(
                 new Concert
                 {
@@ -93,6 +93,8 @@ namespace ExampleWebApplicationTests
             Assert.AreEqual(1, ((response as OkObjectResult).Value as List<Concert>).Count);
             var rockInRio = ((response as OkObjectResult).Value as List<Concert>).Single();
             Assert.AreEqual(2, rockInRio.TimeSlices.Count);
+            Assert.IsTrue(rockInRio.TimeSlices.Any(ts=>ts.Child.Name=="Joao"));
+            Assert.IsTrue(rockInRio.TimeSlices.Any(ts=>ts.Child.Name=="Patricia"));
         }
     }
 }

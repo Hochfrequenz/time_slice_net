@@ -10,7 +10,6 @@ namespace ExampleWebApplication
 {
     public class Startup
     {
-        private readonly DbConnection _connection;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -35,11 +34,6 @@ namespace ExampleWebApplication
             var connection = new SqliteConnection("Filename=webapp.db");
             connection.Open();
             return connection;
-        }
-
-        public void Dispose()
-        {
-            _connection.Dispose();
         }
     }
 }
