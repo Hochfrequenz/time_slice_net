@@ -63,7 +63,7 @@ namespace ExampleClasses.Music
     {
         public override ListeningType ListeningType => ListeningType.Live;
     }
-    
+
     [ExcludeFromCodeCoverage]
     public class Streaming : ListeningExperience
     {
