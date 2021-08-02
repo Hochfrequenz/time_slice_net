@@ -26,8 +26,11 @@ jobs:
       - name: Install dependencies
         working-directory: ./TimeSliceNet
         run: dotnet restore
-      - name: Install coverlet.msbuild in UnitTests
+      - name: Install coverlet.msbuild in TimeSliceTests
         working-directory: ./TimeSliceNet/TimeSliceTests
+        run: dotnet add package coverlet.msbuild
+      - name: Install coverlet.msbuild in WebApplicationTests
+        working-directory: ./TimeSliceNet/ExampleWebApplicationTests
         run: dotnet add package coverlet.msbuild
       - name: Measure Test Coverage
         working-directory: ./TimeSliceNet
