@@ -30,7 +30,7 @@ namespace ExampleClasses.Music
         /// <example>John Doe</example>
         public string Name { get; set; }
     }
-    
+
     public enum ListeningType
     {
         /// <summary>

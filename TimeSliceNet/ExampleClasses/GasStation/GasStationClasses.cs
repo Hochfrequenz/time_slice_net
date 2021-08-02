@@ -3,7 +3,7 @@ using TimeSlice;
 
 namespace ExampleClasses.GasStation
 {
-    
+
     /// <summary>
     ///     a car needs gasoline which it gets from a <see cref="GasolinePump" />
     /// </summary>
