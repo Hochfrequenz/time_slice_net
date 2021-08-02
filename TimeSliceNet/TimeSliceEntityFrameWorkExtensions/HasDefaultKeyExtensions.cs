@@ -6,6 +6,9 @@ using TimeSlice;
 
 namespace TimeSliceEntityFrameWorkExtensions
 {
+    /// <summary>
+    /// Extensions to specify a key for <see cref="IParentChildRelationship{TParent,TChild}"/> and <see cref="TimeDependentParentChildCollection{TRelationship,TParent,TChild}"/>
+    /// </summary>
     public static class HasDefaultKeyExtensions
     {
         /// <summary>
