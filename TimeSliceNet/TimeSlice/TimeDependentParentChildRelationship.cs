@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TimeSlice
 {
@@ -11,7 +12,15 @@ namespace TimeSlice
         private string _discriminator;
 
         /// <inheritdoc />
-        [JsonPropertyName("discriminator")]
+        public bool Equals(IParentChildRelationship<TParent, TChild> other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Discriminator == other.Discriminator && EqualityComparer<TParent>.Default.Equals(Parent, other.Parent) &&
+                   EqualityComparer<TChild>.Default.Equals(Child, other.Child);
+        }
+
+        /// <inheritdoc />
         public string Discriminator
         {
             get => _discriminator ?? $"{typeof(TimeDependentParentChildRelationship<TParent, TChild>).FullName}";
@@ -24,13 +33,25 @@ namespace TimeSlice
         /// <summary>
         ///     The entity that "owns" / has assigned <see cref="Child" /> in between [<see cref="ITimeSlice.Start" /> and <see cref="ITimeSlice.End" />)
         /// </summary>
-        [JsonPropertyName("parent")]
         public TParent Parent { get; set; }
 
         /// <summary>
         ///     The entity that is owned by / assigned to <see cref="Parent" /> in between [<see cref="ITimeSlice.Start" /> and <see cref="ITimeSlice.End" />)
         /// </summary>
-        [JsonPropertyName("child")]
         public TChild Child { get; set; }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj.GetType() == GetType() && Equals((IParentChildRelationship<TParent, TChild>)obj);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(base.GetHashCode(), _discriminator, Parent, Child);
+        }
     }
 }

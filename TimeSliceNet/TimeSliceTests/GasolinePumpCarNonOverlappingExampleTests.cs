@@ -37,11 +37,9 @@ namespace TimeSliceTests
                 Child = otherCar // but different car
             };
             // collections are initialized by providing the common parent (the "1" in the 1:n cardinality)
-            var collection = new GasolinePumpAllocationCollection(theSinglePump)
-            {
-                myGasolinePumpAllocation, // this describes, that my car uses the gasoline pump
-                anotherGasolinePumpAllocation // another car may use the same gasoline pump but only at a different time
-            };
+            var collection = new GasolinePumpAllocationCollection(theSinglePump);
+            collection.Add(myGasolinePumpAllocation); // this describes, that my car uses the gasoline pump
+            collection.Add(anotherGasolinePumpAllocation); // another car may use the same gasoline pump but only at a different time
             // ...12:00....12:05..12:10.....12:20. ....... (time) --->
             // .....|XXXXXXXX|.....|XXXXXXXXXX|........... (gasoline pump is occupied)
             //      [ my car )

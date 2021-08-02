@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -15,7 +16,8 @@ namespace TimeSliceTests
         private readonly JsonSerializerOptions _minifyOptions = new()
         {
             WriteIndented = false,
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            PropertyNameCaseInsensitive = true
         };
 
         /// <summary>
@@ -85,9 +87,9 @@ namespace TimeSliceTests
         ///     Tests deserialization of <see cref="PlainTimeSlice" /> and that any DateTimeOffset is returned without offset
         /// </summary>
         [Test]
-        [TestCase("{\"start\":\"2021-07-01T00:00:00Z\",\"end\":\"2021-08-01T00:00:00Z\"}")]
-        [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":\"2021-08-01T00:00:00+00:00\"}")]
-        [TestCase("{\"start\":\"2021-07-01T02:00:00+02:00\",\"end\":\"2021-07-31T22:00:00-02:00\"}")]
+        [TestCase("{\"Start\":\"2021-07-01T00:00:00Z\",\"End\":\"2021-08-01T00:00:00Z\"}")]
+        [TestCase("{\"Start\":\"2021-07-01T00:00:00+00:00\",\"End\":\"2021-08-01T00:00:00+00:00\"}")]
+        [TestCase("{\"Start\":\"2021-07-01T02:00:00+02:00\",\"End\":\"2021-07-31T22:00:00-02:00\"}")]
         public void TestDeserializationWithoutOffset(string json)
         {
             var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
@@ -105,9 +107,9 @@ namespace TimeSliceTests
         ///     Tests deserialization of <see cref="PlainTimeSlice" /> "wrong"/invalid time slices
         /// </summary>
         [Test]
-        [TestCase("{\"start\":\"2021-07-01T00:00:00Z\",\"end\":\"2021-07-31T23:59:59+02:00\"}")] // 23:59:59
-        [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":\"2021-07-31T21:59:59Z\"}")] // similar to 23:59:59 but as UTC
-        [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":\"2020-07-01T00:00:00Z\"}")] // similar to 23:59:59 but as UTC
+        [TestCase("{\"Start\":\"2021-07-01T00:00:00Z\",\"End\":\"2021-07-31T23:59:59+02:00\"}")] // 23:59:59
+        [TestCase("{\"Start\":\"2021-07-01T00:00:00+00:00\",\"End\":\"2021-07-31T21:59:59Z\"}")] // similar to 23:59:59 but as UTC
+        [TestCase("{\"Start\":\"2021-07-01T00:00:00+00:00\",\"End\":\"2020-07-01T00:00:00Z\"}")] // similar to 23:59:59 but as UTC
         public void TestInvalidTimeSlices(string json)
         {
             var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
@@ -116,11 +118,32 @@ namespace TimeSliceTests
         }
 
         /// <summary>
+        ///     While milliseconds are interesting for high temporal resolution technical applications, they mostly annoy us when
+        ///     storing information in a database (who knows the resolution there?) or (de)serializing between different systems.
+        ///     In normal business applications we don't care for sub-second resolution.
+        /// </summary>
+        [Test]
+        public void TestMillisecondsAreIgnored()
+        {
+            var ptsWithMilliseconds = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 8, 1, 0, 0, 0, 123, TimeSpan.Zero),
+                End = new DateTimeOffset(2021, 8, 1, 0, 0, 0, 456, TimeSpan.Zero)
+            };
+            var ptsWithoutMilliseconds = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 8, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2021, 8, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            Assert.AreEqual(ptsWithMilliseconds, ptsWithoutMilliseconds);
+        }
+
+        /// <summary>
         ///     Tests round trip (de-)serialization of <see cref="PlainTimeSlice" />
         /// </summary>
         [Test]
-        [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":\"2021-08-01T00:00:00+00:00\"}")]
-        [TestCase("{\"start\":\"2021-07-01T00:00:00+00:00\",\"end\":null}")]
+        [TestCase("{\"Start\":\"2021-07-01T00:00:00+00:00\",\"End\":\"2021-08-01T00:00:00+00:00\"}")]
+        [TestCase("{\"Start\":\"2021-07-01T00:00:00+00:00\",\"End\":null}")]
         public void TestDeserializationRoundTrip(string json)
         {
             var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
@@ -134,8 +157,8 @@ namespace TimeSliceTests
         ///     Tests (de-)serialization of null as end date works
         /// </summary>
         [Test]
-        [TestCase("{\"start\":\"2021-07-01T00:00:00Z\",\"end\":null}")]
-        [TestCase("{\"start\":\"2021-07-01T00:00:00Z\"}")]
+        [TestCase("{\"Start\":\"2021-07-01T00:00:00Z\",\"End\":null}")]
+        [TestCase("{\"Start\":\"2021-07-01T00:00:00Z\"}")]
         public void TestNullEndDateDeserialization(string json)
         {
             var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
@@ -153,8 +176,8 @@ namespace TimeSliceTests
         ///     Tests that the start date must not be null.
         /// </summary>
         [Test]
-        [TestCase("{\"start\":null,\"end\":\"2021-08-01T00:00:00\"}")]
-        [TestCase("{\"start\":null\"}")]
+        [TestCase("{\"Start\":null,\"End\":\"2021-08-01T00:00:00\"}")]
+        [TestCase("{\"Start\":null\"}")]
         public void TestNullStartDateDeserialization(string json)
         {
             Assert.Throws<FormatException>(() => JsonSerializer.Deserialize<PlainTimeSlice>(json));
@@ -170,8 +193,55 @@ namespace TimeSliceTests
         [Test]
         public void TestDeserializationEnforceOffset()
         {
-            const string json = "{\"start\":\"2021-07-01T00:00:00\",\"end\":\"2021-08-01T00:00:00\"}";
+            const string json = "{\"Start\":\"2021-07-01T00:00:00\",\"End\":\"2021-08-01T00:00:00\"}";
             Assert.Throws<FormatException>(() => JsonSerializer.Deserialize<PlainTimeSlice>(json));
+        }
+
+        [Test]
+        public void TestNullIsNotEqualToTimeSlice()
+        {
+            var pts = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
+                End = null
+            };
+            Assert.AreNotEqual(pts, null);
+            Assert.IsFalse(pts.Equals(null));
+        }
+
+        [Test]
+        public void TestNoPlainTimeSliceIsNotEqualToTimeSlice()
+        {
+            var pts = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
+                End = null
+            };
+            Assert.AreNotEqual(pts, "asdasd");
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            Assert.IsFalse(pts.Equals("asdasd"));
+        }
+
+        [Test]
+        public void TestSameTimeSliceHasSameHashCode()
+        {
+            var ptsA = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
+                End = null
+            };
+            var ptsB = new PlainTimeSlice
+            {
+                Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
+                End = null
+            };
+            Assert.AreEqual(ptsA, ptsB);
+            var set = new HashSet<PlainTimeSlice>
+            {
+                ptsA, // adding a equal time slice
+                ptsB // twice
+            };
+            Assert.AreEqual(1, set.Count); // but we'll keep only one
         }
     }
 }

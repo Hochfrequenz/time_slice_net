@@ -43,7 +43,7 @@ namespace TimeSlice.Converters
         {
             var dateTimeString = reader.GetString();
             var result = dateTimeString.ToUtcDateTimeOffset();
-            if (result == null) throw new FormatException("The value must not be null.");
+            if (!result.HasValue) throw new FormatException("The value must not be null.");
             return result.Value;
         }
 
