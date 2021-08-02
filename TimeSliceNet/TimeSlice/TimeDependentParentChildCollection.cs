@@ -18,7 +18,7 @@ namespace TimeSlice
         AllowOverlaps,
 
         /// <summary>
-        ///     prevent overlapping time slices (there might be &gt;1 child assigned to a parent at a time
+        ///     prevent overlapping time slices (there might be &gt;1 child assigned to a parent at a time)
         /// </summary>
         PreventOverlaps
     }
