@@ -56,11 +56,6 @@ namespace ExampleClasses.Music
         ///     just an example property
         /// </summary>
         public virtual ListeningType ListeningType { get; set; }
-
-        /// <summary>
-        ///     a unique ID of this Listening Experience
-        /// </summary>
-        public Guid Guid { get; set; }
     }
 
     [ExcludeFromCodeCoverage]

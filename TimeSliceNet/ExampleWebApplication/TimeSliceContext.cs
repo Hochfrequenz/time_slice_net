@@ -27,7 +27,7 @@ namespace ExampleWebApplication
             modelBuilder.Entity<Musician>().HasKey(m => m.Name);
             modelBuilder.Entity<Listener>().HasKey(l => l.Name);
 
-            modelBuilder.Entity<ListeningExperience>().HasDefaultKeys<ListeningExperience, Musician, Listener>(le => le.Guid);
+            modelBuilder.Entity<ListeningExperience>().HasDefaultKeys<ListeningExperience, Musician, Listener>(); // can autogenerate key
             modelBuilder.Entity<Concert>().HasDefaultKeys<Concert, ListeningExperience, Musician, Listener>(c => c.Guid);
             modelBuilder.Entity<Concert>().ToTable("Concerts");
         }

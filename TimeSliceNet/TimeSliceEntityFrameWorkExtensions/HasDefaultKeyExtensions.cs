@@ -29,10 +29,8 @@ namespace TimeSliceEntityFrameworkExtensions
         {
             etb.HasOne(x => x.CommonParent);
             etb.HasMany(x => x.TimeSlices);
-            if (keyExpression != null)
-                etb.HasKey(keyExpression);
-            else
-                etb.HasNoKey(); // todo: test this path
+            etb.HasKey(keyExpression ?? throw new ArgumentNullException(nameof(keyExpression),
+                $"Any {nameof(TimeDependentParentChildCollection<TRelationship, TParent, TChild>)} has to have a separate key."));
         }
 
         /// <summary>
@@ -61,10 +59,7 @@ namespace TimeSliceEntityFrameworkExtensions
             etb.UsePropertyAccessMode(PropertyAccessMode.PreferProperty); // required for the discriminator to be not null
             etb.HasOne(x => x.Parent);
             etb.HasOne(x => x.Child);
-            if (keyExpression != null)
-                etb.HasKey(keyExpression);
-            else
-                etb.HasNoKey(); // todo: test this path
+            etb.HasKey(keyExpression ?? (x => new { x.Start, x.End, x.Parent, x.Child, x.Discriminator }));
         }
     }
 }
