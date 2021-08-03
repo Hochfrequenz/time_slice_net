@@ -36,7 +36,7 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(1986, 7, 12, 17, 0, 0, TimeSpan.Zero), // bob arrived super early
                 End = new DateTimeOffset(1986, 7, 12, 23, 0, 0, TimeSpan.Zero), // but had to leave early
                 Parent = freddyMercury, // same musician
-                Child = bob,
+                Child = bob
             };
             // collections are initialized by providing the common parent (the "1" in the 1:n cardinality)
             var liveAtWembley = new Concert(freddyMercury, new[] { aliceAtWembley, bobAtWembley });
@@ -54,7 +54,6 @@ namespace TimeSliceTests
                 from attendanceB in liveAtWembley.TimeSliceList
                 where !ReferenceEquals(attendanceA, attendanceB)
                       && attendanceA.Overlaps(attendanceB)
-                      && attendanceA.ListeningType == ListeningType.Live && attendanceB.ListeningType == ListeningType.Live
                 select (attendanceA.Child, attendanceB.Child);
             Assert.Contains((alice, bob), peopleThatCouldHaveMetAtWembley.ToList());
         }

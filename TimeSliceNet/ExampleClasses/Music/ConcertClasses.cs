@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using TimeSlice;
+using TimeSliceEntityFrameworkExtensions;
 
 namespace ExampleClasses.Music
 {
@@ -19,6 +20,16 @@ namespace ExampleClasses.Music
     }
 
     /// <summary>
+    /// The persistable Musician is a <see cref="Musician"/>, that has a key on a database (hence implements <see cref="IHasKey{TKey}"/>.
+    /// <seealso cref="PersistableListener"/>
+    /// </summary>
+    /// <remarks>Your classes only need to implement <see cref="IHasKey{TKey}"/> if you want to store them in a database, otherwise the plain <see cref="Musician"/> would be fine</remarks>
+    public class PersistableMusician : Musician, IHasKey<string>
+    {
+        public string Key => Name;
+    }
+
+    /// <summary>
     ///     a listener is someone who listens to music, made e.g. by <see cref="Musician" />s
     /// </summary>
     [ExcludeFromCodeCoverage]
@@ -31,49 +42,69 @@ namespace ExampleClasses.Music
         public string Name { get; set; }
     }
 
-    public enum ListeningType
+    /// <summary>
+    /// A persisitable Listener is a <see cref="Listener"/>, that has a key on a database (hence implements <see cref="IHasKey{TKey}"/>.
+    /// <seealso cref="PersistableMusician"/>
+    /// </summary>
+    public class PersistableListener : Listener, IHasKey<string>
     {
-        /// <summary>
-        ///     live in concert
-        /// </summary>
-        Live,
-
-        /// <summary>
-        ///     on a record (e.g. CD, Vinyl, Streaming...)
-        /// </summary>
-        Record
+        public string Key => Name;
     }
 
     /// <summary>
-    ///     That a <see cref="Listener" /> listens to music by a <see cref="Musician" /> is modelled as a Musician Listener Relationship
+    ///     a fan (<see cref="Listener" />) can visit a concert of a <see cref="Musician" />
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public abstract class ListeningExperience : TimeDependentParentChildRelationship<Musician, Listener>
+    public class ConcertVisit : TimeDependentParentChildRelationship<Musician, Listener>
     {
-        // add properties as you like
-
-        /// <summary>
-        ///     just an example property
-        /// </summary>
-        public virtual ListeningType ListeningType { get; set; }
     }
 
     /// <summary>
-    /// a fan (<see cref="Listener"/>) can visit a concert of a <see cref="Musician"/>
+    /// A persistable concert visit is a <see cref="ConcertVisit"/> that can be stored in a database.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class ConcertVisit : ListeningExperience
+    public class PersistableConcertVisit : ConcertVisit, IPersistableParentChildRelationship<PersistableMusician, string, PersistableListener, string>
     {
-        public override ListeningType ListeningType => ListeningType.Live;
+        public bool Equals(IParentChildRelationship<PersistableMusician, PersistableListener>? other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public new PersistableMusician Parent { get => base.Parent as PersistableMusician; }
+        public new PersistableListener Child { get => base.Child as PersistableListener; }
+        public string ParentId { get; set; }
+        public string ChildId { get; set; }
     }
 
     /// <summary>
-    /// a fan (<see cref="Listener"/>) can meet a <see cref="Musician"/> backstage.
+    ///     a fan (<see cref="Listener" />) can meet a <see cref="Musician" /> backstage.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class OneOnOneWithAStar : ListeningExperience
+    public class OneOnOneWithAStar : TimeDependentParentChildRelationship<Musician, Listener>
     {
-        public override ListeningType ListeningType => ListeningType.Live;
+        public Guid MeetingGuid { get; set; }
+    }
+
+    [ExcludeFromCodeCoverage]
+    public class PersistableOneOnOneWithAStart : OneOnOneWithAStar, IPersistableParentChildRelationship<PersistableMusician, string, PersistableListener, string>
+    {
+        public bool Equals(IParentChildRelationship<PersistableMusician, PersistableListener>? other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ParentId { get; set; }
+        public string ChildId { get; set; }
+
+        public new PersistableMusician Parent
+        {
+            get => base.Parent as PersistableMusician;
+        }
+
+        public new PersistableListener Child
+        {
+            get => base.Child as PersistableListener;
+        }
     }
 
     /// <summary>
@@ -106,7 +137,7 @@ namespace ExampleClasses.Music
         /// </summary>
         public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.AllowOverlaps;
     }
-    
+
     /// <summary>
     ///     A musician can meet one listener at a time in a backstage meeting.
     /// </summary>
@@ -125,7 +156,7 @@ namespace ExampleClasses.Music
         ///     unique ID of this backstage meeting
         /// </summary>
         public Guid Guid { get; set; }
-        
+
 
         /// <summary>
         ///     At a concert multiple listeners can enjoy the same musician at the same time

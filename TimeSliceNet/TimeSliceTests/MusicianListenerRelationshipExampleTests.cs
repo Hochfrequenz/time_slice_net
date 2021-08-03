@@ -33,7 +33,7 @@ namespace TimeSliceTests
                 Child = me
             };
             Assert.AreEqual(TimeSpan.FromMinutes(120), relationship.Duration);
-            var iAmAtMyFavouriteArtistsConcert = relationship.Overlaps(DateTimeOffset.Parse(dateTimeString)) && relationship.ListeningType == ListeningType.Live;
+            var iAmAtMyFavouriteArtistsConcert = relationship.Overlaps(DateTimeOffset.Parse(dateTimeString));
             Assert.AreEqual(expectedAtConcert, iAmAtMyFavouriteArtistsConcert);
         }
     }

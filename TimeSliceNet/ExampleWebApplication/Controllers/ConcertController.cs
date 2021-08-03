@@ -20,7 +20,7 @@ namespace ExampleWebApplication.Controllers
         [HttpGet("{location}")]
         public async Task<IActionResult> GetAllConcerts([FromRoute] string location)
         {
-            if (string.IsNullOrWhiteSpace(location)) return new BadRequestObjectResult(new StringContent($"The location '{location}' is not implemented in this MWE."));
+            if (string.IsNullOrWhiteSpace(location)) return new BadRequestObjectResult(new StringContent($"The empty location '{location}' is not implemented in this MWE."));
 
             var result = await _context.Concerts
                 .Include(r => r.CommonParent)

@@ -50,7 +50,7 @@ namespace TimeSlice
         }
 
         /// <inheritdoc />
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
             if (End < Start)

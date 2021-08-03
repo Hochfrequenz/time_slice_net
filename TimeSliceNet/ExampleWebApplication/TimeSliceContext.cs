@@ -1,4 +1,6 @@
-﻿using ExampleClasses.Music;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using ExampleClasses.Music;
 using Microsoft.EntityFrameworkCore;
 using TimeSliceEntityFrameworkExtensions;
 
@@ -24,14 +26,18 @@ namespace ExampleWebApplication
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Musician>().HasKey(m => m.Name);
-            modelBuilder.Entity<Listener>().HasKey(l => l.Name);
-            
-            modelBuilder.Entity<ListeningExperience>().HasDefaultKeys<ListeningExperience, Musician, Listener>(); // can autogenerate key
-            modelBuilder.Entity<Concert>().HasDefaultKeys<Concert, ConcertVisit, Musician, Listener>(c => c.Guid);
-            modelBuilder.Entity<BackstageMeetings>().HasDefaultKeys<BackstageMeetings, OneOnOneWithAStar, Musician, Listener>(c => c.Guid);
-            modelBuilder.Entity<Concert>().ToTable("Concerts");
-            modelBuilder.Entity<BackstageMeetings>().ToTable("BackstageMeetings");
+            // modelBuilder.Entity<Musician>().HasKey(m => m.Name);
+            // modelBuilder.Entity<Listener>().HasKey(l => l.Name);
+
+
+            modelBuilder.SetDefaultKeys<Concert, PersistableConcertVisit, PersistableMusician, string, PersistableListener, string>(
+                concert => concert.Guid, // The key of a collection (Concert) has to be explicitly set, always
+                relationshipKeyExpression: null //  but keys for ConcertVisit can be derived automatically (null)
+            );
+            modelBuilder.SetDefaultKeys<BackstageMeetings, PersistableOneOnOneWithAStart, PersistableMusician, string, PersistableListener, string>(
+                backstageMeeting => backstageMeeting.Guid, // The key of a collection (BackstageMeetings) has to be explicitly set, always
+                relationshipKeyExpression: oneOnOneWithAStar => oneOnOneWithAStar.MeetingGuid // it's possible to also explicitly set a key for the relationship (!=null)
+            );
         }
     }
 }

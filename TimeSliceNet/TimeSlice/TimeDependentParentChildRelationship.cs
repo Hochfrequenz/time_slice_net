@@ -6,8 +6,8 @@ namespace TimeSlice
     /// <summary>
     ///     The simplest implementation of a time dependent parent child relationship.
     /// </summary>
-    public class TimeDependentParentChildRelationship<TParent, TChild> : PlainTimeSlice,
-        IParentChildRelationship<TParent, TChild> where TParent : class where TChild : class
+    public class TimeDependentParentChildRelationship<TParent, TChild> : PlainTimeSlice, IParentChildRelationship<TParent, TChild> where TParent : class where TChild : class
+
     {
         private string _discriminator;
 
@@ -23,7 +23,7 @@ namespace TimeSlice
         /// <inheritdoc />
         public string Discriminator
         {
-            get => _discriminator ?? $"{typeof(TimeDependentParentChildRelationship<TParent, TChild>).FullName}";
+            get => _discriminator ?? $"{GetType().FullName}";
             set
             {
                 if (!string.IsNullOrWhiteSpace(value)) _discriminator = value;
