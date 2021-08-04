@@ -51,15 +51,15 @@ openTimeSlice.End = DateTimeOffset.MaxValue;
 Assert.IsTrue(openTimeSlice.IsOpen()); // end is infinity => "open"
 ```
 
-## Relationships
+## Relations
 
-Relationships describe that "parents" have "children" assigned for a specific time range.
-For a minimal, easy to understand example on relationships, see the [gasoline pump ⬌ car relationship tests](TimeSliceNet/TimeSliceTests/GasolinePumpCarRelationshipExampleTests.cs).
+A relation describes that a single "parent" has a single "child" assigned for a specific time range.
+For a minimal, easy to understand example on relations, see the [gasoline pump ⬌ car relation tests](TimeSliceNet/TimeSliceTests/GasolinePumpCarRelationpExampleTests.cs).
 
-### Relationships that vary over time = Collections
+### Relations that vary over time = Collections
 
-In many business cases these relations vary over time; children are assigned and unassigned at specific points in time.
-We call these assignments "time dependent parent child relationship collection".
+In many business cases these relations vary over time; children are assigned and unassigned to/from parents at specific points in time.
+We call these assignments "time dependent collection".
 There are two main kinds:
 
 - overlaps are allowed = any number of children per point in time (easy to handle)
