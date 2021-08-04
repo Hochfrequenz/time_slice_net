@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading;
 using ExampleClasses.Music;
@@ -6,7 +7,7 @@ using ExampleWebApplication;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 using NUnit.Framework;
 using TimeSliceEntityFrameworkExtensions;
 
@@ -50,22 +51,30 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
             return context.Entry(musician);
         }
 
+        private static List<ValueGenerator> GetValueGenerators()
+        {
+            return new List<ValueGenerator>()
+            {
+                new ChildIdValueGenerator<ConcertVisit, Musician, string, Listener, string>(),
+                new ParentIdValueGenerator<ConcertVisit, Musician, string, Listener, string>(),
+                new CommonParentIdValueGenerator<Concert, ConcertVisit, Musician, string, Listener, string>(),
+            };
+        }
+
         [Test]
         [NonParallelizable]
         public void ValueGeneratorsThrowNotImplementedExceptions()
         {
             using (ContextIsInUseSemaphore)
             {
-                var childIdGenerator = new ChildIdValueGenerator<ConcertVisit, Musician, string, Listener, string>();
-                var parentIdGenerator = new ParentIdValueGenerator<ConcertVisit, Musician, string, Listener, string>();
-                var commonParentIdGenerator = new CommonParentIdValueGenerator<Concert, ConcertVisit, Musician, string, Listener, string>();
                 EntityEntry entry = null;
                 try
                 {
                     entry = GetMusicianEntry(); // this entry is not usable for any of the value generators in place
-                    Assert.Throws<NotImplementedException>(() => childIdGenerator.Next(entry));
-                    Assert.Throws<NotImplementedException>(() => parentIdGenerator.Next(entry));
-                    Assert.Throws<NotImplementedException>(() => commonParentIdGenerator.Next(entry));
+                    foreach (var valueGenerator in GetValueGenerators())
+                    {
+                        Assert.Throws<NotImplementedException>(() => valueGenerator.Next(entry));
+                    }
                 }
                 finally
                 {
@@ -74,6 +83,16 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                         entry.State = EntityState.Detached;
                     }
                 }
+            }
+        }
+
+        [Test]
+        [NonParallelizable]
+        public void ValueGeneratorDontGenerateTemporaryValues()
+        {
+            foreach (var valueGenerator in GetValueGenerators())
+            {
+                Assert.IsFalse(valueGenerator.GeneratesTemporaryValues);
             }
         }
     }

@@ -35,6 +35,8 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                 Assert.AreEqual(2, ((response as OkObjectResult).Value as List<Concert>).Count);
                 var museAtRockInRio = ((response as OkObjectResult).Value as List<Concert>).Single(c => c.CommonParent.Name == "Muse");
                 Assert.IsTrue(museAtRockInRio.IsValid); // <-- property, not method
+                museAtRockInRio.IsValid = false; // <-- has no effect
+                Assert.IsTrue(museAtRockInRio.IsValid); // <-- property, not method
                 var concertDirectlyFromContext = await context.Concerts.SingleAsync(c => c.CommonParentId == "Muse");
                 Assert.AreEqual(concertDirectlyFromContext, museAtRockInRio);
                 Assert.IsTrue(concertDirectlyFromContext.Equals(museAtRockInRio));
