@@ -37,6 +37,17 @@ namespace TimeSliceEntityFrameworkExtensions
         /// </summary>
         public TParentKey CommonParentId { get; set; }
 
+        /// <summary>
+        ///     This property is mapped to a column on the database.
+        ///     This allows us to enforce only valid collections on the database using a Check constraint.
+        ///     The setter is only fake.
+        /// </summary>
+        public bool IsValid
+        {
+            get => this.IsValid();
+            set { } // not necessary
+        }
+
         /// <inheritdoc />
         public bool Equals(PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey> other)
         {

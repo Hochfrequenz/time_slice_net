@@ -65,6 +65,8 @@ namespace TimeSliceEntityFrameworkExtensions
             // autogenerate common parent id property for collection
             modelBuilder.Entity<TTimeSliceCollection>().Property(x => x.CommonParentId)
                 .HasValueGenerator<CommonParentIdValueGenerator<TTimeSliceCollection, TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>>();
+
+            modelBuilder.Entity<TTimeSliceCollection>(collection => collection.HasCheckConstraint("validity_check_constraint", "IsValid == true"));
         }
     }
 
