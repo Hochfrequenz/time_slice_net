@@ -8,7 +8,7 @@ using TimeSlice;
 namespace TimeSliceEntityFrameworkExtensions
 {
     /// <summary>
-    ///     Extensions to specify a key for <see cref="IRelation{TParent,TChild}" /> and <see cref="TimeDependentParentChildCollection{TRelation,TParent,TChild}" />
+    ///     Extensions to specify a key for <see cref="IRelation{TParent,TChild}" /> and <see cref="TimeDependentCollection{TRelation,TParent,TChild}" />
     /// </summary>
     public static class EntityTypeBuilderExtensions
     {
@@ -27,7 +27,7 @@ namespace TimeSliceEntityFrameworkExtensions
         ///     <see cref="IRelation{TParent,TChild}.Child" />
         /// </typeparam>
         /// <typeparam name="TTimeSliceCollection">
-        ///     <see cref="TimeDependentParentChildCollection{TRelation,TParent,TChild}" />
+        ///     <see cref="TimeDependentCollection{TRelation,TParent,TChild}" />
         /// </typeparam>
         /// <typeparam name="TParentKey"></typeparam>
         /// <typeparam name="TChildKey"></typeparam>
@@ -39,10 +39,11 @@ namespace TimeSliceEntityFrameworkExtensions
             where TPersistableParent : class, IHasKey<TParentKey>
             where TPersistableChild : class, IHasKey<TChildKey>
         {
+            etb.Property(x => x.CommonParentId).IsRequired();
             etb.HasOne(x => x.CommonParent);
             etb.HasMany(x => x.TimeSlices);
             etb.HasKey(collectionKeyExpression ?? throw new ArgumentNullException(nameof(collectionKeyExpression),
-                $"Each {nameof(TimeDependentParentChildCollection<TPersistableRelation, TPersistableParent, TPersistableChild>)}, especially {typeof(TTimeSliceCollection).FullName} has to have a separate key."));
+                $"Each {nameof(TimeDependentCollection<TPersistableRelation, TPersistableParent, TPersistableChild>)}, especially {typeof(TTimeSliceCollection).FullName} has to have a separate key."));
         }
 
         /// <summary>
@@ -68,6 +69,8 @@ namespace TimeSliceEntityFrameworkExtensions
             where TPersistableParent : class, IHasKey<TParentKey>
             where TPersistableChild : class, IHasKey<TChildKey>
         {
+            etb.Property(x => x.ParentId).IsRequired();
+            etb.Property(x => x.ChildId).IsRequired();
             etb.HasDiscriminator(x => x.Discriminator);
             etb.UsePropertyAccessMode(PropertyAccessMode.PreferProperty); // required for the discriminator to be not null
             etb.HasOne(x => x.Parent);

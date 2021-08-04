@@ -1,6 +1,5 @@
 using System;
 using System.Data.Common;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ExampleClasses.Music;
@@ -71,10 +70,6 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
             await context.Concerts.AddRangeAsync(
                 new Concert
                 {
-                    Location = "new york"
-                },
-                new Concert
-                {
                     Location = "rio",
                     CommonParent = muse,
                     TimeSlices =
@@ -117,10 +112,6 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                             End = new DateTimeOffset(2013, 9, 14, 17, 0, 0, TimeSpan.FromHours(-3))
                         }
                     }
-                },
-                new Concert
-                {
-                    Location = "tokyo"
                 });
             await context.BackstageMeetings.AddRangeAsync(
                 new BackstageMeetings

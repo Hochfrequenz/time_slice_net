@@ -29,7 +29,7 @@ namespace TimeSlice
     /// <typeparam name="TParent"></typeparam>
     /// <typeparam name="TChild"></typeparam>
     /// <typeparam name="TRelation"></typeparam>
-    public abstract class TimeDependentParentChildCollection<TRelation, TParent, TChild> : IEquatable<TimeDependentParentChildCollection<TRelation, TParent, TChild>>,
+    public abstract class TimeDependentCollection<TRelation, TParent, TChild> : IEquatable<TimeDependentCollection<TRelation, TParent, TChild>>,
         IValidatableObject
         where TRelation : IRelation<TParent, TChild>, ITimeSlice, IValidatableObject
         where TParent : class
@@ -41,7 +41,7 @@ namespace TimeSlice
         /// <param name="commonParent"></param>
         /// <param name="relations">optional relations to be added on construction</param>
         /// <exception cref="ArgumentNullException">iff <paramref name="commonParent" /> is null</exception>
-        protected TimeDependentParentChildCollection(TParent commonParent, IEnumerable<TRelation> relations = null) : this()
+        protected TimeDependentCollection(TParent commonParent, IEnumerable<TRelation> relations = null) : this()
         {
             CommonParent = commonParent ?? throw new ArgumentNullException(nameof(commonParent));
             if (relations == null) return;
@@ -52,7 +52,7 @@ namespace TimeSlice
         /// <summary>
         ///     A parameterless constructor is required for deserializing
         /// </summary>
-        protected TimeDependentParentChildCollection()
+        protected TimeDependentCollection()
         {
             TimeSlices = new List<TRelation>();
         }
@@ -92,7 +92,7 @@ namespace TimeSlice
         public int Count => TimeSlices.Count;
 
         /// <inheritdoc />
-        public bool Equals(TimeDependentParentChildCollection<TRelation, TParent, TChild> other)
+        public bool Equals(TimeDependentCollection<TRelation, TParent, TChild> other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -183,7 +183,7 @@ namespace TimeSlice
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((TimeDependentParentChildCollection<TRelation, TParent, TChild>)obj);
+            return obj.GetType() == GetType() && Equals((TimeDependentCollection<TRelation, TParent, TChild>)obj);
         }
 
         /// <inheritdoc />

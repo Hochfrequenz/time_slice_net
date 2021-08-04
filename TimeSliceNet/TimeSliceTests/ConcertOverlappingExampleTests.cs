@@ -8,13 +8,13 @@ namespace TimeSliceTests
 {
     /// <summary>
     ///     Test cases that are not thought to cover every edge case but rather demonstrate the main ideas of this library.
-    ///     In this test class we cover <see cref="TimeDependentParentChildCollection{TRelation, TParent,TChild}" />s.
+    ///     In this test class we cover <see cref="TimeDependentCollection{TRelation,TParent,TChild}" />s.
     /// </summary>
     /// <remarks>To understand these tests, first have a look at <seealso cref="MusicianListenerRelationExampleTests" /></remarks>
     public class ConcertOverlappingExampleTests
     {
         /// <summary>
-        ///     demonstrates the use of the <see cref="TimeDependentParentChildCollection{TRelation,TParent,TChild}" /> with <see cref="TimeDependentCollectionType.AllowOverlaps" />
+        ///     demonstrates the use of the <see cref="TimeDependentCollection{TRelation,TParent,TChild}" /> with <see cref="TimeDependentCollectionType.AllowOverlaps" />
         /// </summary>
         [Test]
         public void TestMultipleListenersAtTheSameConcert()

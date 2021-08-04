@@ -6,7 +6,7 @@ using TimeSlice;
 namespace TimeSliceEntityFrameworkExtensions
 {
     /// <summary>
-    ///     Similar to <see cref="TimeDependentParentChildCollection{TRelation,TParent,TChild}" /> but with persistable parent and child
+    ///     Similar to <see cref="TimeDependentCollection{TRelation,TParent,TChild}" /> but with persistable parent and child
     /// </summary>
     /// <typeparam name="TPersistableRelation"></typeparam>
     /// <typeparam name="TPersistableParent"></typeparam>
@@ -14,27 +14,36 @@ namespace TimeSliceEntityFrameworkExtensions
     /// <typeparam name="TPersistableChild"></typeparam>
     /// <typeparam name="TChildKey"></typeparam>
     public abstract class PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey> :
-        TimeDependentParentChildCollection<TPersistableRelation, TPersistableParent, TPersistableChild>,
+        TimeDependentCollection<TPersistableRelation, TPersistableParent, TPersistableChild>,
         IEquatable<PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>>
         where TPersistableRelation : IPersistableRelation<TPersistableParent, TParentKey, TPersistableChild, TChildKey>, ITimeSlice, IValidatableObject,
         IRelation<TPersistableParent, TPersistableChild>
         where TPersistableParent : class, IHasKey<TParentKey>
         where TPersistableChild : class, IHasKey<TChildKey>
     {
+        /// <inheritdoc />
         protected PersistableTimeDependentCollection(TPersistableParent commonParent, IEnumerable<TPersistableRelation> relations = null)
             : base(commonParent, relations)
         {
         }
 
+        /// <inheritdoc />
         protected PersistableTimeDependentCollection()
         {
         }
 
+        /// <summary>
+        ///     ID of <see cref="TimeDependentCollection{TRelation,TParent,TChild}.CommonParent" />
+        /// </summary>
+        public TParentKey CommonParentId { get; set; }
+
+        /// <inheritdoc />
         public bool Equals(PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey> other)
         {
             return base.Equals(other);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -43,6 +52,7 @@ namespace TimeSliceEntityFrameworkExtensions
                    Equals((PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>)obj);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return base.GetHashCode();

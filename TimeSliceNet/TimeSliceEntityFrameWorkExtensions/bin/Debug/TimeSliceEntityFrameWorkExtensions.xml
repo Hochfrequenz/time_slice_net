@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TimeSliceEntityFrameWorkExtensions</name>
+    </assembly>
+    <members>
+        <member name="T:TimeSliceEntityFrameworkExtensions.EntityTypeBuilderExtensions">
+            <summary>
+                Extensions to specify a key for <see cref="T:TimeSlice.IRelation`2" /> and <see cref="T:TimeSlice.TimeDependentCollection`3" />
+            </summary>
+        </member>
+        <member name="M:TimeSliceEntityFrameworkExtensions.EntityTypeBuilderExtensions.HasDefaultKeys``6(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+                Adds default keys for a <typeparamref name="TPersistableRelation" /> using <see cref="M:Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder.HasKey(System.String[])" />
+            </summary>
+            <param name="etb"></param>
+            <param name="collectionKeyExpression">key of the collection, must not be null</param>
+            <typeparam name="TPersistableRelation">
+                <see cref="T:TimeSlice.IRelation`2" />
+            </typeparam>
+            <typeparam name="TPersistableParent">
+                <see cref="P:TimeSlice.IRelation`2.Parent" />
+            </typeparam>
+            <typeparam name="TPersistableChild">
+                <see cref="P:TimeSlice.IRelation`2.Child" />
+            </typeparam>
+            <typeparam name="TTimeSliceCollection">
+                <see cref="T:TimeSlice.TimeDependentCollection`3" />
+            </typeparam>
+            <typeparam name="TParentKey"></typeparam>
+            <typeparam name="TChildKey"></typeparam>
+        </member>
+        <member name="M:TimeSliceEntityFrameworkExtensions.EntityTypeBuilderExtensions.HasDefaultKeys``5(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+                Adds default keys for <typeparamref name="TPersistableRelation" /> using <see cref="M:Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder.HasKey(System.String[])" />
+            </summary>
+            <param name="etb"></param>
+            <param name="relationKeyExpression">optional key of each <typeparamref name="TPersistableRelation" />, can be null</param>
+            <typeparam name="TPersistableRelation">
+                <see cref="T:TimeSlice.IRelation`2" />
+            </typeparam>
+            <typeparam name="TPersistableParent">
+                <see cref="P:TimeSlice.IRelation`2.Parent" />
+            </typeparam>
+            <typeparam name="TPersistableChild">
+                <see cref="P:TimeSlice.IRelation`2.Child" />
+            </typeparam>
+            <typeparam name="TParentKey"></typeparam>
+            <typeparam name="TChildKey"></typeparam>
+        </member>
+        <member name="T:TimeSliceEntityFrameworkExtensions.IHasKey`1">
+            <summary>
+                Interface ensures that a class that implements it, has a Property <see cref="P:TimeSliceEntityFrameworkExtensions.IHasKey`1.Id" /> of type <typeparamref name="TKey" /> that can be used as a database primary/foreign/part of
+                a composite key in Entity Framework
+            </summary>
+            <typeparam name="TKey">key type, e.g. string or Guid</typeparam>
+        </member>
+        <member name="P:TimeSliceEntityFrameworkExtensions.IHasKey`1.Id">
+            <summary>
+                Unique ID of this entry on a database
+            </summary>
+        </member>
+        <member name="T:TimeSliceEntityFrameworkExtensions.IPersistableRelation`4">
+            <summary>
+                A persistable parent child relation is similar to a <see cref="T:TimeSlice.IRelation`2" /> but has the additional constraint,
+                that the parent and child involved each have a key property, that can be used as a primary key on a database.
+            </summary>
+            <typeparam name="TPersistableParent">
+                <see cref="P:TimeSlice.IRelation`2.Parent" />
+            </typeparam>
+            <typeparam name="TParentKey"><see cref="P:TimeSlice.IRelation`2.Parent" />s key</typeparam>
+            <typeparam name="TPersistableChild">
+                <see cref="P:TimeSlice.IRelation`2.Child" />
+            </typeparam>
+            <typeparam name="TChildKey"><see cref="P:TimeSlice.IRelation`2.Child" />s key</typeparam>
+        </member>
+        <member name="P:TimeSliceEntityFrameworkExtensions.IPersistableRelation`4.ParentId">
+            <summary>
+                Unique ID of the <typeparamref name="TPersistableParent" /> involved in the relation
+            </summary>
+        </member>
+        <member name="P:TimeSliceEntityFrameworkExtensions.IPersistableRelation`4.ChildId">
+            <summary>
+                Unique ID of the <typeparamref name="TPersistableChild" /> involved in the relation
+            </summary>
+        </member>
+        <member name="T:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentRelation`4">
+            <summary>
+                A persistable time dependent parent child relation is similar to a <see cref="T:TimeSlice.TimeDependentRelation`2" /> but has the additional constraint,
+                that the parent and child involved each have a key property, that can be used as a primary key on a database.
+            </summary>
+            <typeparam name="TPersistableParent">
+                <see cref="P:TimeSlice.IRelation`2.Parent" />
+            </typeparam>
+            <typeparam name="TParentKey"><see cref="P:TimeSlice.IRelation`2.Parent" />s key</typeparam>
+            <typeparam name="TPersistableChild">
+                <see cref="P:TimeSlice.IRelation`2.Child" />
+            </typeparam>
+            <typeparam name="TChildKey"><see cref="P:TimeSlice.IRelation`2.Child" />s key</typeparam>
+        </member>
+        <member name="P:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentRelation`4.ParentId">
+            <summary>
+            The key of <see cref="P:TimeSlice.TimeDependentRelation`2.Parent"/>
+            </summary>
+        </member>
+        <member name="P:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentRelation`4.ChildId">
+            <summary>
+            The key of <see cref="P:TimeSlice.TimeDependentRelation`2.Child"/>
+            </summary>
+        </member>
+        <member name="T:TimeSliceEntityFrameworkExtensions.ModelBuilderExtensions">
+            <summary>
+                Extensions to <see cref="T:Microsoft.EntityFrameworkCore.ModelBuilder" />
+            </summary>
+        </member>
+        <member name="M:TimeSliceEntityFrameworkExtensions.ModelBuilderExtensions.SetupCollectionAndRelations``6(Microsoft.EntityFrameworkCore.ModelBuilder,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}})">
+            <summary>
+                Set default keys using
+                <see cref="M:TimeSliceEntityFrameworkExtensions.EntityTypeBuilderExtensions.HasDefaultKeys``6(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})" />.
+            </summary>
+            <param name="modelBuilder">a model builder instance</param>
+            <param name="collectionKeyExpression">each collection has to have a key defined</param>
+            <param name="relationKeyExpression">optional key for each <typeparamref name="TPersistableRelation" /></param>
+            <typeparam name="TTimeSliceCollection">
+                <see cref="T:TimeSlice.TimeDependentCollection`3" />
+            </typeparam>
+            <typeparam name="TPersistableRelation">
+                <see cref="T:TimeSlice.TimeDependentRelation`2" />
+            </typeparam>
+            <typeparam name="TPersistableParent">
+                <see cref="P:TimeSlice.TimeDependentRelation`2.Parent" />
+            </typeparam>
+            <typeparam name="TPersistableChild">
+                <see cref="P:TimeSlice.TimeDependentRelation`2.Child" />
+            </typeparam>
+            <typeparam name="TParentKey"><see cref="P:TimeSliceEntityFrameworkExtensions.IHasKey`1.Id" /> of <typeparamref name="TPersistableParent" /></typeparam>
+            <typeparam name="TChildKey"><see cref="P:TimeSliceEntityFrameworkExtensions.IHasKey`1.Id" /> of <typeparamref name="TPersistableChild" /></typeparam>
+        </member>
+        <member name="T:TimeSliceEntityFrameworkExtensions.CommonParentIdValueGenerator`6">
+            <summary>
+            The CommonParentIdValueGenerator extracts the <see cref="P:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentCollection`5.CommonParentId"/> from the <see cref="P:TimeSlice.TimeDependentCollection`3.CommonParent"/>
+            </summary>
+            <typeparam name="TTimeSliceCollection"></typeparam>
+            <typeparam name="TPersistableRelation"></typeparam>
+            <typeparam name="TPersistableParent"></typeparam>
+            <typeparam name="TParentKey"></typeparam>
+            <typeparam name="TPersistableChild"></typeparam>
+            <typeparam name="TChildKey"></typeparam>
+        </member>
+        <member name="T:TimeSliceEntityFrameworkExtensions.ParentIdValueGenerator`5">
+            <summary>
+            The ParentIdValueGenerator extracts the <see cref="P:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentRelation`4.ParentId"/> from the <see cref="P:TimeSlice.TimeDependentRelation`2.Parent"/>
+            </summary>
+            <typeparam name="TPersistableRelation"></typeparam>
+            <typeparam name="TPersistableParent"></typeparam>
+            <typeparam name="TParentKey"></typeparam>
+            <typeparam name="TPersistableChild"></typeparam>
+            <typeparam name="TChildKey"></typeparam>
+        </member>
+        <member name="T:TimeSliceEntityFrameworkExtensions.ChildIdValueGenerator`5">
+            <summary>
+            The ParentIdValueGenerator extracts the <see cref="P:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentRelation`4.ChildId"/> from the <see cref="P:TimeSlice.TimeDependentRelation`2.Child"/>
+            </summary>
+            <typeparam name="TPersistableRelation"></typeparam>
+            <typeparam name="TPersistableParent"></typeparam>
+            <typeparam name="TParentKey"></typeparam>
+            <typeparam name="TPersistableChild"></typeparam>
+            <typeparam name="TChildKey"></typeparam>
+        </member>
+        <member name="T:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentCollection`5">
+            <summary>
+                Similar to <see cref="T:TimeSlice.TimeDependentCollection`3" /> but with persistable parent and child
+            </summary>
+            <typeparam name="TPersistableRelation"></typeparam>
+            <typeparam name="TPersistableParent"></typeparam>
+            <typeparam name="TParentKey"></typeparam>
+            <typeparam name="TPersistableChild"></typeparam>
+            <typeparam name="TChildKey"></typeparam>
+        </member>
+        <member name="M:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentCollection`5.#ctor(`1,System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentCollection`5.#ctor">
+            <inheritdoc />
+        </member>
+        <member name="P:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentCollection`5.CommonParentId">
+            <summary>
+            ID of <see cref="P:TimeSlice.TimeDependentCollection`3.CommonParent"/>
+            </summary>
+        </member>
+        <member name="M:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentCollection`5.Equals(TimeSliceEntityFrameworkExtensions.PersistableTimeDependentCollection{`0,`1,`2,`3,`4})">
+            <inheritdoc />
+        </member>
+        <member name="M:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentCollection`5.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentCollection`5.GetHashCode">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

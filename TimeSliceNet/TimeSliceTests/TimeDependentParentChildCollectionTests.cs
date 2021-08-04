@@ -7,7 +7,7 @@ using TimeSlice;
 namespace TimeSliceTests
 {
     /// <summary>
-    ///     Tests <see cref="TimeDependentParentChildCollection{TRelation, TParent,TChild}" />
+    ///     Tests <see cref="TimeDependentCollection{TRelation,TParent,TChild}" />
     /// </summary>
     public class TimeDependentParentChildCollectionTests
     {
@@ -83,7 +83,7 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        ///     Test that a collection is invalid as soon as at least one element in <see cref="TimeDependentParentChildCollection{TRelation,TParent,TChild}.TimeSlices" /> is invalid
+        ///     Test that a collection is invalid as soon as at least one element in <see cref="TimeDependentCollection{TRelation,TParent,TChild}.TimeSlices" /> is invalid
         /// </summary>
         [Test]
         public void TestValidationErrorsAreForwarded()
@@ -217,7 +217,7 @@ namespace TimeSliceTests
             }
         }
 
-        private class RelationsWithOverlaps : TimeDependentParentChildCollection<FooBarRelation, Foo, Bar>, IEquatable<RelationsWithOverlaps>
+        private class RelationsWithOverlaps : TimeDependentCollection<FooBarRelation, Foo, Bar>, IEquatable<RelationsWithOverlaps>
         {
             public RelationsWithOverlaps(Foo commonParent, IEnumerable<FooBarRelation> relations = null) : base(commonParent, relations)
             {
@@ -247,7 +247,7 @@ namespace TimeSliceTests
             }
         }
 
-        private class RelationsWithoutOverlap : TimeDependentParentChildCollection<FooBarRelation, Foo, Bar>
+        private class RelationsWithoutOverlap : TimeDependentCollection<FooBarRelation, Foo, Bar>
         {
             public RelationsWithoutOverlap(Foo commonParent, IEnumerable<FooBarRelation> relations = null) : base(commonParent, relations)
             {

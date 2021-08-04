@@ -21,7 +21,14 @@ namespace TimeSliceEntityFrameworkExtensions
         where TPersistableParent : class, IHasKey<TParentKey>
         where TPersistableChild : class, IHasKey<TChildKey>
     {
+        /// <summary>
+        ///     The key of <see cref="TimeDependentRelation{TParent,TChild}.Parent" />
+        /// </summary>
         public TParentKey ParentId { get; set; }
+
+        /// <summary>
+        ///     The key of <see cref="TimeDependentRelation{TParent,TChild}.Child" />
+        /// </summary>
         public TChildKey ChildId { get; set; }
     }
 }

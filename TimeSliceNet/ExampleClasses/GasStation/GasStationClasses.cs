@@ -40,7 +40,7 @@ namespace ExampleClasses.GasStation
     ///     multiple allocations that vary over time are modeled as a "collection".
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class GasolinePumpAllocationCollection : TimeDependentParentChildCollection<GasolinePumpAllocation, GasolinePump, Car>
+    public class GasolinePumpAllocationCollection : TimeDependentCollection<GasolinePumpAllocation, GasolinePump, Car>
     {
         public GasolinePumpAllocationCollection(GasolinePump commonParent) : base(commonParent)
         {

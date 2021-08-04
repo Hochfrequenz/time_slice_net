@@ -157,7 +157,7 @@
                 prevent overlapping time slices (there might be &gt;1 child assigned to a parent at a time)
             </summary>
         </member>
-        <member name="T:TimeSlice.TimeDependentParentChildCollection`3">
+        <member name="T:TimeSlice.TimeDependentCollection`3">
             <summary>
                 The simplest way to describe a time dependent parent/child collection
             </summary>
@@ -165,7 +165,7 @@
             <typeparam name="TChild"></typeparam>
             <typeparam name="TRelation"></typeparam>
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.#ctor(`1,System.Collections.Generic.IEnumerable{`0})">
+        <member name="M:TimeSlice.TimeDependentCollection`3.#ctor(`1,System.Collections.Generic.IEnumerable{`0})">
             <summary>
                 the collection may be initialized by providing the parent that is shared among all children.
             </summary>
@@ -173,24 +173,24 @@
             <param name="relations">optional relations to be added on construction</param>
             <exception cref="T:System.ArgumentNullException">iff <paramref name="commonParent" /> is null</exception>
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.#ctor">
+        <member name="M:TimeSlice.TimeDependentCollection`3.#ctor">
             <summary>
                 A parameterless constructor is required for deserializing
             </summary>
         </member>
-        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.CollectionType">
+        <member name="P:TimeSlice.TimeDependentCollection`3.CollectionType">
             <summary>
                 <inheritdoc cref="T:TimeSlice.TimeDependentCollectionType" />
                 This has to be set by the inheriting class
             </summary>
             <remarks>This is also the reason why this class is abstract. It should prevent the user of the library from suddenly changing the Collection Type which is not intended.</remarks>
         </member>
-        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.CommonParent">
+        <member name="P:TimeSlice.TimeDependentCollection`3.CommonParent">
             <summary>
-                The common parent for this collection that is the same for all slices in <see cref="P:TimeSlice.TimeDependentParentChildCollection`3.TimeSlices" />
+                The common parent for this collection that is the same for all slices in <see cref="P:TimeSlice.TimeDependentCollection`3.TimeSlices" />
             </summary>
         </member>
-        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.TimeSlices">
+        <member name="P:TimeSlice.TimeDependentCollection`3.TimeSlices">
             <summary>
                 the single time slices.
             </summary>
@@ -199,45 +199,45 @@
                 serialized on its own without "knowing" about the other items.
             </remarks>
         </member>
-        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.TimeSliceList">
+        <member name="P:TimeSlice.TimeDependentCollection`3.TimeSliceList">
             <summary>
                 returns a list of all children time slices as list that is sorted by start and end
             </summary>
             <returns></returns>
         </member>
-        <member name="P:TimeSlice.TimeDependentParentChildCollection`3.Count">
+        <member name="P:TimeSlice.TimeDependentCollection`3.Count">
             <inheritdoc cref="P:System.Collections.ICollection.Count" />
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Equals(TimeSlice.TimeDependentParentChildCollection{`0,`1,`2})">
+        <member name="M:TimeSlice.TimeDependentCollection`3.Equals(TimeSlice.TimeDependentCollection{`0,`1,`2})">
             <inheritdoc />
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+        <member name="M:TimeSlice.TimeDependentCollection`3.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
             <inheritdoc />
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Add(`0)">
+        <member name="M:TimeSlice.TimeDependentCollection`3.Add(`0)">
             <summary>
                 Add an item to the children
             </summary>
             <param name="item"></param>
             <exception cref="T:System.ArgumentNullException">iff <paramref name="item" /> is null</exception>
-            <exception cref="T:System.ArgumentException">if the parent of <paramref name="item" /> is not the same as <see cref="P:TimeSlice.TimeDependentParentChildCollection`3.CommonParent" /></exception>
+            <exception cref="T:System.ArgumentException">if the parent of <paramref name="item" /> is not the same as <see cref="P:TimeSlice.TimeDependentCollection`3.CommonParent" /></exception>
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Clear">
+        <member name="M:TimeSlice.TimeDependentCollection`3.Clear">
             <inheritdoc cref="M:System.Collections.IList.Clear" />
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Contains(`0)">
+        <member name="M:TimeSlice.TimeDependentCollection`3.Contains(`0)">
             <inheritdoc cref="M:System.Collections.IList.Contains(System.Object)" />
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Remove(`0)">
+        <member name="M:TimeSlice.TimeDependentCollection`3.Remove(`0)">
             <inheritdoc cref="M:System.Collections.IList.Remove(System.Object)" />
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.IndexOf(`0)">
+        <member name="M:TimeSlice.TimeDependentCollection`3.IndexOf(`0)">
             <inheritdoc cref="M:System.Collections.IList.IndexOf(System.Object)" />
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.Equals(System.Object)">
+        <member name="M:TimeSlice.TimeDependentCollection`3.Equals(System.Object)">
             <inheritdoc />
         </member>
-        <member name="M:TimeSlice.TimeDependentParentChildCollection`3.GetHashCode">
+        <member name="M:TimeSlice.TimeDependentCollection`3.GetHashCode">
             <inheritdoc />
         </member>
         <member name="T:TimeSlice.TimeDependentRelation`2">

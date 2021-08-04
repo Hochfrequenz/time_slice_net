@@ -14,8 +14,8 @@ namespace ExampleWebApplication
             Database.EnsureCreated();
         }
 
-        // example classes from musician <-> listener example
         public DbSet<Musician> Musicians { get; set; }
+
         public DbSet<Listener> Listeners { get; set; }
 
         // two db sets using the same base type must not interfere
@@ -24,15 +24,10 @@ namespace ExampleWebApplication
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // modelBuilder.Entity<Musician>().HasKey(m => m.Name);
-            // modelBuilder.Entity<Listener>().HasKey(l => l.Name);
-
-
-            modelBuilder.SetDefaultKeys<Concert, ConcertVisit, Musician, string, Listener, string>(
-                concert => concert.Guid, // The key of a collection (Concert) has to be explicitly set, always
-                null //  but keys for ConcertVisit can be derived automatically (null)
+            modelBuilder.SetupCollectionAndRelations<Concert, ConcertVisit, Musician, string, Listener, string>(
+                concert => concert.Guid //  but keys for ConcertVisit can be derived automatically (null)
             );
-            modelBuilder.SetDefaultKeys<BackstageMeetings, OneOnOneWithAStar, Musician, string, Listener, string>(
+            modelBuilder.SetupCollectionAndRelations<BackstageMeetings, OneOnOneWithAStar, Musician, string, Listener, string>(
                 backstageMeeting => backstageMeeting.Guid, // The key of a collection (BackstageMeetings) has to be explicitly set, always
                 oneOnOneWithAStar => oneOnOneWithAStar.MeetingGuid // it's possible to also explicitly set a key for the relation (!=null)
             );
