@@ -37,6 +37,9 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                 Assert.IsTrue(museAtRockInRio.IsValid); // <-- property, not method
                 museAtRockInRio.IsValid = false; // <-- has no effect
                 Assert.IsTrue(museAtRockInRio.IsValid); // <-- property, not method
+                Assert.IsFalse(museAtRockInRio.Equals(null));
+                // ReSharper disable once SuspiciousTypeConversion.Global
+                Assert.IsFalse(museAtRockInRio.Equals("foo"));
                 var concertDirectlyFromContext = await context.Concerts.SingleAsync(c => c.CommonParentId == "Muse");
                 Assert.AreEqual(concertDirectlyFromContext, museAtRockInRio);
                 Assert.IsTrue(concertDirectlyFromContext.Equals(museAtRockInRio));
