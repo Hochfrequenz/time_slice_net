@@ -15,7 +15,7 @@ However the focus of TimeSlice.NET is slightly different:
 Furthermore:
 
 - The code is designed with time zones in mind. They exist and will cause problems if ignored.
-- All end date times are, if set to a finite value other than `MaxValue`, meant and treated as exclusive.
+- All end date times are, if set to a finite value other than `MaxValue`, meant and treated as exclusive ([here's why](https://hf-kklein.github.io/exclusive_end_dates.github.io/))
 
 ## Code Quality / Production Readiness
 
