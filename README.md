@@ -16,6 +16,7 @@ Furthermore:
 
 - The code is designed with time zones in mind. They exist and will cause problems if ignored.
 - All end date times are, if set to a finite value other than `MaxValue`, meant and treated as exclusive ([here's why](https://hf-kklein.github.io/exclusive_end_dates.github.io/))
+- All sub second times (milliseconds and ticks) are ignored because they tend to cause trouble on the database/ORM level and there's barely a business case that requires them
 
 ## Code Quality / Production Readiness
 
