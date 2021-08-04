@@ -54,7 +54,7 @@ Assert.IsTrue(openTimeSlice.IsOpen()); // end is infinity => "open"
 ## Relations
 
 A relation describes that a single "parent" has a single "child" assigned for a specific time range.
-For a minimal, easy to understand example on relations, see the [gasoline pump ⬌ car relation tests](TimeSliceNet/TimeSliceTests/GasolinePumpCarRelationpExampleTests.cs).
+For a minimal, easy to understand example on relations, see the [gasoline pump ⬌ car relation tests](TimeSliceNet/TimeSliceTests/GasolinePumpCarRelationExampleTests.cs).
 
 ### Relations that vary over time = Collections
 
