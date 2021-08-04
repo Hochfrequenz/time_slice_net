@@ -68,3 +68,28 @@ There are two main kinds:
 For a minimal, easy to understand example of collections with overlapping children see the [concert tests](TimeSliceNet/TimeSliceTests/ConcertOverlappingExampleTests.cs).
 
 For a minimal, easy to understand example of collections of non-overlapping children see the [gasoline pump ⬌ car (non overlapping) collection tests](TimeSliceNet/TimeSliceTests/GasolinePumpCarNonOverlappingExampleTests.cs).
+
+## Storing the Collections on a Database using Entity Framework Core
+
+In the [`TimeSliceEntityFrameworkExtensions`](TimeSliceNet/TimeSliceEntityFrameWorkExtensions) package you'll find extension classes that make your time slices, relations and collections of relations easily persistable using EF Core.
+
+To make a relation persistable, simply change the interfaces known from above minimal working examples to:
+
+| Simple Interface/ Base Class | Interface/Base Class to Persist using EF Core                                 |
+| ---------------------------- | ----------------------------------------------------------------------------- |
+| _no constraints_             | Parents and Childs used in relations have to implement `IHasKey<TPrimaryKey>` |
+| `IRelation`                  | `IPersistableRelation`                                                        |
+| `TimeDependentRelation`      | `PersistableTimeDependentReleation`                                           |
+| `TimeDependentCollection`    | `PersistableTimeDependentCollection`                                          |
+
+The generics used may look a bit overcomplicated to simply define a primary key (which you can "normally" do by using the `[Key]` attribute) but the real advantage is, that all the primary and foreign key relations for the collection are then automatically set up using
+
+```c#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.SetupCollectionAndRelations<MyCollectionType, MyRelationType, MyParent, MyParentsKey, MyChild, MyChildsKey>(collection=>collection.YourKey);
+    // that's all.
+}
+```
+
+See the [ExampleWebApplication 🠒 TimeSliceContext](TimeSliceNet/ExampleWebApplication/TimeSliceContext.cs) class for a working (and [unit tested](TimeSliceNet/TimeSliceTests/EntityFrameworkExtensionTests)) example.
