@@ -42,8 +42,7 @@ namespace TimeSliceEntityFrameworkExtensions
             etb.Property(x => x.CommonParentId).IsRequired();
             etb.HasOne(x => x.CommonParent);
             etb.HasMany(x => x.TimeSlices);
-            etb.HasKey(collectionKeyExpression ?? throw new ArgumentNullException(nameof(collectionKeyExpression),
-                $"Each {nameof(TimeDependentCollection<TPersistableRelation, TPersistableParent, TPersistableChild>)}, especially {typeof(TTimeSliceCollection).FullName} has to have a separate key."));
+            etb.HasKey(collectionKeyExpression ?? throw new ArgumentNullException(nameof(collectionKeyExpression), $"Each {nameof(TimeDependentCollection<TPersistableRelation, TPersistableParent, TPersistableChild>)}, especially {typeof(TTimeSliceCollection).FullName} has to have a separate key."));
         }
 
         /// <summary>

@@ -51,7 +51,7 @@ namespace TimeSliceEntityFrameworkExtensions
         /// <inheritdoc />
         public bool Equals(PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey> other)
         {
-            return base.Equals(other);
+            return base.Equals(other) && other.CommonParentId.Equals(this.CommonParentId);
         }
 
         /// <inheritdoc />
@@ -59,14 +59,13 @@ namespace TimeSliceEntityFrameworkExtensions
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() &&
-                   Equals((PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>)obj);
+            return obj.GetType() == GetType() && Equals((PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>)obj);
         }
 
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(CommonParentId, base.GetHashCode());
         }
     }
 }

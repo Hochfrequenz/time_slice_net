@@ -43,7 +43,7 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
 
         [Test]
         [NonParallelizable]
-        public async Task TestSameBaseTypeEntriesMustNotInterfere()
+        public void TestSameBaseTypeEntriesMustNotInterfere()
         {
             using (ContextIsInUseSemaphore)
             {

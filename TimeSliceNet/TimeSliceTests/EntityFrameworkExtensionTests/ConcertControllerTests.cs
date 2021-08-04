@@ -34,6 +34,11 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                 Assert.IsInstanceOf<OkObjectResult>(response);
                 Assert.AreEqual(2, ((response as OkObjectResult).Value as List<Concert>).Count);
                 var museAtRockInRio = ((response as OkObjectResult).Value as List<Concert>).Single(c => c.CommonParent.Name == "Muse");
+                Assert.IsTrue(museAtRockInRio.IsValid); // <-- property, not method
+                var concertDirectlyFromContext = await context.Concerts.SingleAsync(c => c.CommonParentId == "Muse");
+                Assert.AreEqual(concertDirectlyFromContext, museAtRockInRio);
+                Assert.IsTrue(concertDirectlyFromContext.Equals(museAtRockInRio));
+                Assert.AreEqual(concertDirectlyFromContext.GetHashCode(), museAtRockInRio.GetHashCode());
                 Assert.AreEqual(3, museAtRockInRio.TimeSlices.Count);
                 Assert.IsTrue(museAtRockInRio.TimeSlices.Any(ts => ts.Child.Name == "Joao"));
                 Assert.IsTrue(museAtRockInRio.TimeSlices.Any(ts => ts.Child.Name == "Carlos"));
@@ -87,7 +92,7 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
             Assert.IsFalse(invalidCollection.IsValid());
             using (ContextIsInUseSemaphore)
             {
-                context.BackstageMeetings.Add(invalidCollection);
+                await context.BackstageMeetings.AddAsync(invalidCollection);
                 Assert.ThrowsAsync<DbUpdateException>(() => context.SaveChangesAsync());
             }
         }
