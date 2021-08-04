@@ -19,8 +19,9 @@ Furthermore:
 
 ## Code Quality / Production Readiness
 
-The code has [at least a 95%](https://github.com/Hochfrequenz/time_slice_net/blob/main/.github/workflows/unittests_and_coverage.yml#L34) unit test coverage.
-So if you trust the tests, you can probably also trust the code.
+- The code has [at least a 95%](https://github.com/Hochfrequenz/time_slice_net/blob/main/.github/workflows/unittests_and_coverage.yml#L34) unit test coverage. ✔️
+- The bare TimeSlice.NET package has no extra dependencies. ✔️
+- The only dependency of the TimeSlice.NET Entity Framework Extensions package is EF Core itself. ✔️
 
 ## Examples
 
