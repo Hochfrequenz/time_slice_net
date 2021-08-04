@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading;
-using ExampleClasses.Music;
+using ExampleClasses.Festival;
 using ExampleWebApplication;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;

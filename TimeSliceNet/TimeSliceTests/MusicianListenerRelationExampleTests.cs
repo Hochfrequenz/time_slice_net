@@ -1,5 +1,5 @@
 ﻿using System;
-using ExampleClasses.Music;
+using ExampleClasses.Festival;
 using NUnit.Framework;
 using TimeSlice;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using ExampleClasses.Music;
+using ExampleClasses.Festival;
 using NUnit.Framework;
 using TimeSlice;
 
