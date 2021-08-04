@@ -1,5 +1,7 @@
 using System;
 using System.Data.Common;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ExampleClasses.Music;
 using ExampleWebApplication;
@@ -11,14 +13,20 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
 {
     public abstract class ControllerTest : IDisposable
     {
+        // because the context always uses the "Filename=:memory:" connection string,
+        // All the contexts that are created using this connection share the same database.
+        // To avoid accessing the same database twice we use a semaphore.
+        protected static readonly SemaphoreSlim ContextIsInUseSemaphore = new(1);
+        protected static TimeSliceContext context;
         protected readonly DbConnection _connection;
 
         protected ControllerTest(DbContextOptions<TimeSliceContext> contextOptions)
         {
             ContextOptions = contextOptions;
-            using var context = new TimeSliceContext(ContextOptions);
+            context = new TimeSliceContext(ContextOptions);
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
+            Seed().GetAwaiter().GetResult();
             _connection = RelationalOptionsExtension.Extract(ContextOptions).Connection;
         }
 
@@ -26,6 +34,7 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
 
         void IDisposable.Dispose()
         {
+            context.Dispose();
             _connection.Dispose();
         }
 
@@ -36,7 +45,8 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
             return connection;
         }
 
-        protected static async Task Seed(TimeSliceContext context)
+
+        protected static async Task Seed()
         {
             var muse = new Musician
             {
@@ -46,7 +56,6 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
             {
                 Name = "Iron Maiden"
             };
-            await context.Musicians.AddRangeAsync(muse, ironMaiden);
             var carlos = new Listener
             {
                 Name = "Carlos"
@@ -59,7 +68,6 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
             {
                 Name = "Patricia"
             };
-            await context.Listeners.AddRangeAsync(joao, patricia);
             await context.Concerts.AddRangeAsync(
                 new Concert
                 {
