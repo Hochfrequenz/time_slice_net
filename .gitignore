@@ -12,3 +12,27 @@ TimeSliceNet/TimeSliceTests/bin/Debug/net5.0/
 TimeSliceNet/TimeSlice/bin/Debug/net5.0/
 
 TimeSliceNet/TimeSliceNet.sln.DotSettings.user
+
+TimeSliceNet/.idea/config/
+
+TimeSliceNet/ExampleClasses/bin/Debug/net5.0/
+
+*.cache
+
+TimeSliceNet/TimeSliceEntityFrameWorkExtensions/obj/
+
+TimeSliceNet/ExampleWebApplicationTests/obj/
+
+TimeSliceNet/ExampleWebApplication/webapp.db
+
+TimeSliceNet/ExampleWebApplication/obj/project.packagespec.json
+
+TimeSliceNet/ExampleWebApplication/obj/
+
+TimeSliceNet/ExampleClasses/obj/
+
+*.pdb
+
+TimeSliceNet/ExampleWebApplication/bin/Debug/net5.0/
+
+TimeSliceNet/TimeSliceEntityFrameWorkExtensions/bin/Debug/net5.0/

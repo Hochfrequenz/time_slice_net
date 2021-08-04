@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!-- 
+    This is a project that is referenced by both the ExampleWebApplication and the TimeSliceTests.
+    It's only purpose is to avoid references from the ExampleWebApplication to the TimeSliceTests project.
+    Not because it is impossible but to have a clean setup where actual code does not reference unit test code. 
+     -->
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\TimeSliceEntityFrameWorkExtensions\TimeSliceEntityFrameWorkExtensions.csproj"/>
+        <ProjectReference Include="..\TimeSlice\TimeSlice.csproj"/>
+    </ItemGroup>
+</Project>

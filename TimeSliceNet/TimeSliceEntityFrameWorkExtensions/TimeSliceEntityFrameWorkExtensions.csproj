@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <DocumentationFile>bin\Debug\TimeSliceEntityFrameWorkExtensions.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DocumentationFile>bin\Release\TimeSliceEntityFrameWorkExtensions.xml</DocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\TimeSlice\TimeSlice.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.8"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.8"/>
+    </ItemGroup>
+
+</Project>

@@ -1,19 +1,19 @@
 ﻿using System;
+using ExampleClasses.GasStation;
 using NUnit.Framework;
 using TimeSlice;
-using static TimeSliceTests.GasolinePumpCarRelationshipExampleTests;
 
 namespace TimeSliceTests
 {
     /// <summary>
     ///     Test cases that are not thought to cover every edge case but rather demonstrate the main ideas of this library.
-    ///     In this test class we cover <see cref="TimeDependentParentChildCollection{TRelationship, TParent,TChild}" />s.
+    ///     In this test class we cover <see cref="TimeDependentCollection{TRelation,TParent,TChild}" />s.
     /// </summary>
-    /// <remarks>To understand these tests, first have a look at <seealso cref="GasolinePumpCarRelationshipExampleTests" /></remarks>
+    /// <remarks>To understand these tests, first have a look at <seealso cref="GasolinePumpCarRelationExampleTests" /></remarks>
     public class GasolinePumpCarNonOverlappingExampleTests
     {
         /// <summary>
-        ///     demonstrates the use of the <see cref="TimeDependentParentChildCollection{TRelationship,TParent,TChild}" /> with <see cref="TimeDependentCollectionType.PreventOverlaps" />
+        ///     demonstrates the use of the <see cref="TimeDependentCollection{TRelation,TParent,TChild}" /> with <see cref="TimeDependentCollectionType.PreventOverlaps" />
         /// </summary>
         [Test]
         public void TestMultipleCarsAtOneGasolinePump()
@@ -57,21 +57,6 @@ namespace TimeSliceTests
             collection.Add(conflictingAllocation);
             Assert.IsFalse(collection.IsValid());
             // => if you always check for validity (e.g. before saving a collection or in some kind of middleware), you'll be fine
-        }
-
-        /// <summary>
-        ///     multiple allocations that vary over time are modeled as a "collection".
-        /// </summary>
-        internal class GasolinePumpAllocationCollection : TimeDependentParentChildCollection<GasolinePumpAllocation, GasolinePump, Car>
-        {
-            public GasolinePumpAllocationCollection(GasolinePump commonParent) : base(commonParent)
-            {
-            }
-
-            /// <summary>
-            ///     one gasoline station can only be used by one car at a time => temporal overlaps are not allowed.
-            /// </summary>
-            public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.PreventOverlaps;
         }
     }
 }

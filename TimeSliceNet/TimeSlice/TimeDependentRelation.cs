@@ -4,15 +4,15 @@ using System.Collections.Generic;
 namespace TimeSlice
 {
     /// <summary>
-    ///     The simplest implementation of a time dependent parent child relationship.
+    ///     The simplest implementation of a time dependent parent child relation
     /// </summary>
-    public class TimeDependentParentChildRelationship<TParent, TChild> : PlainTimeSlice,
-        IParentChildRelationship<TParent, TChild> where TParent : class where TChild : class
+    public class TimeDependentRelation<TParent, TChild> : PlainTimeSlice, IRelation<TParent, TChild> where TParent : class where TChild : class
+
     {
         private string _discriminator;
 
         /// <inheritdoc />
-        public bool Equals(IParentChildRelationship<TParent, TChild> other)
+        public bool Equals(IRelation<TParent, TChild> other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -23,7 +23,7 @@ namespace TimeSlice
         /// <inheritdoc />
         public string Discriminator
         {
-            get => _discriminator ?? $"{typeof(TimeDependentParentChildRelationship<TParent, TChild>).FullName}";
+            get => _discriminator ?? $"{GetType().FullName}";
             set
             {
                 if (!string.IsNullOrWhiteSpace(value)) _discriminator = value;
@@ -45,7 +45,7 @@ namespace TimeSlice
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((IParentChildRelationship<TParent, TChild>)obj);
+            return obj.GetType() == GetType() && Equals((IRelation<TParent, TChild>)obj);
         }
 
         /// <inheritdoc />

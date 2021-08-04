@@ -6,20 +6,20 @@ using TimeSlice;
 namespace TimeSliceTests
 {
     /// <summary>
-    ///     Tests <see cref="TimeDependentParentChildRelationship{TParent,TChild}" />
+    ///     Tests <see cref="TimeDependentRelation{TParent,TChild}" />
     /// </summary>
-    public class TimeDependentParentChildRelationshipTests
+    public class TimeDependentRelationTests
     {
         /// <summary>
-        ///     Tests that if no <see cref="IParentChildRelationship{TParent,TChild}.Discriminator" /> is given, the type name is used as discriminator
+        ///     Tests that if no <see cref="IRelation{TParent,TChild}.Discriminator" /> is given, the type name is used as discriminator
         /// </summary>
         [Test]
         [TestCase("")]
         [TestCase("   ")]
         [TestCase(null)]
-        public void TimeDependentParentChildRelationshipDefaultDiscriminator(string discriminator)
+        public void TimeDependentRelationDefaultDiscriminator(string discriminator)
         {
-            var tdpcr = new TimeDependentParentChildRelationship<Foo, Bar>
+            var tdpcr = new TimeDependentRelation<Foo, Bar>
             {
                 Child = new Bar(),
                 Parent = new Foo(),
@@ -29,12 +29,12 @@ namespace TimeSliceTests
         }
 
         /// <summary>
-        ///     Tests that if <see cref="IParentChildRelationship{TParent,TChild}.Discriminator" /> is given, it is used as discriminator
+        ///     Tests that if <see cref="IRelation{TParent,TChild}.Discriminator" /> is given, it is used as discriminator
         /// </summary>
         [Test]
-        public void TimeDependentParentChildRelationshipCustomDiscriminator()
+        public void TimeDependentRelationCustomDiscriminator()
         {
-            var tdpcr = new TimeDependentParentChildRelationship<Foo, Bar>
+            var tdpcr = new TimeDependentRelation<Foo, Bar>
             {
                 Child = new Bar(),
                 Parent = new Foo(),
@@ -47,9 +47,9 @@ namespace TimeSliceTests
         ///     Test that (de)serialization works
         /// </summary>
         [Test]
-        public void TimeDependentParentChildRelationshipDeSerialization()
+        public void TimeDependentRelationDeSerialization()
         {
-            var tdpcr = new TimeDependentParentChildRelationship<Foo, Bar>
+            var tdpcr = new TimeDependentRelation<Foo, Bar>
             {
                 Child = new Bar(),
                 Parent = new Foo(),
@@ -58,14 +58,14 @@ namespace TimeSliceTests
                 End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
             var json = JsonSerializer.Serialize(tdpcr);
-            var deserializedTdpcr = JsonSerializer.Deserialize<TimeDependentParentChildRelationship<Foo, Bar>>(json);
+            var deserializedTdpcr = JsonSerializer.Deserialize<TimeDependentRelation<Foo, Bar>>(json);
             Assert.AreEqual(tdpcr, deserializedTdpcr);
         }
 
         [Test]
         public void TestNullIsNotEqualToRelation()
         {
-            var tdpcr = new TimeDependentParentChildRelationship<Foo, Bar>
+            var tdpcr = new TimeDependentRelation<Foo, Bar>
             {
                 Child = new Bar(),
                 Parent = new Foo(),
@@ -80,7 +80,7 @@ namespace TimeSliceTests
         [Test]
         public void TestSomethingElseIsNotEqualToRelation()
         {
-            var tdpcr = new TimeDependentParentChildRelationship<Foo, Bar>
+            var tdpcr = new TimeDependentRelation<Foo, Bar>
             {
                 Child = new Bar(),
                 Parent = new Foo(),

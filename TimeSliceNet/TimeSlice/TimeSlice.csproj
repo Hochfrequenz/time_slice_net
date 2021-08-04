@@ -5,13 +5,13 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <DocumentationFile>bin\Debug\TimeSlice.xml</DocumentationFile>
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <DocumentationFile>bin\Debug\TimeSlice.xml</DocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <DocumentationFile>bin\Release\TimeSlice.xml</DocumentationFile>
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <DocumentationFile>bin\Release\TimeSlice.xml</DocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
 </Project>
