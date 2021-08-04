@@ -1,4 +1,4 @@
-﻿using ExampleClasses.Music;
+﻿using ExampleClasses.Festival;
 using Microsoft.EntityFrameworkCore;
 using TimeSliceEntityFrameworkExtensions;
 

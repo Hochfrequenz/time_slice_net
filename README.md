@@ -77,12 +77,12 @@ In the [`TimeSliceEntityFrameworkExtensions`](TimeSliceNet/TimeSliceEntityFrameW
 
 To make a relation persistable, simply change the interfaces known from above minimal working examples to:
 
-| Simple Interface/ Base Class | Interface/Base Class to Persist using EF Core                                 |
-| ---------------------------- | ----------------------------------------------------------------------------- |
-| _no constraints_             | Parents and Childs used in relations have to implement `IHasKey<TPrimaryKey>` |
-| `IRelation`                  | `IPersistableRelation`                                                        |
-| `TimeDependentRelation`      | `PersistableTimeDependentReleation`                                           |
-| `TimeDependentCollection`    | `PersistableTimeDependentCollection`                                          |
+| Simple Interface/ Base Class | Interface/Base Class to Persist using EF Core                                   |
+| ---------------------------- | ------------------------------------------------------------------------------- |
+| _no constraints_             | Parents and Children used in relations have to implement `IHasKey<TPrimaryKey>` |
+| `IRelation`                  | `IPersistableRelation`                                                          |
+| `TimeDependentRelation`      | `PersistableTimeDependentReleation`                                             |
+| `TimeDependentCollection`    | `PersistableTimeDependentCollection`                                            |
 
 The generics used may look a bit overcomplicated to simply define a primary key (which you can "normally" do by using the `[Key]` attribute) but the real advantage is, that all the primary and foreign key relations for the collection are then automatically set up using
 
@@ -95,3 +95,93 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 ```
 
 See the [ExampleWebApplication 🠒 TimeSliceContext](TimeSliceNet/ExampleWebApplication/TimeSliceContext.cs) class for a working (and [unit tested](TimeSliceNet/TimeSliceTests/EntityFrameworkExtensionTests)) example.
+
+### From Scratch: Defining a Persistable Time Dependent 1:n and 1:1 Relations and Collections
+
+There's a festival in town.
+The persons attending the festival are either `Musician`s or `Listener`s.
+For simplicity we model both of those types in separate, easily distinguishable classes.
+Both `Musician` and `Listener` have a name that is, in both cases also used as primary key to store them on a database.
+
+```c#
+public class Musician : IHasKey<string>
+{
+    public string Name { get; set; } // e.g. Freddie Mercury
+    string IHasKey<string>.Id => Name; // <-- used a PK in musician table
+}
+
+public class Listener : IHasKey<string>
+{
+    public string Name { get; set; } // e.g. John Doe
+    string IHasKey<string>.Id => Name; // <-- used a PK in listener table
+}
+```
+
+If a `Listener` attends a concert, this is modelled as a _relation_ where the `Musician` is a _parent_ to which the `Listener` is assigned as a _child_.
+
+```c#
+public class ConcertVisit : PersistableTimeDependentRelation<Musician, string, Listener, string>
+{
+    // no class body needed, everything we need is already inherited from the base class
+}
+```
+
+At a concert there is usually _`1`_ `Musician` playing for _`n`_ listeners.
+This 1:n cardinality explains why the type `Musician` is referred to as "_parent_" and the type `Listener` is referred to as "_child_".
+In the names used in this library the "1" side of a cardinality is always named "parent".
+
+The entire `Concert`, that consists of multiple n `Listener` listening to the same 1 `Musician` at (possibly but not necessarily) the same time is defined as a `Collection` of n `ConcertVisit`s.
+
+```c#
+public class Concert : PersistableTimeDependentCollection<ConcertVisit, Musician, string, Listener, string>
+{
+    // each collection has to define if the children involved in it
+    // at a concert the visits of listeners may overlaps
+    public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.AllowOverlaps;
+
+    // the key of a collection is not enforced using generics, because it's not necessary.
+    // so we could use anything else as a key but choosing a Guid is definitly not a bad idea at all.
+    public Guid ConcertId { get; set; } // unique ID of the concert
+}
+```
+
+To store concerts on a database we simply have to add one line to the `OnModelCreating` method:
+
+```c#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // ...
+    modelBuilder.SetupCollectionAndRelations<Concert, ConcertVisit, Musician, string, Listener, string>(concert=>concert.ConcertId);
+    // This will set up:
+    // * the Primary Keys for Musicians and Listeners
+    // * the 1:n cardinality and unique constraints for the musician<->listener relation
+    // * the table and keys for the concerts
+}
+```
+
+Now we can filling the concert hall:
+
+```c#
+var freddy = new Musician { Name = "Freddie Mercury" };
+var liveAtWembley = new Concert(freddy, new List<ConcertVisit>
+{
+    new()
+    {
+        Start = DateTimeOffset.Parse("1986-07-12T19:00:00+00:00"),
+        End = DateTimeOffset.Parse("1986-07-12T22:00:00+00:00"),
+        Child = new Listener { Name = "John Doe" };,
+        Parent = freddy
+    },
+    new()
+    {
+        Start = DateTimeOffset.Parse("1986-07-12T19:30:00+00:00"),
+        End = DateTimeOffset.Parse("1986-07-12T21:35:00+00:00"),
+        Child = new Listener { Name = "Erika Musterfrau" },
+        Parent = freddy
+    }
+    // ... many more
+});
+// add to context and save on database
+await context.Concerts.AddAsync(liveAtWembley);
+await context.SaveChangesAsync();
+```

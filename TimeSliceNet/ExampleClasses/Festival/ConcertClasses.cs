@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using TimeSlice;
 using TimeSliceEntityFrameworkExtensions;
 
-namespace ExampleClasses.Music
+namespace ExampleClasses.Festival
 {
     // The example classes from this name space are a bit more complex than those from the gas pump/gas station example.
     // This is because each of the classes defined here is persistable using Entity Framework Core.
@@ -66,18 +66,6 @@ namespace ExampleClasses.Music
     }
 
     /// <summary>
-    ///     a fan (<see cref="Listener" />) can meet a <see cref="Musician" /> in private/backstage.
-    /// </summary>
-    [ExcludeFromCodeCoverage]
-    public class OneOnOneWithAStar : PersistableTimeDependentRelation<Musician, string, Listener, string>
-    {
-        /// <summary>
-        ///     it's possible but not necessary to define ones own key
-        /// </summary>
-        public Guid MeetingGuid { get; set; }
-    }
-
-    /// <summary>
     ///     multiple allocations that vary over time are modeled as a "collection".
     /// </summary>
     [ExcludeFromCodeCoverage]
@@ -109,8 +97,63 @@ namespace ExampleClasses.Music
     }
 
     /// <summary>
-    ///     A musician can meet one listener at a time in a backstage meeting.
+    /// A stage is a place where a <see cref="Musician"/> plays a <see cref="Concert"/>.
+    /// At one stage there can be max. 1 concert at a time.
     /// </summary>
+    [ExcludeFromCodeCoverage]
+    public class Stage : IHasKey<int>
+    {
+        /// <summary>
+        /// unique number of this stage
+        /// </summary>
+        public int StageNumber { get; set; }
+
+        /// <summary>
+        /// The <see cref="StageNumber"/> of a stage is also its primary key on the database. <inheritdoc cref="IHasKey{TKey}.Id"/>
+        /// </summary>
+        int IHasKey<int>.Id
+        {
+            get => StageNumber;
+            set { }
+        }
+    }
+
+    /// <summary>
+    /// A festival act is a musician playing at a stage.
+    /// </summary>
+    [ExcludeFromCodeCoverage]
+    public class FestivalAct : PersistableTimeDependentRelation<Stage, int, Musician, string>
+    {
+    }
+
+    /// <summary>
+    /// A festival is a collection of <see cref="FestivalAct"/>s. At each Stage there can be max. 1 act at a time.
+    /// </summary>
+    [ExcludeFromCodeCoverage]
+    public class Festival : PersistableTimeDependentCollection<FestivalAct, Stage, int, Musician, string>
+    {
+        public override TimeDependentCollectionType CollectionType => TimeDependentCollectionType.PreventOverlaps;
+    }
+
+
+    /// <summary>
+    ///     a fan (<see cref="Listener" />) can meet a <see cref="Musician" /> in private/backstage.
+    ///     Other than at a <see cref="Concert"/> there a musician can only meet one <see cref="Listener"/> at a time in a OneOnONeWithAStar.
+    /// </summary>
+    [ExcludeFromCodeCoverage]
+    public class OneOnOneWithAStar : PersistableTimeDependentRelation<Musician, string, Listener, string>
+    {
+        /// <summary>
+        ///     it's possible but not necessary to define ones own key
+        /// </summary>
+        public Guid MeetingGuid { get; set; }
+    }
+
+    /// <summary>
+    ///     A musician can meet one listener at a time in a backstage meeting.
+    ///     Each of those backstage meetings is a <see cref="OneOnOneWithAStar"/>.
+    /// </summary>
+    /// <remarks>The reason for this class is to have a <see cref="Musician"/> &lt;-&gt;<see cref="Listener"/> relation that is 1:[0 or 1] other than the 1:n <see cref="Concert"/></remarks>
     [ExcludeFromCodeCoverage]
     public class BackstageMeetings : PersistableTimeDependentCollection<OneOnOneWithAStar, Musician, string, Listener, string>
     {

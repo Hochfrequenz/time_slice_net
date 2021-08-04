@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ExampleClasses.Music;
+using ExampleClasses.Festival;
 using ExampleWebApplication;
 using ExampleWebApplication.Controllers;
 using Microsoft.AspNetCore.Mvc;
