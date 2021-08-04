@@ -32,3 +32,7 @@ TimeSliceNet/ExampleWebApplication/obj/
 TimeSliceNet/ExampleClasses/obj/
 
 *.pdb
+
+TimeSliceNet/ExampleWebApplication/bin/Debug/net5.0/
+
+TimeSliceNet/TimeSliceEntityFrameWorkExtensions/bin/Debug/net5.0/
