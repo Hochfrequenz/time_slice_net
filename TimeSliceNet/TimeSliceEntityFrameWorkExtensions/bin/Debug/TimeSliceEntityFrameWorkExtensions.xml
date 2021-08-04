@@ -170,9 +170,9 @@
         </member>
         <member name="P:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentCollection`5.IsValid">
             <summary>
-            This property is mapped to a column on the database.
-            This allows us to enforce only valid collections on the database using a Check constraint.
-            The setter is only fake.
+                This property is mapped to a column on the database.
+                This allows us to enforce only valid collections on the database using a Check constraint.
+                The setter is only fake.
             </summary>
         </member>
         <member name="M:TimeSliceEntityFrameworkExtensions.PersistableTimeDependentCollection`5.Equals(TimeSliceEntityFrameworkExtensions.PersistableTimeDependentCollection{`0,`1,`2,`3,`4})">

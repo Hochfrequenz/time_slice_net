@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using TimeSlice;
 
+[assembly: InternalsVisibleTo("TimeSliceTests")]
 namespace TimeSliceEntityFrameworkExtensions
 {
     /// <summary>
