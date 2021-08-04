@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using ExampleClasses.Music;
+﻿using ExampleClasses.Music;
 using Microsoft.EntityFrameworkCore;
 using TimeSliceEntityFrameworkExtensions;
 
@@ -30,13 +28,13 @@ namespace ExampleWebApplication
             // modelBuilder.Entity<Listener>().HasKey(l => l.Name);
 
 
-            modelBuilder.SetDefaultKeys<Concert, PersistableConcertVisit, PersistableMusician, string, PersistableListener, string>(
+            modelBuilder.SetDefaultKeys<Concert, ConcertVisit, Musician, string, Listener, string>(
                 concert => concert.Guid, // The key of a collection (Concert) has to be explicitly set, always
-                relationshipKeyExpression: null //  but keys for ConcertVisit can be derived automatically (null)
+                null //  but keys for ConcertVisit can be derived automatically (null)
             );
-            modelBuilder.SetDefaultKeys<BackstageMeetings, PersistableOneOnOneWithAStart, PersistableMusician, string, PersistableListener, string>(
+            modelBuilder.SetDefaultKeys<BackstageMeetings, OneOnOneWithAStar, Musician, string, Listener, string>(
                 backstageMeeting => backstageMeeting.Guid, // The key of a collection (BackstageMeetings) has to be explicitly set, always
-                relationshipKeyExpression: oneOnOneWithAStar => oneOnOneWithAStar.MeetingGuid // it's possible to also explicitly set a key for the relationship (!=null)
+                oneOnOneWithAStar => oneOnOneWithAStar.MeetingGuid // it's possible to also explicitly set a key for the relation (!=null)
             );
         }
     }

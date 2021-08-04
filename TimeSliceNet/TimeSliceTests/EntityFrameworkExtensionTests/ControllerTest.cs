@@ -1,13 +1,11 @@
 using System;
 using System.Data.Common;
-using System.Linq;
 using System.Threading.Tasks;
 using ExampleClasses.Music;
 using ExampleWebApplication;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using NUnit.Framework;
 
 namespace TimeSliceTests.EntityFrameworkExtensionTests
 {
@@ -33,7 +31,7 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
 
         protected static DbConnection CreateInMemoryDatabase()
         {
-            var connection = new SqliteConnection($"Filename=:memory:");
+            var connection = new SqliteConnection("Filename=:memory:");
             connection.Open();
             return connection;
         }

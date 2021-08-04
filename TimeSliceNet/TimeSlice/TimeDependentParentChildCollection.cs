@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 namespace TimeSlice
 {
     /// <summary>
-    ///     Describes the possible kinds of time dependent relationships between parents and children
+    ///     Describes the possible kinds of time dependent relations between parents and children
     /// </summary>
     public enum TimeDependentCollectionType
     {
@@ -28,10 +28,10 @@ namespace TimeSlice
     /// </summary>
     /// <typeparam name="TParent"></typeparam>
     /// <typeparam name="TChild"></typeparam>
-    /// <typeparam name="TRelationship"></typeparam>
-    public abstract class TimeDependentParentChildCollection<TRelationship, TParent, TChild> : IEquatable<TimeDependentParentChildCollection<TRelationship, TParent, TChild>>,
+    /// <typeparam name="TRelation"></typeparam>
+    public abstract class TimeDependentParentChildCollection<TRelation, TParent, TChild> : IEquatable<TimeDependentParentChildCollection<TRelation, TParent, TChild>>,
         IValidatableObject
-        where TRelationship : IParentChildRelationship<TParent, TChild>, ITimeSlice, IValidatableObject // IEquatable<TRelationship>
+        where TRelation : IRelation<TParent, TChild>, ITimeSlice, IValidatableObject
         where TParent : class
         where TChild : class
     {
@@ -39,13 +39,13 @@ namespace TimeSlice
         ///     the collection may be initialized by providing the parent that is shared among all children.
         /// </summary>
         /// <param name="commonParent"></param>
-        /// <param name="relationships">optional relationships to be added on construction</param>
+        /// <param name="relations">optional relations to be added on construction</param>
         /// <exception cref="ArgumentNullException">iff <paramref name="commonParent" /> is null</exception>
-        protected TimeDependentParentChildCollection(TParent commonParent, IEnumerable<TRelationship> relationships = null) : this()
+        protected TimeDependentParentChildCollection(TParent commonParent, IEnumerable<TRelation> relations = null) : this()
         {
             CommonParent = commonParent ?? throw new ArgumentNullException(nameof(commonParent));
-            if (relationships == null) return;
-            foreach (var r in relationships)
+            if (relations == null) return;
+            foreach (var r in relations)
                 TimeSlices.Add(r);
         }
 
@@ -54,7 +54,7 @@ namespace TimeSlice
         /// </summary>
         protected TimeDependentParentChildCollection()
         {
-            TimeSlices = new List<TRelationship>();
+            TimeSlices = new List<TRelation>();
         }
 
         /// <summary>
@@ -74,25 +74,25 @@ namespace TimeSlice
         ///     the single time slices.
         /// </summary>
         /// <remarks>
-        ///     We model a list of <typeparamref name="TRelationship" /> instead of <typeparamref name="TChild" /> because each of the items inside this list may still be persisted or
+        ///     We model a list of <typeparamref name="TRelation" /> instead of <typeparamref name="TChild" /> because each of the items inside this list may still be persisted or
         ///     serialized on its own without "knowing" about the other items.
         /// </remarks>
         [JsonInclude]
-        public List<TRelationship> TimeSlices { get; protected set; }
+        public List<TRelation> TimeSlices { get; protected set; }
 
         /// <summary>
         ///     returns a list of all children time slices as list that is sorted by start and end
         /// </summary>
         /// <returns></returns>
         [JsonIgnore]
-        public List<TRelationship> TimeSliceList => TimeSlices.OrderBy(ts => (ts.Start, ts.End ?? DateTimeOffset.MaxValue)).ToList();
+        public List<TRelation> TimeSliceList => TimeSlices.OrderBy(ts => (ts.Start, ts.End ?? DateTimeOffset.MaxValue)).ToList();
 
 
         /// <inheritdoc cref="ICollection.Count" />
         public int Count => TimeSlices.Count;
 
         /// <inheritdoc />
-        public bool Equals(TimeDependentParentChildCollection<TRelationship, TParent, TChild> other)
+        public bool Equals(TimeDependentParentChildCollection<TRelation, TParent, TChild> other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -142,7 +142,7 @@ namespace TimeSlice
         /// <param name="item"></param>
         /// <exception cref="ArgumentNullException">iff <paramref name="item" /> is null</exception>
         /// <exception cref="ArgumentException">if the parent of <paramref name="item" /> is not the same as <see cref="CommonParent" /></exception>
-        public void Add(TRelationship item)
+        public void Add(TRelation item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
@@ -159,21 +159,21 @@ namespace TimeSlice
         }
 
         /// <inheritdoc cref="IList.Contains" />
-        public bool Contains(TRelationship item)
+        public bool Contains(TRelation item)
         {
             return TimeSlices.Contains(item);
         }
 
 
         /// <inheritdoc cref="IList.Remove" />
-        public bool Remove(TRelationship item)
+        public bool Remove(TRelation item)
         {
             return TimeSlices.Remove(item);
         }
 
 
         /// <inheritdoc cref="IList.IndexOf" />
-        public int IndexOf(TRelationship item)
+        public int IndexOf(TRelation item)
         {
             return TimeSlices.IndexOf(item);
         }
@@ -183,7 +183,7 @@ namespace TimeSlice
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((TimeDependentParentChildCollection<TRelationship, TParent, TChild>)obj);
+            return obj.GetType() == GetType() && Equals((TimeDependentParentChildCollection<TRelation, TParent, TChild>)obj);
         }
 
         /// <inheritdoc />

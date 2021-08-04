@@ -6,112 +6,82 @@ using TimeSliceEntityFrameworkExtensions;
 
 namespace ExampleClasses.Music
 {
+    // The example classes from this name space are a bit more complex than those from the gas pump/gas station example.
+    // This is because each of the classes defined here is persistable using Entity Framework Core.
+    // For this to be the case, they all have to define a primary key which is done using Generics (instead of attributes), so that in the end there is one generic method,
+    // that can set up the relations and constraints on the database.
+
     /// <summary>
     ///     a musician is someone who makes music
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class Musician
+    public class Musician : IHasKey<string>
     {
         /// <summary>
         ///     name of the musician
         /// </summary>
         /// <example>Freddie Mercury</example>
         public string Name { get; set; }
+
+        /// <summary>
+        ///     The <see cref="Name" /> is also the primary key in the musician table on the database. <inheritdoc cref="IHasKey{TKey}.Id" />
+        /// </summary>
+        string IHasKey<string>.Id
+        {
+            get => Name;
+            set { }
+        }
     }
 
-    /// <summary>
-    /// The persistable Musician is a <see cref="Musician"/>, that has a key on a database (hence implements <see cref="IHasKey{TKey}"/>.
-    /// <seealso cref="PersistableListener"/>
-    /// </summary>
-    /// <remarks>Your classes only need to implement <see cref="IHasKey{TKey}"/> if you want to store them in a database, otherwise the plain <see cref="Musician"/> would be fine</remarks>
-    public class PersistableMusician : Musician, IHasKey<string>
-    {
-        public string Key => Name;
-    }
 
     /// <summary>
     ///     a listener is someone who listens to music, made e.g. by <see cref="Musician" />s
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class Listener
+    public class Listener : IHasKey<string>
     {
         /// <summary>
         ///     name of the listener
         /// </summary>
         /// <example>John Doe</example>
         public string Name { get; set; }
-    }
 
-    /// <summary>
-    /// A persisitable Listener is a <see cref="Listener"/>, that has a key on a database (hence implements <see cref="IHasKey{TKey}"/>.
-    /// <seealso cref="PersistableMusician"/>
-    /// </summary>
-    public class PersistableListener : Listener, IHasKey<string>
-    {
-        public string Key => Name;
-    }
-
-    /// <summary>
-    ///     a fan (<see cref="Listener" />) can visit a concert of a <see cref="Musician" />
-    /// </summary>
-    [ExcludeFromCodeCoverage]
-    public class ConcertVisit : TimeDependentParentChildRelationship<Musician, Listener>
-    {
-    }
-
-    /// <summary>
-    /// A persistable concert visit is a <see cref="ConcertVisit"/> that can be stored in a database.
-    /// </summary>
-    [ExcludeFromCodeCoverage]
-    public class PersistableConcertVisit : ConcertVisit, IPersistableParentChildRelationship<PersistableMusician, string, PersistableListener, string>
-    {
-        public bool Equals(IParentChildRelationship<PersistableMusician, PersistableListener>? other)
+        /// <summary>
+        ///     The <see cref="Name" /> is also the primary key of the listeners table on the database. <inheritdoc cref="IHasKey{TKey}.Id" />
+        /// </summary>
+        string IHasKey<string>.Id
         {
-            throw new NotImplementedException();
+            get => Name;
+            set { }
         }
-
-        public new PersistableMusician Parent { get => base.Parent as PersistableMusician; }
-        public new PersistableListener Child { get => base.Child as PersistableListener; }
-        public string ParentId { get; set; }
-        public string ChildId { get; set; }
     }
 
     /// <summary>
-    ///     a fan (<see cref="Listener" />) can meet a <see cref="Musician" /> backstage.
+    ///     A <see cref="Listener" /> can visit a concert of a <see cref="Musician" />.
+    ///     The time slice the listener spends at the concert is modelled as Concert Visit.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class OneOnOneWithAStar : TimeDependentParentChildRelationship<Musician, Listener>
+    public class ConcertVisit : PersistableTimeDependentRelation<Musician, string, Listener, string>
     {
+    }
+
+    /// <summary>
+    ///     a fan (<see cref="Listener" />) can meet a <see cref="Musician" /> in private/backstage.
+    /// </summary>
+    [ExcludeFromCodeCoverage]
+    public class OneOnOneWithAStar : PersistableTimeDependentRelation<Musician, string, Listener, string>
+    {
+        /// <summary>
+        ///     it's possible but not necessary to define ones own key
+        /// </summary>
         public Guid MeetingGuid { get; set; }
-    }
-
-    [ExcludeFromCodeCoverage]
-    public class PersistableOneOnOneWithAStart : OneOnOneWithAStar, IPersistableParentChildRelationship<PersistableMusician, string, PersistableListener, string>
-    {
-        public bool Equals(IParentChildRelationship<PersistableMusician, PersistableListener>? other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ParentId { get; set; }
-        public string ChildId { get; set; }
-
-        public new PersistableMusician Parent
-        {
-            get => base.Parent as PersistableMusician;
-        }
-
-        public new PersistableListener Child
-        {
-            get => base.Child as PersistableListener;
-        }
     }
 
     /// <summary>
     ///     multiple allocations that vary over time are modeled as a "collection".
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class Concert : TimeDependentParentChildCollection<ConcertVisit, Musician, Listener>
+    public class Concert : PersistableTimeDependentCollection<ConcertVisit, Musician, string, Listener, string>
     {
         public Concert(Musician artist, IEnumerable<ConcertVisit> experiences = null) : base(artist, experiences)
         {
@@ -142,7 +112,7 @@ namespace ExampleClasses.Music
     ///     A musician can meet one listener at a time in a backstage meeting.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class BackstageMeetings : TimeDependentParentChildCollection<OneOnOneWithAStar, Musician, Listener>
+    public class BackstageMeetings : PersistableTimeDependentCollection<OneOnOneWithAStar, Musician, string, Listener, string>
     {
         public BackstageMeetings(Musician artist, IEnumerable<OneOnOneWithAStar> experiences = null) : base(artist, experiences)
         {

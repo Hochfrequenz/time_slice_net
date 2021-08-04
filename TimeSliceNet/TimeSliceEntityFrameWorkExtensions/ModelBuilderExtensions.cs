@@ -7,35 +7,48 @@ using TimeSlice;
 namespace TimeSliceEntityFrameworkExtensions
 {
     /// <summary>
-    ///     Extensions to <see cref="ModelBuilder"/>
+    ///     Extensions to <see cref="ModelBuilder" />
     /// </summary>
     public static class ModelBuilderExtensions
     {
         /// <summary>
-        /// Set default keys using <see cref="EntityTypeBuilderExtensions.HasDefaultKeys{TTimeSliceCollection,TRelationship,TParent,TChild}"/>.
+        ///     Set default keys using
+        ///     <see cref="EntityTypeBuilderExtensions.HasDefaultKeys{TTimeSliceCollection,TPersistableRelation,TPersistableParent,TParentKey,TPersistableChild,TChildKey}" />.
         /// </summary>
         /// <param name="modelBuilder">a model builder instance</param>
         /// <param name="collectionKeyExpression">each collection has to have a key defined</param>
-        /// <param name="relationshipKeyExpression">optional key for each <typeparamref name="TRelationship"/></param>
-        /// <typeparam name="TTimeSliceCollection"><see cref="TimeDependentParentChildCollection{TRelationship,TParent,TChild}"/></typeparam>
-        /// <typeparam name="TRelationship"><see cref="TimeDependentParentChildRelationship{TParent,TChild}"/></typeparam>
-        /// <typeparam name="TParent"><see cref="TimeDependentParentChildRelationship{TParent,TChild}.Parent"/></typeparam>
-        /// <typeparam name="TChild"><see cref="TimeDependentParentChildRelationship{TParent,TChild}.Child"/></typeparam>
-        /// <typeparam name="TParentKey"><see cref="IHasKey{TKey}.Key"/> of <typeparamref name="TParent"/></typeparam>
-        /// <typeparam name="TChildKey"><see cref="IHasKey{TKey}.Key"/> of <typeparamref name="TChild"/></typeparam>
-        public static void SetDefaultKeys<TTimeSliceCollection, TRelationship, TParent, TParentKey, TChild, TChildKey>(this ModelBuilder modelBuilder,
+        /// <param name="relationKeyExpression">optional key for each <typeparamref name="TPersistableRelation" /></param>
+        /// <typeparam name="TTimeSliceCollection">
+        ///     <see cref="TimeDependentParentChildCollection{TRelation,TParent,TChild}" />
+        /// </typeparam>
+        /// <typeparam name="TPersistableRelation">
+        ///     <see cref="TimeDependentRelation{TParent,TChild}" />
+        /// </typeparam>
+        /// <typeparam name="TPersistableParent">
+        ///     <see cref="TimeDependentRelation{TParent,TChild}.Parent" />
+        /// </typeparam>
+        /// <typeparam name="TPersistableChild">
+        ///     <see cref="TimeDependentRelation{TParent,TChild}.Child" />
+        /// </typeparam>
+        /// <typeparam name="TParentKey"><see cref="IHasKey{TKey}.Id" /> of <typeparamref name="TPersistableParent" /></typeparam>
+        /// <typeparam name="TChildKey"><see cref="IHasKey{TKey}.Id" /> of <typeparamref name="TPersistableChild" /></typeparam>
+        public static void SetDefaultKeys<TTimeSliceCollection, TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>(
+            this ModelBuilder modelBuilder,
             [NotNull] Expression<Func<TTimeSliceCollection, object>> collectionKeyExpression,
-            Expression<Func<TRelationship, object>> relationshipKeyExpression = null)
-            where TTimeSliceCollection : TimeDependentParentChildCollection<TRelationship, TParent, TChild>
-            where TRelationship : class, ITimeSlice, IPersistableParentChildRelationship<TParent, TParentKey, TChild, TChildKey>
-            where TParent : class, IHasKey<TParentKey>
-            where TChild : class, IHasKey<TChildKey>
+            Expression<Func<TPersistableRelation, object>> relationKeyExpression = null)
+            where TTimeSliceCollection : PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild,
+                TChildKey>
+            where TPersistableRelation : class, ITimeSlice, IPersistableRelation<TPersistableParent, TParentKey, TPersistableChild, TChildKey>
+            where TPersistableParent : class, IHasKey<TParentKey>
+            where TPersistableChild : class, IHasKey<TChildKey>
         {
-            modelBuilder.Entity<TParent>().HasKey(parent => parent.Key);
-            modelBuilder.Entity<TChild>().HasKey(child => child.Key);
-            modelBuilder.Entity<TTimeSliceCollection>().HasDefaultKeys<TTimeSliceCollection, TRelationship, TParent, TChild>(collectionKeyExpression);
-            modelBuilder.Entity<TRelationship>().HasKey(x => new { x.Discriminator, x.ParentId, x.ChildId, x.Start, x.End });
-            modelBuilder.Entity<TRelationship>().HasDefaultKeys<TRelationship, TParent, TChild>(relationshipKeyExpression);
+            modelBuilder.Entity<TPersistableParent>().HasKey(parent => parent.Id);
+            modelBuilder.Entity<TPersistableChild>().HasKey(child => child.Id);
+            modelBuilder.Entity<TPersistableRelation>().HasKey(x => new { x.Discriminator, x.ParentId, x.ChildId, x.Start, x.End });
+            modelBuilder.Entity<TPersistableRelation>()
+                .HasDefaultKeys<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>(relationKeyExpression);
+            modelBuilder.Entity<TTimeSliceCollection>()
+                .HasDefaultKeys<TTimeSliceCollection, TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>(collectionKeyExpression);
         }
     }
 }

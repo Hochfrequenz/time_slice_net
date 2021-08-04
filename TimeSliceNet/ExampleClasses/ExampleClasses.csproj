@@ -8,7 +8,7 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\TimeSliceEntityFrameWorkExtensions\TimeSliceEntityFrameWorkExtensions.csproj" />
-        <ProjectReference Include="..\TimeSlice\TimeSlice.csproj" />
+        <ProjectReference Include="..\TimeSliceEntityFrameWorkExtensions\TimeSliceEntityFrameWorkExtensions.csproj"/>
+        <ProjectReference Include="..\TimeSlice\TimeSlice.csproj"/>
     </ItemGroup>
 </Project>

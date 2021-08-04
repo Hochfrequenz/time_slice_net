@@ -3,6 +3,9 @@ using TimeSlice;
 
 namespace ExampleClasses.GasStation
 {
+    // The gas station examples are pretty simple/dummy classes.
+    // Other than the ExampleClasses from the Music sub namespace they are not persistable on a database.
+
     /// <summary>
     ///     a car needs gasoline which it gets from a <see cref="GasolinePump" />
     /// </summary>
@@ -23,7 +26,7 @@ namespace ExampleClasses.GasStation
     ///     The allocation/usage of a <see cref="GasolinePump" /> by a <see cref="Car" /> for a specific time frame is called "allocation".
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class GasolinePumpAllocation : TimeDependentParentChildRelationship<GasolinePump, Car>
+    public class GasolinePumpAllocation : TimeDependentRelation<GasolinePump, Car>
     {
         // add properties as you like
 

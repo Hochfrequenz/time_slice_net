@@ -1,4 +1,3 @@
-using System;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Builder;
@@ -33,7 +32,7 @@ namespace ExampleWebApplication
 
         private static DbConnection CreateInMemoryDatabase()
         {
-            var connection = new SqliteConnection($"Filename=webapp.db");
+            var connection = new SqliteConnection("Filename=webapp.db");
             connection.Open();
             return connection;
         }

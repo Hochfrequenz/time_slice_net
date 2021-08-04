@@ -30,7 +30,7 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
             // test the concerts
             var response = await controller.GetAllConcerts("rio");
             Assert.IsInstanceOf<OkObjectResult>(response);
-            Assert.AreEqual(3, ((response as OkObjectResult).Value as List<Concert>).Count);
+            Assert.AreEqual(2, ((response as OkObjectResult).Value as List<Concert>).Count);
             var museAtRockInRio = ((response as OkObjectResult).Value as List<Concert>).Single(c => c.CommonParent.Name == "Muse");
             Assert.AreEqual(3, museAtRockInRio.TimeSlices.Count);
             Assert.IsTrue(museAtRockInRio.TimeSlices.Any(ts => ts.Child.Name == "Joao"));

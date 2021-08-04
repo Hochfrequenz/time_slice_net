@@ -7,15 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="NUnit" Version="3.12.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+        <PackageReference Include="NUnit" Version="3.12.0"/>
+        <PackageReference Include="NUnit3TestAdapter" Version="3.16.1"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ExampleClasses\ExampleClasses.csproj" />
-      <ProjectReference Include="..\ExampleWebApplication\ExampleWebApplication.csproj" />
-      <ProjectReference Include="..\TimeSlice\TimeSlice.csproj" />
+        <ProjectReference Include="..\ExampleClasses\ExampleClasses.csproj"/>
+        <ProjectReference Include="..\ExampleWebApplication\ExampleWebApplication.csproj"/>
+        <ProjectReference Include="..\TimeSlice\TimeSlice.csproj"/>
     </ItemGroup>
 
 </Project>
