@@ -16,13 +16,17 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.100
+      - uses: olegtarasov/get-tag@v2.1
+        id: tagTimeslice
+        with:
+          tagRegex: "(?<package>.*)-(?<version>.*)"
       - name: Build/Check for compile errors (dotnet build)
-        run: dotnet build --configuration Release
+        run: dotnet build --configuration -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }}
       - name: Run Unit Tests (dotnet test)
         run: dotnet test --configuration Release
       - name: Create Package (dotnet pack)
         run: |
-          dotnet pack --configuration Release
+          dotnet pack --configuration -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }}
       - name: Setup Nuget.exe
         uses: warrenbuckley/Setup-Nuget@v1
       - name: Nuget push
