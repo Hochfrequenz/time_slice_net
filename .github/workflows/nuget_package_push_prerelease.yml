@@ -30,7 +30,7 @@ jobs:
       - name: Run Unit Tests (dotnet test)
         run: dotnet test --configuration Release
       - name: Create Package (dotnet pack)
-        run: dotnet pack -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }}
+        run: dotnet pack --configuration Release -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }}
       - name: Setup Nuget.exe
         uses: warrenbuckley/Setup-Nuget@v1
       - name: Nuget push
