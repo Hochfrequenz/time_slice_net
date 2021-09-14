@@ -26,11 +26,14 @@ jobs:
         with:
           tagRegex: "(?<package>.*)-(?<version>.*)"
       - name: Build/Check for compile errors (dotnet build)
-        run: dotnet pack -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }} --version-suffix "beta${{ steps.current-time.outputs.formattedTime }}"
+        with:
+          dirname: ${{ steps.tagName.outputs.package }}
+          tagname: ${{ steps.tagName.outputs.version }}
+        run: dotnet pack -p:PackageVersion=tagname --version-suffix "beta${{ steps.current-time.outputs.formattedTime }}"
       - name: Run Unit Tests (dotnet test)
         run: dotnet test --configuration Release
       - name: Create Package (dotnet pack)
-        run: dotnet pack --configuration Release -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }} --version-suffix "beta${{ steps.current-time.outputs.formattedTime }}"
+        run: dotnet pack -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }} --version-suffix "beta${{ steps.current-time.outputs.formattedTime }}"
       - name: Setup Nuget.exe
         uses: warrenbuckley/Setup-Nuget@v1
       - name: Nuget push
