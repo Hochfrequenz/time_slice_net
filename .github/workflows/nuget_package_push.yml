@@ -21,7 +21,7 @@ jobs:
         with:
           tagRegex: "(?<package>.*)-(?<version>.*)"
       - name: Build/Check for compile errors (dotnet build)
-        run: dotnet build --configuration -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }}
+        run: dotnet build --configuration Release -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }}
       - name: Run Unit Tests (dotnet test)
         run: dotnet test --configuration Release
       - name: Create Package (dotnet pack)
