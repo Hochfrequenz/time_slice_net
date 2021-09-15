@@ -18,6 +18,9 @@ Furthermore:
 - All end date times are, if set to a finite value other than `MaxValue`, meant and treated as exclusive ([here's why](https://hf-kklein.github.io/exclusive_end_dates.github.io/))
 - All sub second times (milliseconds and ticks) are ignored because they tend to cause trouble on the database/ORM level and there's barely a business case that requires them
 
+## Release Workflow
+To create a **pre-release** nuget package, create a tag of the form `prerelease-vx.y.z` where `x.y.z` is the semantic version of the pre-release.
+
 ## Code Quality / Production Readiness
 
 - The code has [at least a 95%](https://github.com/Hochfrequenz/time_slice_net/blob/main/.github/workflows/unittests_and_coverage.yml#L34) unit test coverage. ✔️
