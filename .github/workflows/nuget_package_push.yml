@@ -2,8 +2,8 @@ name: Nuget Master Release
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - v*
 
 jobs:
   pushrelease:
@@ -19,17 +19,28 @@ jobs:
       - uses: olegtarasov/get-tag@v2.1
         id: tagTimeslice
         with:
-          tagRegex: "(?<package>.*)-(?<version>.*)"
+          tagRegex: "v(\\d+\\.\\d+\\.\\d+)"
       - name: Build/Check for compile errors (dotnet build)
-        run: dotnet build --configuration Release -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }}
+        working-directory: "TimeSliceNet"
+        run: dotnet build --configuration Release
       - name: Run Unit Tests (dotnet test)
+        working-directory: "TimeSliceNet"
         run: dotnet test --configuration Release
-      - name: Create Package (dotnet pack)
-        run: |
-          dotnet pack --configuration -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }}
+      - name: Create Package TimeSlice (dotnet pack)
+        working-directory: "TimeSliceNet/TimeSlice"
+        run: dotnet pack TimeSlice.csproj --configuration Release -p:PackageVersion="${{ steps.tagTimeslice.outputs.tag }}"
+      - name: Create Package TimeSliceEntityFrameWorkExtensions (dotnet pack)
+        working-directory: "TimeSliceNet/TimeSliceEntityFrameWorkExtensions"
+        run: dotnet pack TimeSliceEntityFrameWorkExtensions.csproj --configuration Release -p:PackageVersion="${{ steps.tagTimeslice.outputs.tag }}"
       - name: Setup Nuget.exe
         uses: warrenbuckley/Setup-Nuget@v1
-      - name: Nuget push
+      - name: Nuget push TimeSlice
+        working-directory: "TimeSliceNet/TimeSlice"
         run: |
           nuget setApiKey ${{ secrets.TIMESLICE_NUGET_ORG_PUSH_TOKEN }}
-          nuget push .\**\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json -SkipDuplicate -NoSymbols
+          nuget push .\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json -SkipDuplicate -NoSymbols
+      - name: Nuget push TimeSliceEntityFrameWorkExtensions
+        working-directory: "TimeSliceNet/TimeSliceEntityFrameWorkExtensions"
+        run: |
+          nuget setApiKey ${{ secrets.TIMESLICE_NUGET_ORG_PUSH_TOKEN }}
+          nuget push .\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json -SkipDuplicate -NoSymbols
