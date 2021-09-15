@@ -2,8 +2,6 @@ name: Nuget Develop Prerelease
 
 on:
   push:
-    branches:
-      - develop
     tags:
       - prerelease-v*
 
