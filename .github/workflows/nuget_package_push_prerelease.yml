@@ -31,7 +31,7 @@ jobs:
         run: dotnet test --configuration Release
       - name: Create Package (dotnet pack)
         working-directory: "TimeSlice"
-        run: dotnet pack -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }} --version-suffix "beta${{ steps.current-time.outputs.formattedTime }}"
+        run: dotnet pack TimeSlice.csproj -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }} --version-suffix "beta${{ steps.current-time.outputs.formattedTime }}"
       - name: Setup Nuget.exe
         uses: warrenbuckley/Setup-Nuget@v1
       - name: Nuget push
