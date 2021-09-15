@@ -2,6 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <Authors>Hochfrequenz Unternehmensberatung GmbH</Authors>
+        <PackageProjectUrl>https://github.com/Hochfrequenz/time_slice_net</PackageProjectUrl>
+        <PackageLicense>https://github.com/Hochfrequenz/time_slice_net/blob/main/LICENSE</PackageLicense>
+        <RepositoryUrl>https://github.com/Hochfrequenz/time_slice_net</RepositoryUrl>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -15,12 +19,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\TimeSlice\TimeSlice.csproj"/>
+        <ProjectReference Include="..\TimeSlice\TimeSlice.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.8"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.8"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.8" />
     </ItemGroup>
 
 </Project>
