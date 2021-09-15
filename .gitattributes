@@ -1,3 +1,4 @@
 *.cs	text eol=crlf
 *.sh	text eol=lf
 *.yml	text eol=lf
+*.md	text eol=crlf

@@ -19,7 +19,10 @@ Furthermore:
 - All sub second times (milliseconds and ticks) are ignored because they tend to cause trouble on the database/ORM level and there's barely a business case that requires them
 
 ## Release Workflow
-To create a **pre-release** nuget package, create a tag of the form `prerelease-vx.y.z` where `x.y.z` is the semantic version of the pre-release.
+
+To create a **pre-release** nuget package, create a tag of the form `prerelease-vx.y.z` where `x.y.z` is the semantic version of the pre-release. This will create and push nuget packages with the specified version `x.y.z` and a `-betaYYYYMMDDHHmmss` suffix.
+
+To create a **release** nuget package, create a tag of the form `vx.y.z` where `x.y.z` is the semantic version of the release. This will create and push nuget packages with the specified version `x.y.z`.
 
 ## Code Quality / Production Readiness
 

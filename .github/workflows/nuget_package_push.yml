@@ -1,4 +1,4 @@
-name: Nuget Master Release
+name: Nuget Release
 
 on:
   push:
