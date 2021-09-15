@@ -2,6 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <Authors>Hochfrequenz Unternehmensberatung GmbH</Authors>
+        <PackageProjectUrl>https://github.com/Hochfrequenz/time_slice_net/</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/Hochfrequenz/time_slice_net/blob/main/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/Hochfrequenz/time_slice_net/</RepositoryUrl>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
