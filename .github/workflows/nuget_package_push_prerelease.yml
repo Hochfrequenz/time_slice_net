@@ -31,13 +31,22 @@ jobs:
       - name: Run Unit Tests (dotnet test)
         working-directory: "TimeSliceNet"
         run: dotnet test --configuration Release
-      - name: Create Package (dotnet pack)
+      - name: Create Package TimeSlice (dotnet pack)
         working-directory: "TimeSliceNet/TimeSlice"
         run: dotnet pack TimeSlice.csproj --configuration Release -p:PackageVersion="${{ steps.tagTimeslice.outputs.tag }}-beta${{ steps.current-time.outputs.formattedTime }}"
+     - name: Create Package TimeSliceEntityFrameWorkExtensions (dotnet pack)
+        working-directory: "TimeSliceNet/TimeSliceEntityFrameWorkExtensions"
+        run: dotnet pack TimeSliceEntityFrameWorkExtensions.csproj --configuration Release -p:PackageVersion="${{ steps.tagTimeslice.outputs.tag }}-beta${{ steps.current-time.outputs.formattedTime }}"
       - name: Setup Nuget.exe
         uses: warrenbuckley/Setup-Nuget@v1
-      - name: Nuget push
+      - name: Nuget push TimeSlice
         working-directory: "TimeSliceNet/TimeSlice"
         run: |
           nuget setApiKey ${{ secrets.TIMESLICE_NUGET_ORG_PUSH_TOKEN }}
           nuget push .\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json -SkipDuplicate -NoSymbols
+      - name: Nuget push TimeSliceEntityFrameWorkExtensions
+        working-directory: "TimeSliceNet/TimeSliceEntityFrameWorkExtensions"
+        run: |
+          nuget setApiKey ${{ secrets.TIMESLICE_NUGET_ORG_PUSH_TOKEN }}
+          nuget push .\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json -SkipDuplicate -NoSymbols
+
