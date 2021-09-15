@@ -18,17 +18,26 @@ Furthermore:
 - All end date times are, if set to a finite value other than `MaxValue`, meant and treated as exclusive ([here's why](https://hf-kklein.github.io/exclusive_end_dates.github.io/))
 - All sub second times (milliseconds and ticks) are ignored because they tend to cause trouble on the database/ORM level and there's barely a business case that requires them
 
-## Release Workflow
-
-To create a **pre-release** nuget package, create a tag of the form `prerelease-vx.y.z` where `x.y.z` is the semantic version of the pre-release. This will create and push nuget packages with the specified version `x.y.z` and a `-betaYYYYMMDDHHmmss` suffix.
-
-To create a **release** nuget package, create a tag of the form `vx.y.z` where `x.y.z` is the semantic version of the release. This will create and push nuget packages with the specified version `x.y.z`.
-
 ## Code Quality / Production Readiness
 
 - The code has [at least a 95%](https://github.com/Hochfrequenz/time_slice_net/blob/main/.github/workflows/unittests_and_coverage.yml#L34) unit test coverage. ✔️
 - The bare TimeSlice.NET package has no extra dependencies. ✔️
 - The only dependency of the TimeSlice.NET Entity Framework Extensions package is EF Core itself. ✔️
+
+## Nuget Packages
+This repository contains two package.
+1. `TimeSlice` for the core time slice functionalities
+    * ![Nuget Package](https://badgen.net/nuget/v/TimeSlice)
+    * ![Nuget Prerelease](https://badgen.net/nuget/v/TimeSlice/pre)
+2. `TimeSliceEntityFrameWorkExtensions` for the Entity Framework extensions
+    * ![Nuget Package](https://badgen.net/nuget/v/TimeSliceEntityFrameWorkExtensions)
+    * ![Nuget Prerelease](https://badgen.net/nuget/v/TimeSliceEntityFrameWorkExtensions/pre)
+
+## Release Workflow
+
+To create a **pre-release** nuget package, create a tag of the form `prerelease-vx.y.z` where `x.y.z` is the semantic version of the pre-release. This will create and push nuget packages with the specified version `x.y.z` and a `-betaYYYYMMDDHHmmss` suffix.
+
+To create a **release** nuget package, create a tag of the form `vx.y.z` where `x.y.z` is the semantic version of the release. This will create and push nuget packages with the specified version `x.y.z`.
 
 ## Examples
 
