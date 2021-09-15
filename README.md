@@ -24,6 +24,21 @@ Furthermore:
 - The bare TimeSlice.NET package has no extra dependencies. ✔️
 - The only dependency of the TimeSlice.NET Entity Framework Extensions package is EF Core itself. ✔️
 
+## Nuget Packages
+This repository contains two package.
+1. `TimeSlice` for the core time slice functionalities
+    * ![Nuget Package](https://badgen.net/nuget/v/TimeSlice)
+    * ![Nuget Prerelease](https://badgen.net/nuget/v/TimeSlice/pre)
+2. `TimeSliceEntityFrameWorkExtensions` for the Entity Framework extensions
+    * ![Nuget Package](https://badgen.net/nuget/v/TimeSliceEntityFrameWorkExtensions)
+    * ![Nuget Prerelease](https://badgen.net/nuget/v/TimeSliceEntityFrameWorkExtensions/pre)
+
+## Release Workflow
+
+To create a **pre-release** nuget package, create a tag of the form `prerelease-vx.y.z` where `x.y.z` is the semantic version of the pre-release. This will create and push nuget packages with the specified version `x.y.z` and a `-betaYYYYMMDDHHmmss` suffix.
+
+To create a **release** nuget package, create a tag of the form `vx.y.z` where `x.y.z` is the semantic version of the release. This will create and push nuget packages with the specified version `x.y.z`.
+
 ## Examples
 
 ### Plain Time Slices
