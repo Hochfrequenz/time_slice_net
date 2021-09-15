@@ -23,6 +23,8 @@ jobs:
           dotnet-version: 5.0.100
       - uses: olegtarasov/get-tag@v2.1
         id: tagTimeslice
+        with:
+          tagRegex: "prerelease-v(\\d+\\.\\d+\\.\\d+)"
       - name: Build/Check for compile errors (dotnet build)
         run: dotnet pack -p:PackageVersion=${{ steps.tagTimeslice.outputs.tag }} --version-suffix "beta${{ steps.current-time.outputs.formattedTime }}"
       - name: Run Unit Tests (dotnet test)
