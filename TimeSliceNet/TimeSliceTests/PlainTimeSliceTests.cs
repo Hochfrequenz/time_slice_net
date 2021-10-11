@@ -71,7 +71,7 @@ namespace TimeSliceTests
         }
 
         [Test]
-        public void TestObviouslyFalseEquals()
+        public void TestObviousEqualalities()
         {
             var pts = new PlainTimeSlice
             {
@@ -82,6 +82,14 @@ namespace TimeSliceTests
             // this comparison is supposed to be suspicious ;)
             // ReSharper disable once SuspiciousTypeConversion.Global
             pts.Equals(new StringBuilder()).Should().BeFalse(); // Objects that do not implement the time slice interface should not be considered equal.
+            pts.Equals(pts).Should().BeTrue();
+            pts.Equals((object)pts).Should().BeTrue();
+            var otherPts = new PlainTimeSlice
+            {
+                Start = DateTimeOffset.UtcNow,
+                End = DateTimeOffset.UtcNow + TimeSpan.FromDays(1)
+            };
+            pts.Equals((object)otherPts).Should().BeTrue();
         }
 
         /// <summary>

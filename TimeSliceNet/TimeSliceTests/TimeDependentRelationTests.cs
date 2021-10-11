@@ -94,5 +94,46 @@ namespace TimeSliceTests
             // ReSharper disable once SuspiciousTypeConversion.Global
             tdpcr.Equals("asdasd").Should().BeFalse();
         }
+
+        [Test]
+        public void TestRelationShouldBeEqualToItself()
+        {
+            var tdpcr = new TimeDependentRelation<Foo, Bar>
+            {
+                Child = new Bar(),
+                Parent = new Foo(),
+                Discriminator = "foo_parent_bar_child",
+                Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            tdpcr.Equals(tdpcr).Should().BeTrue();
+            tdpcr.Equals((object)tdpcr).Should().BeTrue();
+            tdpcr.Equals((object)null).Should().BeFalse();
+            tdpcr.Equals((TimeDependentRelation<Foo, Bar>)null).Should().BeFalse();
+        }
+
+        [Test]
+        public void TestRelationShouldHaveHashCodeThatDependsOnProperties()
+        {
+            var tdpcr = new TimeDependentRelation<Foo, Bar>
+            {
+                Child = new Bar(),
+                Parent = new Foo(),
+                Discriminator = "foo_parent_bar_child",
+                Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            tdpcr.GetHashCode().Should().NotBe(0);
+
+            var anotherTdpcr = new TimeDependentRelation<Foo, Bar>
+            {
+                Child = new Bar(),
+                Parent = new Foo(),
+                Discriminator = "asd",
+                Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            tdpcr.GetHashCode().Should().NotBe(anotherTdpcr.GetHashCode());
+        }
     }
 }
