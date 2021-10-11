@@ -36,3 +36,7 @@ TimeSliceNet/ExampleClasses/obj/
 TimeSliceNet/ExampleWebApplication/bin/Debug/net5.0/
 
 TimeSliceNet/TimeSliceEntityFrameWorkExtensions/bin/Debug/net5.0/
+
+TimeSliceNet/TimeSlice/bin/Debug/
+
+TimeSliceNet/TimeSliceEntityFrameWorkExtensions/bin/Debug/TimeSliceEntityFrameWorkExtensions.xml

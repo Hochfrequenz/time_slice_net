@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json;
+using FluentAssertions;
 using NUnit.Framework;
 using TimeSlice;
 
@@ -59,7 +60,8 @@ namespace TimeSliceTests
             };
             var json = JsonSerializer.Serialize(tdpcr);
             var deserializedTdpcr = JsonSerializer.Deserialize<TimeDependentRelation<Foo, Bar>>(json);
-            Assert.AreEqual(tdpcr, deserializedTdpcr);
+            deserializedTdpcr.Should().NotBeNull();
+            deserializedTdpcr.ShouldBeEquivalentTo(tdpcr);
         }
 
         [Test]
@@ -73,8 +75,8 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
                 End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
-            Assert.AreNotEqual(tdpcr, null);
-            Assert.IsFalse(tdpcr.Equals(null));
+            tdpcr.Should().NotBeNull();
+            tdpcr.Equals(null).Should().BeFalse();
         }
 
         [Test]
@@ -88,8 +90,50 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
                 End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
-            Assert.AreNotEqual(tdpcr, "asdasd");
-            Assert.IsFalse(tdpcr.Equals("asdasd"));
+            tdpcr.Should().NotBe("asdasd");
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            tdpcr.Equals("asdasd").Should().BeFalse();
+        }
+
+        [Test]
+        public void TestRelationShouldBeEqualToItself()
+        {
+            var tdpcr = new TimeDependentRelation<Foo, Bar>
+            {
+                Child = new Bar(),
+                Parent = new Foo(),
+                Discriminator = "foo_parent_bar_child",
+                Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            tdpcr.Equals(tdpcr).Should().BeTrue();
+            tdpcr.Equals((object)tdpcr).Should().BeTrue();
+            tdpcr.Equals((object)null).Should().BeFalse();
+            tdpcr.Equals((TimeDependentRelation<Foo, Bar>)null).Should().BeFalse();
+        }
+
+        [Test]
+        public void TestRelationShouldHaveHashCodeThatDependsOnProperties()
+        {
+            var tdpcr = new TimeDependentRelation<Foo, Bar>
+            {
+                Child = new Bar(),
+                Parent = new Foo(),
+                Discriminator = "foo_parent_bar_child",
+                Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            tdpcr.GetHashCode().Should().NotBe(0);
+
+            var anotherTdpcr = new TimeDependentRelation<Foo, Bar>
+            {
+                Child = new Bar(),
+                Parent = new Foo(),
+                Discriminator = "asd",
+                Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
+                End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            };
+            tdpcr.GetHashCode().Should().NotBe(anotherTdpcr.GetHashCode());
         }
     }
 }

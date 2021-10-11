@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Threading;
 using ExampleClasses.Festival;
 using ExampleWebApplication;
+using FluentAssertions;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -73,7 +74,8 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                     entry = GetMusicianEntry(); // this entry is not usable for any of the value generators in place
                     foreach (var valueGenerator in GetValueGenerators())
                     {
-                        Assert.Throws<NotImplementedException>(() => valueGenerator.Next(entry));
+                        Action invalidNext = () => valueGenerator.Next(entry);
+                        invalidNext.ShouldThrow<NotImplementedException>();
                     }
                 }
                 finally
@@ -92,7 +94,7 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
         {
             foreach (var valueGenerator in GetValueGenerators())
             {
-                Assert.IsFalse(valueGenerator.GeneratesTemporaryValues);
+                valueGenerator.GeneratesTemporaryValues.Should().BeFalse();
             }
         }
     }

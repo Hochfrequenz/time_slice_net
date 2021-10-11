@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using FluentAssertions;
 using NUnit.Framework;
 using TimeSlice;
 
@@ -33,7 +34,7 @@ namespace TimeSliceTests
         {
             var pts = TestHelper.CreateTimeSlice(startString, endString);
             var actualDuration = pts.Duration?.TotalSeconds;
-            Assert.AreEqual(expectedDurationSeconds, actualDuration);
+            actualDuration.Should().Be(expectedDurationSeconds);
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace TimeSliceTests
         {
             var pts = TestHelper.CreateTimeSlice(startString, endString);
             var actualString = pts.ToString();
-            Assert.AreEqual(expectedStringRepresentation, actualString);
+            actualString.Should().BeEquivalentTo(expectedStringRepresentation);
         }
 
         /// <summary>
@@ -60,27 +61,36 @@ namespace TimeSliceTests
             var ptsA = TestHelper.CreateTimeSlice(startStringA, endStringA);
             var ptsB = TestHelper.CreateTimeSlice(startStringB, endStringB);
             var actual = ptsA.Equals(ptsB);
-            Assert.AreEqual(actual, ptsB.Equals(ptsA)); // if A equals B, then B also equals A
-            Assert.AreEqual(expected, actual);
+            actual.Should().Be(ptsB.Equals(ptsA));
+            actual.Should().Be(expected);
             if (expected)
-                Assert.AreEqual(ptsA.GetHashCode(), ptsB.GetHashCode());
+                ptsB.GetHashCode().Should().Be(ptsA.GetHashCode());
             else
-                Assert.AreNotEqual(ptsA.GetHashCode(), ptsB.GetHashCode());
-            Assert.IsTrue(ptsA.IsValid());
+                ptsB.GetHashCode().Should().NotBe(ptsA.GetHashCode());
+            ptsA.IsValid().Should().BeTrue();
         }
 
         [Test]
-        public void TestObviouslyFalseEquals()
+        public void TestObviousEqualalities()
         {
             var pts = new PlainTimeSlice
             {
                 Start = DateTimeOffset.UtcNow,
                 End = DateTimeOffset.UtcNow + TimeSpan.FromDays(1)
             };
-            Assert.IsFalse(pts.Equals(null), "Null must not equal any time slice.");
+            pts.Equals(null).Should().BeFalse(); // Null must not equal any time slice.
             // this comparison is supposed to be suspicious ;)
             // ReSharper disable once SuspiciousTypeConversion.Global
-            Assert.IsFalse(pts.Equals(new StringBuilder()), "Objects that do not implement the time slice interface should not be considered equal.");
+            pts.Equals(new StringBuilder()).Should().BeFalse(); // Objects that do not implement the time slice interface should not be considered equal.
+            pts.Equals(pts).Should().BeTrue();
+            pts.Equals((object)pts).Should().BeTrue();
+            var otherPts = new PlainTimeSlice
+            {
+                Start = DateTimeOffset.UtcNow.AddMinutes(1),
+                End = DateTimeOffset.UtcNow + TimeSpan.FromDays(1) + TimeSpan.FromMinutes(1)
+            };
+            pts.Equals((object)otherPts).Should().BeFalse();
+            pts.Equals(otherPts).Should().BeFalse();
         }
 
         /// <summary>
@@ -98,9 +108,9 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
                 End = new DateTimeOffset(2021, 8, 1, 0, 0, 0, TimeSpan.Zero)
             };
-            Assert.AreEqual(actual: pts, expected: expected);
-            Assert.IsNotNull(pts);
-            Assert.IsTrue(pts.IsValid());
+            pts.Should().NotBeNull();
+            pts.Should().Be(expected);
+            pts.IsValid().Should().BeTrue();
         }
 
         /// <summary>
@@ -113,8 +123,8 @@ namespace TimeSliceTests
         public void TestInvalidTimeSlices(string json)
         {
             var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
-            Assert.IsNotNull(pts);
-            Assert.IsFalse(pts.IsValid());
+            pts.Should().NotBeNull();
+            pts.IsValid().Should().BeFalse();
         }
 
         /// <summary>
@@ -135,7 +145,7 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2021, 8, 1, 0, 0, 0, TimeSpan.Zero),
                 End = new DateTimeOffset(2021, 8, 1, 0, 0, 0, TimeSpan.Zero)
             };
-            Assert.AreEqual(ptsWithMilliseconds, ptsWithoutMilliseconds);
+            ptsWithMilliseconds.Should().Be(ptsWithoutMilliseconds);
         }
 
         /// <summary>
@@ -147,10 +157,10 @@ namespace TimeSliceTests
         public void TestDeserializationRoundTrip(string json)
         {
             var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
+            pts.Should().NotBeNull();
+            pts.IsValid().Should().BeTrue();
             var reserializedPts = JsonSerializer.Serialize(pts, _minifyOptions);
-            Assert.AreEqual(json, reserializedPts);
-            Assert.IsNotNull(pts);
-            Assert.IsTrue(pts.IsValid());
+            reserializedPts.ShouldBeEquivalentTo(json);
         }
 
         /// <summary>
@@ -162,14 +172,14 @@ namespace TimeSliceTests
         public void TestNullEndDateDeserialization(string json)
         {
             var pts = JsonSerializer.Deserialize<PlainTimeSlice>(json);
+            pts.Should().NotBeNull();
+            pts.IsValid().Should().BeTrue();
             var expected = new PlainTimeSlice
             {
                 Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
                 End = null
             };
-            Assert.AreEqual(actual: pts, expected: expected);
-            Assert.IsNotNull(pts);
-            Assert.IsTrue(pts.IsValid());
+            pts.Should().Be(expected);
         }
 
         /// <summary>
@@ -180,7 +190,8 @@ namespace TimeSliceTests
         [TestCase("{\"Start\":null\"}")]
         public void TestNullStartDateDeserialization(string json)
         {
-            Assert.Throws<FormatException>(() => JsonSerializer.Deserialize<PlainTimeSlice>(json));
+            Action invalidDeserializationAction = () => JsonSerializer.Deserialize<PlainTimeSlice>(json);
+            invalidDeserializationAction.ShouldThrow<FormatException>();
         }
 
         /// <summary>
@@ -194,7 +205,8 @@ namespace TimeSliceTests
         public void TestDeserializationEnforceOffset()
         {
             const string json = "{\"Start\":\"2021-07-01T00:00:00\",\"End\":\"2021-08-01T00:00:00\"}";
-            Assert.Throws<FormatException>(() => JsonSerializer.Deserialize<PlainTimeSlice>(json));
+            Action invalidDeserializationAction = () => JsonSerializer.Deserialize<PlainTimeSlice>(json);
+            invalidDeserializationAction.ShouldThrow<FormatException>();
         }
 
         [Test]
@@ -205,8 +217,8 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
                 End = null
             };
-            Assert.AreNotEqual(pts, null);
-            Assert.IsFalse(pts.Equals(null));
+            pts.Should().NotBeNull();
+            pts.Equals(null).Should().BeFalse();
         }
 
         [Test]
@@ -217,9 +229,9 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
                 End = null
             };
-            Assert.AreNotEqual(pts, "asdasd");
+            pts.Should().NotBeSameAs("asdasd");
             // ReSharper disable once SuspiciousTypeConversion.Global
-            Assert.IsFalse(pts.Equals("asdasd"));
+            pts.Equals("asdasd").Should().BeFalse();
         }
 
         [Test]
@@ -235,13 +247,13 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
                 End = null
             };
-            Assert.AreEqual(ptsA, ptsB);
+            ptsA.ShouldBeEquivalentTo(ptsB);
             var set = new HashSet<PlainTimeSlice>
             {
                 ptsA, // adding a equal time slice
                 ptsB // twice
             };
-            Assert.AreEqual(1, set.Count); // but we'll keep only one
+            set.Should().HaveCount(1); // but we'll keep only one
         }
     }
 }
