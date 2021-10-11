@@ -187,6 +187,10 @@ namespace TimeSliceTests
                 Start = DateTimeOffset.UtcNow.AddHours(1),
                 End = DateTimeOffset.UtcNow.AddHours(3)
             });
+            collection.Equals(collection).Should().BeTrue();
+            collection.Equals((object)collection).Should().BeTrue();
+            collection.Equals((RelationsWithOverlaps)null).Should().BeFalse();
+            collection.Equals((object)null).Should().BeFalse();
             var json = JsonSerializer.Serialize(collection);
             var deserializedCollection = JsonSerializer.Deserialize<RelationsWithOverlaps>(json);
             deserializedCollection.Should().NotBeNull();
@@ -206,13 +210,6 @@ namespace TimeSliceTests
             public bool Equals(FooBarRelation other)
             {
                 return base.Equals(other);
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(null, obj)) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                return obj.GetType() == GetType() && Equals((FooBarRelation)obj);
             }
 
             public override int GetHashCode()
@@ -236,13 +233,6 @@ namespace TimeSliceTests
             public bool Equals(RelationsWithOverlaps other)
             {
                 return base.Equals(other);
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(null, obj)) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                return obj.GetType() == GetType() && Equals((RelationsWithOverlaps)obj);
             }
 
             public override int GetHashCode()
