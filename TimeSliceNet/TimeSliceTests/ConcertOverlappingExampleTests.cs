@@ -2,6 +2,7 @@
 using System.Linq;
 using ExampleClasses.Festival;
 using NUnit.Framework;
+using FluentAssertions;
 using TimeSlice;
 
 namespace TimeSliceTests
@@ -46,7 +47,7 @@ namespace TimeSliceTests
             //   [ bob listens to freddy  )
             //            [ alice at concert  )
             //            [--overlap ok---)
-            Assert.IsTrue(liveAtWembley.IsValid()); // collections, that allow overlaps are valid iff each of the single items is valid
+            liveAtWembley.IsValid().Should().BeTrue(); // collections, that allow overlaps are valid iff each of the single items is valid
             // it's easier to model and validate than collections that are exclusive
 
             var peopleThatCouldHaveMetAtWembley =
@@ -55,7 +56,7 @@ namespace TimeSliceTests
                 where !ReferenceEquals(attendanceA, attendanceB)
                       && attendanceA.Overlaps(attendanceB)
                 select (attendanceA.Child, attendanceB.Child);
-            Assert.Contains((alice, bob), peopleThatCouldHaveMetAtWembley.ToList());
+            peopleThatCouldHaveMetAtWembley.Should().Contain((alice, bob));
         }
     }
 }

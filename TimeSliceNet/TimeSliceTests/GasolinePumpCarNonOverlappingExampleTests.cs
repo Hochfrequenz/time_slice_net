@@ -1,5 +1,6 @@
 ﻿using System;
 using ExampleClasses.GasStation;
+using FluentAssertions;
 using NUnit.Framework;
 using TimeSlice;
 
@@ -44,7 +45,7 @@ namespace TimeSliceTests
             // .....|XXXXXXXX|.....|XXXXXXXXXX|........... (gasoline pump is occupied)
             //      [ my car )
             //                     [other car)
-            Assert.IsTrue(collection.IsValid()); // collections, that don't allow overlaps are valid if there are no overlaps
+            collection.IsValid().Should().BeTrue(); // collections, that don't allow overlaps are valid if there are no overlaps
 
             // we can try to make another car use the same gasoline pump in a time frame that overlaps with another allocation
             var conflictingAllocation = new GasolinePumpAllocation
@@ -55,8 +56,7 @@ namespace TimeSliceTests
                 Child = new Car()
             };
             collection.Add(conflictingAllocation);
-            Assert.IsFalse(collection.IsValid());
-            // => if you always check for validity (e.g. before saving a collection or in some kind of middleware), you'll be fine
+            collection.IsValid().Should().BeFalse(); // => if you always check for validity (e.g. before saving a collection or in some kind of middleware), you'll be fine
         }
     }
 }

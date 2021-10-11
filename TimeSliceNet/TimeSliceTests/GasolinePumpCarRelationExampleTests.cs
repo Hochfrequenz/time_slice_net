@@ -1,5 +1,6 @@
 ﻿using System;
 using ExampleClasses.GasStation;
+using FluentAssertions;
 using NUnit.Framework;
 using TimeSlice;
 
@@ -20,7 +21,7 @@ namespace TimeSliceTests
         [TestCase("2021-08-01T12:02:30Z", true)] // while the fuel is flowing
         [TestCase("2021-08-01T12:05:00Z", false)] // the moment the car leaves
         [TestCase("2021-08-01T12:45:00Z", false)] // after
-        public void TestGasolinePumpCarRelation(string dateTimeString, bool expectedAtSuperMarket)
+        public void TestGasolinePumpCarRelation(string dateTimeString, bool expectedAtGasolinePump)
         {
             var myCar = new Car();
             var gasolinePump = new GasolinePump();
@@ -32,9 +33,9 @@ namespace TimeSliceTests
                 Parent = gasolinePump,
                 Child = myCar
             };
-            Assert.AreEqual(TimeSpan.FromMinutes(5), gasolinePumpAllocation.Duration);
+            gasolinePumpAllocation.Duration.Should().Be(TimeSpan.FromMinutes(5));
             var myCarOccupiesTheGasolinePump = gasolinePumpAllocation.Overlaps(DateTimeOffset.Parse(dateTimeString));
-            Assert.AreEqual(expectedAtSuperMarket, myCarOccupiesTheGasolinePump);
+            myCarOccupiesTheGasolinePump.Should().Be(expectedAtGasolinePump);
         }
     }
 }

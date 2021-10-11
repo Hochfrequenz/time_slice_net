@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ExampleClasses.Festival;
 using ExampleWebApplication;
 using ExampleWebApplication.Controllers;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -31,28 +32,27 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                 var controller = new ConcertController(context);
                 // test the concerts
                 var response = await controller.GetAllConcerts("rio");
-                Assert.IsInstanceOf<OkObjectResult>(response);
-                Assert.AreEqual(2, ((response as OkObjectResult).Value as List<Concert>).Count);
+                response.Should().BeOfType<OkObjectResult>().Subject.Value.Should().BeOfType<List<Concert>>().Subject.Should().HaveCount(2);
                 var museAtRockInRio = ((response as OkObjectResult).Value as List<Concert>).Single(c => c.CommonParent.Name == "Muse");
-                Assert.IsTrue(museAtRockInRio.IsValid); // <-- property, not method
+                museAtRockInRio.IsValid.Should().BeTrue(); // <-- property, not method
                 museAtRockInRio.IsValid = false; // <-- has no effect
-                Assert.IsTrue(museAtRockInRio.IsValid); // <-- property, not method
-                Assert.IsFalse(museAtRockInRio.Equals(null));
+                museAtRockInRio.IsValid.Should().BeTrue(); // <-- property, not method
+                museAtRockInRio.Equals(null).Should().BeFalse();
                 // ReSharper disable once SuspiciousTypeConversion.Global
-                Assert.IsFalse(museAtRockInRio.Equals("foo"));
+                museAtRockInRio.Equals("null").Should().BeFalse();
                 var concertDirectlyFromContext = await context.Concerts.SingleAsync(c => c.CommonParentId == "Muse");
-                Assert.AreEqual(concertDirectlyFromContext, museAtRockInRio);
-                Assert.IsTrue(concertDirectlyFromContext.Equals(museAtRockInRio));
-                Assert.AreEqual(concertDirectlyFromContext.GetHashCode(), museAtRockInRio.GetHashCode());
-                Assert.AreEqual(3, museAtRockInRio.TimeSlices.Count);
-                Assert.IsTrue(museAtRockInRio.TimeSlices.Any(ts => ts.Child.Name == "Joao"));
-                Assert.IsTrue(museAtRockInRio.TimeSlices.Any(ts => ts.Child.Name == "Carlos"));
-                Assert.IsTrue(museAtRockInRio.TimeSlices.Any(ts => ts.Child.Name == "Patricia"));
+                museAtRockInRio.ShouldBeEquivalentTo(concertDirectlyFromContext);
+                concertDirectlyFromContext.Equals(museAtRockInRio).Should().BeTrue();
+                concertDirectlyFromContext.GetHashCode().ShouldBeEquivalentTo(museAtRockInRio.GetHashCode());
+                museAtRockInRio.TimeSlices.Should().HaveCount(3);
+                museAtRockInRio.TimeSlices.Should().Contain(cv => cv.Child.Name == "Joao");
+                museAtRockInRio.TimeSlices.Should().Contain(cv => cv.Child.Name == "Carlos");
+                museAtRockInRio.TimeSlices.Should().Contain(cv => cv.Child.Name == "Patricia");
                 var ironMaidenAtRockInRio = ((response as OkObjectResult).Value as List<Concert>).Single(c => c.CommonParent.Name == "Iron Maiden");
                 Assert.AreEqual(1, ironMaidenAtRockInRio.TimeSlices.Count);
-                Assert.IsTrue(museAtRockInRio.TimeSlices.Any(ts => ts.Child.Name == "Joao"));
-                Assert.AreEqual(museAtRockInRio.TimeSlices.Single(ts => ts.Child.Name == "Joao").Child,
-                    ironMaidenAtRockInRio.TimeSlices.Single(ts => ts.Child.Name == "Joao").Child);
+                ironMaidenAtRockInRio.TimeSlices.Should().HaveCount(1);
+                museAtRockInRio.TimeSlices.Should().Contain(cv => cv.Child.Name == "Joao");
+                ironMaidenAtRockInRio.TimeSlices.Single(ts => ts.Child.Name == "Joao").Child.Should().Be(museAtRockInRio.TimeSlices.Single(ts => ts.Child.Name == "Joao").Child);
             }
         }
 
@@ -94,11 +94,12 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                     }
                 }
             };
-            Assert.IsFalse(invalidCollection.IsValid());
+            invalidCollection.IsValid().Should().BeFalse();
             using (ContextIsInUseSemaphore)
             {
                 await context.BackstageMeetings.AddAsync(invalidCollection);
-                Assert.ThrowsAsync<DbUpdateException>(() => context.SaveChangesAsync());
+                Action invalidSave = () => context.SaveChanges();
+                invalidSave.ShouldThrow<DbUpdateException>();
             }
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using NUnit.Framework;
 using TimeSlice;
 
@@ -19,7 +20,7 @@ namespace TimeSliceTests
         {
             var pts = TestHelper.CreateTimeSlice(startString, endString);
             var actual = pts.IsOpen();
-            Assert.AreEqual(expected, actual);
+            actual.Should().Be(expected);
         }
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace TimeSliceTests
                 Start = DateTimeOffset.UtcNow,
                 End = DateTimeOffset.MaxValue
             };
-            Assert.IsTrue(pts.IsOpen());
+            pts.IsOpen().Should().BeTrue();
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace TimeSliceTests
             var candidate = DateTimeOffset.Parse(candidateString);
             var pts = TestHelper.CreateTimeSlice(startString, endString);
             var actual = pts.Overlaps(candidate);
-            Assert.AreEqual(expected, actual);
+            actual.Should().Be(expected);
         }
 
         /// <summary>
@@ -69,8 +70,8 @@ namespace TimeSliceTests
             var ptsA = TestHelper.CreateTimeSlice(startStringA, endStringA);
             var ptsB = TestHelper.CreateTimeSlice(startStringB, endStringB);
             var actual = ptsA.Overlaps(ptsB);
-            Assert.AreEqual(actual, ptsB.Overlaps(ptsA)); // if A overlaps B, then B also overlaps A
-            Assert.AreEqual(expected, actual);
+            ptsB.Overlaps(ptsA).Should().Be(actual); // if A overlaps B, then B also overlaps A
+            actual.ShouldBeEquivalentTo(expected);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json;
+using FluentAssertions;
 using NUnit.Framework;
 using TimeSlice;
 
@@ -59,7 +60,8 @@ namespace TimeSliceTests
             };
             var json = JsonSerializer.Serialize(tdpcr);
             var deserializedTdpcr = JsonSerializer.Deserialize<TimeDependentRelation<Foo, Bar>>(json);
-            Assert.AreEqual(tdpcr, deserializedTdpcr);
+            deserializedTdpcr.Should().NotBeNull();
+            deserializedTdpcr.ShouldBeEquivalentTo(tdpcr);
         }
 
         [Test]
@@ -73,8 +75,8 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
                 End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
-            Assert.AreNotEqual(tdpcr, null);
-            Assert.IsFalse(tdpcr.Equals(null));
+            tdpcr.Should().NotBeNull();
+            tdpcr.Equals(null).Should().BeFalse();
         }
 
         [Test]
@@ -88,8 +90,9 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2021, 12, 1, 0, 0, 0, TimeSpan.Zero),
                 End = new DateTimeOffset(2022, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
-            Assert.AreNotEqual(tdpcr, "asdasd");
-            Assert.IsFalse(tdpcr.Equals("asdasd"));
+            tdpcr.Should().NotBe("asdasd");
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            tdpcr.Equals("asdasd").Should().BeFalse();
         }
     }
 }

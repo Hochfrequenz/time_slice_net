@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using FluentAssertions;
 using NUnit.Framework;
 using TimeSlice;
 
@@ -36,14 +37,14 @@ namespace TimeSliceTests
             var collection = new RelationsWithOverlaps(sharedParent);
             collection.Add(tsA);
             collection.Add(tsB);
-            Assert.AreEqual(collection.Count, collection.TimeSliceList.Count);
-            Assert.AreEqual(collection.Contains(tsA), collection.TimeSliceList.Contains(tsA));
-            Assert.AreEqual(1, collection.IndexOf(tsB));
+            collection.TimeSlices.Count.ShouldBeEquivalentTo(collection.Count);
+            collection.Contains(tsA).ShouldBeEquivalentTo(collection.TimeSliceList.Contains(tsA));
+            collection.IndexOf(tsB).Should().Be(1);
             collection.Remove(tsB);
-            Assert.AreEqual(1, collection.Count);
+            collection.Count.Should().Be(1);
             collection.Clear();
-            Assert.IsFalse(collection.Contains(tsA));
-            Assert.AreEqual(0, collection.Count);
+            collection.Contains(tsA).Should().BeFalse();
+            collection.Count.Should().Be(0);
         }
 
         /// <summary>
@@ -122,7 +123,8 @@ namespace TimeSliceTests
         [Test]
         public void TestParentMustNotBeNull()
         {
-            Assert.Throws<ArgumentNullException>(() => _ = new RelationsWithOverlaps(null));
+            Action addingNullAsParent = () => _ = new RelationsWithOverlaps(null);
+            addingNullAsParent.ShouldThrow<ArgumentNullException>();
         }
 
         /// <summary>
@@ -132,7 +134,8 @@ namespace TimeSliceTests
         public void TestChildMustNotBeNull()
         {
             var rs = new RelationsWithOverlaps(new Foo());
-            Assert.Throws<ArgumentNullException>(() => rs.Add(null));
+            Action nullAdd = () => rs.Add(null);
+            nullAdd.ShouldThrow<ArgumentNullException>();
         }
 
         /// <summary>
@@ -149,7 +152,8 @@ namespace TimeSliceTests
                 Parent = theWrongParent,
                 Child = new Bar()
             };
-            Assert.Throws<ArgumentException>(() => collection.Add(sliceWithWrongParent));
+            Action invalidAdd = () => collection.Add(sliceWithWrongParent);
+            invalidAdd.ShouldThrow<ArgumentException>();
         }
 
         /// <summary>
@@ -185,16 +189,16 @@ namespace TimeSliceTests
             });
             var json = JsonSerializer.Serialize(collection);
             var deserializedCollection = JsonSerializer.Deserialize<RelationsWithOverlaps>(json);
-            Assert.IsNotNull(deserializedCollection);
-            Assert.AreEqual(collection.CollectionType, deserializedCollection.CollectionType);
-            Assert.AreEqual(collection.Count, deserializedCollection.Count);
-            Assert.AreEqual(collection.CommonParent, deserializedCollection.CommonParent);
-            Assert.AreEqual(collection.TimeSlices[0], deserializedCollection.TimeSlices[0]);
-            Assert.AreEqual(collection.TimeSlices[1], deserializedCollection.TimeSlices[1]);
-            Assert.AreEqual(collection, deserializedCollection);
-
-            Assert.AreNotEqual(collection.TimeSlices.GetHashCode(), deserializedCollection.TimeSlices.GetHashCode());
-            Assert.AreNotEqual(collection.GetHashCode(), deserializedCollection.GetHashCode());
+            deserializedCollection.Should().NotBeNull();
+            // ReSharper disable once PossibleNullReferenceException
+            deserializedCollection.CollectionType.Should().Be(collection.CollectionType);
+            deserializedCollection.Count.ShouldBeEquivalentTo(collection.Count);
+            deserializedCollection.CommonParent.ShouldBeEquivalentTo(collection.CommonParent);
+            deserializedCollection.TimeSlices[0].ShouldBeEquivalentTo(collection.TimeSlices[0]);
+            deserializedCollection.TimeSlices[1].ShouldBeEquivalentTo(collection.TimeSlices[1]);
+            deserializedCollection.ShouldBeEquivalentTo(collection);
+            deserializedCollection.TimeSlices.GetHashCode().Should().NotBe(collection.TimeSlices.GetHashCode());
+            deserializedCollection.GetHashCode().Should().NotBe(collection.GetHashCode());
         }
 
         private class FooBarRelation : TimeDependentRelation<Foo, Bar>, IEquatable<FooBarRelation>

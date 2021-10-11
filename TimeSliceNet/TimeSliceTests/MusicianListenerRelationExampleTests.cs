@@ -1,5 +1,6 @@
 ﻿using System;
 using ExampleClasses.Festival;
+using FluentAssertions;
 using NUnit.Framework;
 using TimeSlice;
 
@@ -32,9 +33,9 @@ namespace TimeSliceTests
                 Parent = myFavouriteArtist,
                 Child = me
             };
-            Assert.AreEqual(TimeSpan.FromMinutes(120), relation.Duration);
+            relation.Duration.Should().Be(TimeSpan.FromMinutes(120));
             var iAmAtMyFavouriteArtistsConcert = relation.Overlaps(DateTimeOffset.Parse(dateTimeString));
-            Assert.AreEqual(expectedAtConcert, iAmAtMyFavouriteArtistsConcert);
+            iAmAtMyFavouriteArtistsConcert.Should().Be(expectedAtConcert);
         }
     }
 }

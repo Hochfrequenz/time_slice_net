@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ExampleClasses.Festival;
 using ExampleWebApplication;
 using ExampleWebApplication.Controllers;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -30,14 +31,15 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                 var controller = new BackstageMeetingController(context);
                 // test the concerts
                 var response = await controller.GetAllBackstageMeetings();
-                Assert.IsInstanceOf<OkObjectResult>(response);
-                Assert.AreEqual(1, ((response as OkObjectResult).Value as List<BackstageMeetings>).Count);
+                response.Should().BeOfType<OkObjectResult>();
+                (response as OkObjectResult).Value.Should().BeOfType<List<BackstageMeetings>>();
+                ((response as OkObjectResult).Value as List<BackstageMeetings>).Should().HaveCount(1);
                 var museBackstage = ((response as OkObjectResult).Value as List<BackstageMeetings>).Single();
-                Assert.AreEqual(2, museBackstage.TimeSlices.Count);
-                Assert.AreEqual("Muse", museBackstage.CommonParentId, "CommonParentId has to be set automatically by DefaultValueGenerator");
-                Assert.IsTrue(museBackstage.TimeSlices.Any(ts => ts.Child.Name == "Joao"));
-                Assert.IsTrue(museBackstage.TimeSlices.Any(ts => ts.Child.Name == "Patricia"));
-                Assert.IsTrue(museBackstage.IsValid());
+                museBackstage.TimeSlices.Should().HaveCount(2);
+                museBackstage.CommonParentId.ShouldBeEquivalentTo("Muse"); // CommonParentId has to be set automatically by DefaultValueGenerator
+                museBackstage.TimeSlices.Any(ts => ts.Child.Name == "Joao").Should().BeTrue();
+                museBackstage.TimeSlices.Any(ts => ts.Child.Name == "Patricia").Should().BeTrue();
+                museBackstage.IsValid().Should().BeTrue();
             }
         }
 
@@ -48,10 +50,10 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
             using (ContextIsInUseSemaphore)
             {
                 var joaoBackstage = context.BackstageMeetings.Single().TimeSlices.Single(ts => ts.Child.Name == "Joao");
-                Assert.AreEqual("Joao", joaoBackstage.ChildId, "ChildId has to be set automatically by DefaultValueGenerator");
-                Assert.AreEqual("Muse", joaoBackstage.ParentId, "ParentId has to be set automatically by DefaultValueGenerator");
+                joaoBackstage.ChildId.ShouldBeEquivalentTo("Joao"); // ChildId has to be set automatically by DefaultValueGenerator
+                joaoBackstage.ParentId.ShouldBeEquivalentTo("Muse"); // ParentId has to be set automatically by DefaultValueGenerator
                 var joaoAtTheStage = context.Concerts.Single(c => c.Location == "rio" && c.CommonParent.Name == "Muse").TimeSlices.Single(ts => ts.Child.Name == "Joao");
-                Assert.AreNotEqual(joaoBackstage.Discriminator, joaoAtTheStage.Discriminator);
+                joaoAtTheStage.Should().NotBe(joaoBackstage.Discriminator);
             }
         }
     }
