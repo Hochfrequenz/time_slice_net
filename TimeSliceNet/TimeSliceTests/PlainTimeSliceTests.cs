@@ -86,10 +86,11 @@ namespace TimeSliceTests
             pts.Equals((object)pts).Should().BeTrue();
             var otherPts = new PlainTimeSlice
             {
-                Start = DateTimeOffset.UtcNow,
-                End = DateTimeOffset.UtcNow + TimeSpan.FromDays(1)
+                Start = DateTimeOffset.UtcNow.AddMinutes(1),
+                End = DateTimeOffset.UtcNow + TimeSpan.FromDays(1) + TimeSpan.FromMinutes(1)
             };
-            pts.Equals((object)otherPts).Should().BeTrue();
+            pts.Equals((object)otherPts).Should().BeFalse();
+            pts.Equals(otherPts).Should().BeFalse();
         }
 
         /// <summary>

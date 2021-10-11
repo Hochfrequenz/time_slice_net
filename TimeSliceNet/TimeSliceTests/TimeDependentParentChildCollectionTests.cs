@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using FluentAssertions;
@@ -97,7 +97,7 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2020, 1, 1, 0, 0, 0, TimeSpan.Zero)
                 // open time slice
             };
-            Assert.IsTrue(validTimeSlice.IsValid());
+            validTimeSlice.IsValid().Should().BeTrue();
             var invalidTimeSlice = new FooBarRelation
             {
                 Parent = sharedParent,
@@ -105,15 +105,15 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2021, 1, 1, 0, 0, 0, TimeSpan.Zero),
                 End = new DateTimeOffset(2019, 1, 1, 0, 0, 0, TimeSpan.Zero)
             };
-            Assert.IsFalse(invalidTimeSlice.IsValid());
+            invalidTimeSlice.IsValid().Should().BeFalse();
             var relationThatAllowsOverlaps = new RelationsWithOverlaps(sharedParent, new[] { validTimeSlice });
 
-            Assert.IsTrue(relationThatAllowsOverlaps.IsValid());
+            relationThatAllowsOverlaps.IsValid().Should().BeTrue();
             relationThatAllowsOverlaps.Add(invalidTimeSlice);
-            Assert.IsFalse(relationThatAllowsOverlaps.IsValid());
+            relationThatAllowsOverlaps.IsValid().Should().BeFalse();
 
             var initiallyInvalidCollection = new RelationsWithOverlaps(sharedParent, new[] { invalidTimeSlice });
-            Assert.False(initiallyInvalidCollection.IsValid());
+            initiallyInvalidCollection.IsValid().Should().BeFalse();
         }
 
 
