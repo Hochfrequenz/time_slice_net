@@ -58,7 +58,7 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
             {
                 new ChildIdValueGenerator<ConcertVisit, Musician, string, Listener, string>(),
                 new ParentIdValueGenerator<ConcertVisit, Musician, string, Listener, string>(),
-                new CommonParentIdValueGenerator<Concert, ConcertVisit, Musician, string, Listener, string>(),
+                new CommonParentIdValueGenerator<Concert, ConcertVisit, Musician, string, Listener, string>()
             };
         }
 
