@@ -189,7 +189,7 @@ namespace TimeSliceTests
             });
             collection.Equals(collection).Should().BeTrue();
             collection.Equals((object)collection).Should().BeTrue();
-            collection.Equals((RelationsWithOverlaps)null).Should().BeFalse();
+            collection.Equals(null).Should().BeFalse();
             collection.Equals((object)null).Should().BeFalse();
             var json = JsonSerializer.Serialize(collection);
             var deserializedCollection = JsonSerializer.Deserialize<RelationsWithOverlaps>(json);
