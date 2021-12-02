@@ -109,7 +109,7 @@ namespace TimeSliceTests
             tdpcr.Equals(tdpcr).Should().BeTrue();
             tdpcr.Equals((object)tdpcr).Should().BeTrue();
             tdpcr.Equals((object)null).Should().BeFalse();
-            tdpcr.Equals((TimeDependentRelation<Foo, Bar>)null).Should().BeFalse();
+            tdpcr.Equals(null).Should().BeFalse();
         }
 
         [Test]
