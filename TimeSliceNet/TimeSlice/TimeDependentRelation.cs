@@ -7,12 +7,11 @@ namespace TimeSlice
     ///     The simplest implementation of a time dependent parent child relation
     /// </summary>
     public class TimeDependentRelation<TParent, TChild> : PlainTimeSlice, IRelation<TParent, TChild> where TParent : class where TChild : class
-
     {
-        private string _discriminator;
+        private string? _discriminator;
 
         /// <inheritdoc />
-        public bool Equals(IRelation<TParent, TChild> other)
+        public bool Equals(IRelation<TParent, TChild>? other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -33,15 +32,15 @@ namespace TimeSlice
         /// <summary>
         ///     The entity that "owns" / has assigned <see cref="Child" /> in between [<see cref="ITimeSlice.Start" /> and <see cref="ITimeSlice.End" />)
         /// </summary>
-        public TParent Parent { get; set; }
+        public TParent? Parent { get; set; }
 
         /// <summary>
         ///     The entity that is owned by / assigned to <see cref="Parent" /> in between [<see cref="ITimeSlice.Start" /> and <see cref="ITimeSlice.End" />)
         /// </summary>
-        public TChild Child { get; set; }
+        public TChild? Child { get; set; }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

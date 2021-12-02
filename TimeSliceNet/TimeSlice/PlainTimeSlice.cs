@@ -22,7 +22,7 @@ namespace TimeSlice
         public TimeSpan? Duration => End - Start;
 
         /// <inheritdoc />
-        public bool Equals(PlainTimeSlice other)
+        public bool Equals(PlainTimeSlice? other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;

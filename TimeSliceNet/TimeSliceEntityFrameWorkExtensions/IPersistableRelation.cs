@@ -22,11 +22,11 @@ namespace TimeSliceEntityFrameworkExtensions
         /// <summary>
         ///     Unique ID of the <typeparamref name="TPersistableParent" /> involved in the relation
         /// </summary>
-        TParentKey ParentId { get; set; }
+        TParentKey? ParentId { get; set; }
 
         /// <summary>
         ///     Unique ID of the <typeparamref name="TPersistableChild" /> involved in the relation
         /// </summary>
-        TChildKey ChildId { get; set; }
+        TChildKey? ChildId { get; set; }
     }
 }

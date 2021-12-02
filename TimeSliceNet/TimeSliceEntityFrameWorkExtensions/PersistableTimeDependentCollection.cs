@@ -22,7 +22,7 @@ namespace TimeSliceEntityFrameworkExtensions
         where TPersistableChild : class, IHasKey<TChildKey>
     {
         /// <inheritdoc />
-        protected PersistableTimeDependentCollection(TPersistableParent commonParent, IEnumerable<TPersistableRelation> relations = null)
+        protected PersistableTimeDependentCollection(TPersistableParent commonParent, IEnumerable<TPersistableRelation>? relations = null)
             : base(commonParent, relations)
         {
         }
@@ -35,7 +35,7 @@ namespace TimeSliceEntityFrameworkExtensions
         /// <summary>
         ///     ID of <see cref="TimeDependentCollection{TRelation,TParent,TChild}.CommonParent" />
         /// </summary>
-        public TParentKey CommonParentId { get; set; }
+        public TParentKey? CommonParentId { get; set; }
 
         /// <summary>
         ///     This property is mapped to a column on the database.
@@ -49,13 +49,13 @@ namespace TimeSliceEntityFrameworkExtensions
         }
 
         /// <inheritdoc />
-        public bool Equals(PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey> other)
+        public bool Equals(PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>? other)
         {
-            return base.Equals(other) && other.CommonParentId.Equals(this.CommonParentId);
+            return base.Equals(other) && ((other.CommonParentId==null && CommonParentId==null)||(other.CommonParentId!=null && CommonParentId!=null) && other.CommonParentId.Equals(CommonParentId));
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

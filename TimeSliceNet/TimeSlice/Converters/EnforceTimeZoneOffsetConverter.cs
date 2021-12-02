@@ -21,7 +21,7 @@ namespace TimeSlice.Converters
         /// <param name="dateTimeString"></param>
         /// <returns>null iff <paramref name="dateTimeString" /> is null</returns>
         /// <exception cref="FormatException">iff <paramref name="dateTimeString" /> is not parseable with an offset</exception>
-        internal static DateTimeOffset? ToUtcDateTimeOffset(this string dateTimeString)
+        internal static DateTimeOffset? ToUtcDateTimeOffset(this string? dateTimeString)
         {
             if (dateTimeString == null) return null;
             // somehow the datetime format string "O" does not work. but with the workaround below the "Z" is not recognized

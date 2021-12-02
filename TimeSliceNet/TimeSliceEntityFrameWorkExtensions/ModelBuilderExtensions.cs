@@ -39,7 +39,7 @@ namespace TimeSliceEntityFrameworkExtensions
         public static void SetupCollectionAndRelations<TTimeSliceCollection, TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>(
             this ModelBuilder modelBuilder,
             [NotNull] Expression<Func<TTimeSliceCollection, object>> collectionKeyExpression,
-            Expression<Func<TPersistableRelation, object>> relationKeyExpression = null)
+            Expression<Func<TPersistableRelation, object>>? relationKeyExpression = null)
             where TTimeSliceCollection : PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>
             where TPersistableRelation : class, ITimeSlice, IPersistableRelation<TPersistableParent, TParentKey, TPersistableChild, TChildKey>
             where TPersistableParent : class, IHasKey<TParentKey>
@@ -94,7 +94,7 @@ namespace TimeSliceEntityFrameworkExtensions
 
         public override TParentKey Next(EntityEntry entry)
         {
-            if (entry.Entity is TTimeSliceCollection collection) return collection.CommonParent.Id;
+            if (entry.Entity is TTimeSliceCollection collection) return collection.CommonParent!.Id;
 
             throw new NotImplementedException($"Generating a default value for {entry?.Entity?.GetType()} is not implemented.");
         }
@@ -119,7 +119,7 @@ namespace TimeSliceEntityFrameworkExtensions
 
         public override TParentKey Next(EntityEntry entry)
         {
-            if (entry.Entity is TPersistableRelation relation) return relation.Parent.Id;
+            if (entry.Entity is TPersistableRelation relation) return relation.Parent!.Id;
 
             throw new NotImplementedException($"Generating a default value for {entry?.Entity?.GetType()} is not implemented.");
         }
@@ -144,7 +144,7 @@ namespace TimeSliceEntityFrameworkExtensions
 
         public override TChildKey Next(EntityEntry entry)
         {
-            if (entry.Entity is TPersistableRelation relation) return relation.Child.Id;
+            if (entry.Entity is TPersistableRelation relation) return relation.Child!.Id;
 
             throw new NotImplementedException($"Generating a default value for {entry?.Entity?.GetType()} is not implemented.");
         }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace TimeSlice
@@ -9,6 +10,12 @@ namespace TimeSlice
     public static class ValidatableObjectExtensions
     {
         /// <summary>
+        /// This is just a dummy validation context that is not null.
+        /// Replace it with a real validation context.
+        /// </summary>
+        private static ValidationContext _nonNullDummyValidationContext = new(new object());
+        
+        /// <summary>
         ///     if the <see cref="IValidatableObject.Validate" /> method accepts a null validation context, then this method allows an easily readable access
         /// </summary>
         /// <param name="validatableObject"></param>
@@ -16,7 +23,7 @@ namespace TimeSlice
         public static bool IsValid(this IValidatableObject validatableObject)
         {
             // valid = there are no entries returned.
-            return !validatableObject.Validate(null).Any();
+            return !validatableObject.Validate(_nonNullDummyValidationContext).Any();
         }
     }
 }

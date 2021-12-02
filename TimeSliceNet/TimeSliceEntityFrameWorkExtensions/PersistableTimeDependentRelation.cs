@@ -24,11 +24,11 @@ namespace TimeSliceEntityFrameworkExtensions
         /// <summary>
         ///     The key of <see cref="TimeDependentRelation{TParent,TChild}.Parent" />
         /// </summary>
-        public TParentKey ParentId { get; set; }
+        public TParentKey? ParentId { get; set; }
 
         /// <summary>
         ///     The key of <see cref="TimeDependentRelation{TParent,TChild}.Child" />
         /// </summary>
-        public TChildKey ChildId { get; set; }
+        public TChildKey? ChildId { get; set; }
     }
 }

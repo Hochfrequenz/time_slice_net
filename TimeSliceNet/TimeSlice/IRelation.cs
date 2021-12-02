@@ -20,11 +20,11 @@ namespace TimeSlice
         /// <summary>
         ///     The entity that "owns" / has assigned <see cref="Child" /> (the "1" in a 1:n cardinality)
         /// </summary>
-        public TParent Parent { get; }
+        public TParent? Parent { get; }
 
         /// <summary>
         ///     The entity that is owned by / assigned to <see cref="Parent" /> (the "n" in a 1:n cardinality)
         /// </summary>
-        public TChild Child { get; }
+        public TChild? Child { get; }
     }
 }
