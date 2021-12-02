@@ -63,7 +63,7 @@ namespace TimeSliceEntityFrameworkExtensions
         /// <typeparam name="TChildKey"></typeparam>
         public static void HasDefaultKeys<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>(
             this EntityTypeBuilder<TPersistableRelation> etb,
-            Expression<Func<TPersistableRelation, object>> relationKeyExpression = null)
+            Expression<Func<TPersistableRelation, object>>? relationKeyExpression = null)
             where TPersistableRelation : class, ITimeSlice, IPersistableRelation<TPersistableParent, TParentKey, TPersistableChild, TChildKey>
             where TPersistableParent : class, IHasKey<TParentKey>
             where TPersistableChild : class, IHasKey<TChildKey>

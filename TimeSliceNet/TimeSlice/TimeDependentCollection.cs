@@ -41,7 +41,7 @@ namespace TimeSlice
         /// <param name="commonParent"></param>
         /// <param name="relations">optional relations to be added on construction</param>
         /// <exception cref="ArgumentNullException">iff <paramref name="commonParent" /> is null</exception>
-        protected TimeDependentCollection(TParent commonParent, IEnumerable<TRelation> relations = null) : this()
+        protected TimeDependentCollection(TParent commonParent, IEnumerable<TRelation>? relations = null) : this()
         {
             CommonParent = commonParent ?? throw new ArgumentNullException(nameof(commonParent));
             if (relations == null) return;
@@ -68,7 +68,7 @@ namespace TimeSlice
         /// <summary>
         ///     The common parent for this collection that is the same for all slices in <see cref="TimeSlices" />
         /// </summary>
-        public TParent CommonParent { get; init; }
+        public TParent? CommonParent { get; init; }
 
         /// <summary>
         ///     the single time slices.
@@ -92,7 +92,7 @@ namespace TimeSlice
         public int Count => TimeSlices.Count;
 
         /// <inheritdoc />
-        public bool Equals(TimeDependentCollection<TRelation, TParent, TChild> other)
+        public bool Equals(TimeDependentCollection<TRelation, TParent, TChild>? other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -179,7 +179,7 @@ namespace TimeSlice
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

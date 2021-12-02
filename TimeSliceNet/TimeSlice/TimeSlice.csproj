@@ -1,11 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
         <Authors>Hochfrequenz Unternehmensberatung GmbH</Authors>
         <PackageProjectUrl>https://github.com/Hochfrequenz/time_slice_net/</PackageProjectUrl>
         <PackageLicense>https://github.com/Hochfrequenz/time_slice_net/blob/main/LICENSE</PackageLicense>
         <RepositoryUrl>https://github.com/Hochfrequenz/time_slice_net/</RepositoryUrl>
+        <LangVersion>9</LangVersion>
+        <Nullable>enable</Nullable>
+        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
