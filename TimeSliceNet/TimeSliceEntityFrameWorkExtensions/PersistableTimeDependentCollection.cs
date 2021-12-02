@@ -51,7 +51,7 @@ namespace TimeSliceEntityFrameworkExtensions
         /// <inheritdoc />
         public bool Equals(PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey> other)
         {
-            return base.Equals(other) && other.CommonParentId.Equals(this.CommonParentId);
+            return base.Equals(other) && other.CommonParentId.Equals(CommonParentId);
         }
 
         /// <inheritdoc />
