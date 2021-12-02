@@ -54,7 +54,7 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
 
         private static List<ValueGenerator> GetValueGenerators()
         {
-            return new List<ValueGenerator>()
+            return new List<ValueGenerator>
             {
                 new ChildIdValueGenerator<ConcertVisit, Musician, string, Listener, string>(),
                 new ParentIdValueGenerator<ConcertVisit, Musician, string, Listener, string>(),
