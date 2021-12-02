@@ -14,7 +14,7 @@ namespace TimeSlice
         /// Replace it with a real validation context.
         /// </summary>
         private static ValidationContext _nonNullDummyValidationContext = new(new object());
-        
+
         /// <summary>
         ///     if the <see cref="IValidatableObject.Validate" /> method accepts a null validation context, then this method allows an easily readable access
         /// </summary>
