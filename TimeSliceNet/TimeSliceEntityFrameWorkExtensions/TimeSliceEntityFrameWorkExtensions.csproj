@@ -5,7 +5,7 @@
         <PackageProjectUrl>https://github.com/Hochfrequenz/time_slice_net</PackageProjectUrl>
         <PackageLicense>https://github.com/Hochfrequenz/time_slice_net/blob/main/LICENSE</PackageLicense>
         <RepositoryUrl>https://github.com/Hochfrequenz/time_slice_net</RepositoryUrl>
-        <LangVersion>10</LangVersion>
+        <LangVersion>9</LangVersion>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
     </PropertyGroup>
