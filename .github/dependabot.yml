@@ -9,3 +9,5 @@ updates:
     directory: "/TimeSliceNet" # Location of package manifests
     schedule:
       interval: "daily"
+    reviewers:
+      - "@Hochfrequenz/c-developers-review-team"
