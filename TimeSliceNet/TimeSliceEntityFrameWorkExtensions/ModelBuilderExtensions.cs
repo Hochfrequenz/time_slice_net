@@ -38,8 +38,8 @@ namespace TimeSliceEntityFrameworkExtensions
         /// <typeparam name="TChildKey"><see cref="IHasKey{TKey}.Id" /> of <typeparamref name="TPersistableChild" /></typeparam>
         public static void SetupCollectionAndRelations<TTimeSliceCollection, TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>(
             this ModelBuilder modelBuilder,
-            [NotNull] Expression<Func<TTimeSliceCollection, object>> collectionKeyExpression,
-            Expression<Func<TPersistableRelation, object>>? relationKeyExpression = null)
+            Expression<Func<TTimeSliceCollection, object?>> collectionKeyExpression,
+            Expression<Func<TPersistableRelation, object?>>? relationKeyExpression = null)
             where TTimeSliceCollection : PersistableTimeDependentCollection<TPersistableRelation, TPersistableParent, TParentKey, TPersistableChild, TChildKey>
             where TPersistableRelation : class, ITimeSlice, IPersistableRelation<TPersistableParent, TParentKey, TPersistableChild, TChildKey>
             where TPersistableParent : class, IHasKey<TParentKey>
