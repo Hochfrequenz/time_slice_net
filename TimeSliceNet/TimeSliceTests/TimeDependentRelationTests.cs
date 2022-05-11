@@ -61,7 +61,7 @@ namespace TimeSliceTests
             var json = JsonSerializer.Serialize(tdpcr);
             var deserializedTdpcr = JsonSerializer.Deserialize<TimeDependentRelation<Foo, Bar>>(json);
             deserializedTdpcr.Should().NotBeNull();
-            deserializedTdpcr.ShouldBeEquivalentTo(tdpcr);
+            deserializedTdpcr.Should().BeEquivalentTo(tdpcr);
         }
 
         [Test]

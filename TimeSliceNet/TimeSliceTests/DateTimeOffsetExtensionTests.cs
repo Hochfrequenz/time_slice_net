@@ -27,7 +27,7 @@ namespace TimeSliceTests
             var actual = dto.StripSubSecond();
             actual.Should().HaveValue();
             actual.Value.Millisecond.Should().Be(0);
-            actual.Value.ToString("O").ShouldBeEquivalentTo("2020-01-01T00:00:00.0000000+00:00");
+            actual.Value.ToString("O").Should().BeEquivalentTo("2020-01-01T00:00:00.0000000+00:00");
         }
 
         [Test]

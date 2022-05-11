@@ -75,7 +75,7 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                     foreach (var valueGenerator in GetValueGenerators())
                     {
                         Action invalidNext = () => valueGenerator.Next(entry);
-                        invalidNext.ShouldThrow<NotImplementedException>();
+                        invalidNext.Should().Throw<NotImplementedException>();
                     }
                 }
                 finally

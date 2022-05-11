@@ -41,9 +41,9 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                 // ReSharper disable once SuspiciousTypeConversion.Global
                 museAtRockInRio.Equals("null").Should().BeFalse();
                 var concertDirectlyFromContext = await context.Concerts.SingleAsync(c => c.CommonParentId == "Muse");
-                museAtRockInRio.ShouldBeEquivalentTo(concertDirectlyFromContext);
+                museAtRockInRio.Should().BeEquivalentTo(concertDirectlyFromContext);
                 concertDirectlyFromContext.Equals(museAtRockInRio).Should().BeTrue();
-                concertDirectlyFromContext.GetHashCode().ShouldBeEquivalentTo(museAtRockInRio.GetHashCode());
+                concertDirectlyFromContext.GetHashCode().Should().Be(museAtRockInRio.GetHashCode());
                 museAtRockInRio.TimeSlices.Should().HaveCount(3);
                 museAtRockInRio.TimeSlices.Should().Contain(cv => cv.Child.Name == "Joao");
                 museAtRockInRio.TimeSlices.Should().Contain(cv => cv.Child.Name == "Carlos");
@@ -99,7 +99,7 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
             {
                 await context.BackstageMeetings.AddAsync(invalidCollection);
                 Action invalidSave = () => context.SaveChanges();
-                invalidSave.ShouldThrow<DbUpdateException>();
+                invalidSave.Should().Throw<DbUpdateException>();
             }
         }
     }

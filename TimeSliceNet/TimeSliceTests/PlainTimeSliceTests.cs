@@ -160,7 +160,7 @@ namespace TimeSliceTests
             pts.Should().NotBeNull();
             pts.IsValid().Should().BeTrue();
             var reserializedPts = JsonSerializer.Serialize(pts, _minifyOptions);
-            reserializedPts.ShouldBeEquivalentTo(json);
+            reserializedPts.Should().BeEquivalentTo(json);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace TimeSliceTests
         public void TestNullStartDateDeserialization(string json)
         {
             Action invalidDeserializationAction = () => JsonSerializer.Deserialize<PlainTimeSlice>(json);
-            invalidDeserializationAction.ShouldThrow<FormatException>();
+            invalidDeserializationAction.Should().Throw<FormatException>();
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace TimeSliceTests
         {
             const string json = "{\"Start\":\"2021-07-01T00:00:00\",\"End\":\"2021-08-01T00:00:00\"}";
             Action invalidDeserializationAction = () => JsonSerializer.Deserialize<PlainTimeSlice>(json);
-            invalidDeserializationAction.ShouldThrow<FormatException>();
+            invalidDeserializationAction.Should().Throw<FormatException>();
         }
 
         [Test]
@@ -247,7 +247,7 @@ namespace TimeSliceTests
                 Start = new DateTimeOffset(2021, 7, 1, 0, 0, 0, TimeSpan.Zero),
                 End = null
             };
-            ptsA.ShouldBeEquivalentTo(ptsB);
+            ptsA.Should().BeEquivalentTo(ptsB);
             var set = new HashSet<PlainTimeSlice>
             {
                 ptsA, // adding a equal time slice
