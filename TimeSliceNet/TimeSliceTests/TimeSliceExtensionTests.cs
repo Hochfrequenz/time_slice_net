@@ -71,7 +71,7 @@ namespace TimeSliceTests
             var ptsB = TestHelper.CreateTimeSlice(startStringB, endStringB);
             var actual = ptsA.Overlaps(ptsB);
             ptsB.Overlaps(ptsA).Should().Be(actual); // if A overlaps B, then B also overlaps A
-            actual.ShouldBeEquivalentTo(expected);
+            actual.Should().Be(expected);
         }
     }
 }

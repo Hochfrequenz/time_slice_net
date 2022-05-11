@@ -36,7 +36,7 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
                 ((response as OkObjectResult).Value as List<BackstageMeetings>).Should().HaveCount(1);
                 var museBackstage = ((response as OkObjectResult).Value as List<BackstageMeetings>).Single();
                 museBackstage.TimeSlices.Should().HaveCount(2);
-                museBackstage.CommonParentId.ShouldBeEquivalentTo("Muse"); // CommonParentId has to be set automatically by DefaultValueGenerator
+                museBackstage.CommonParentId.Should().BeEquivalentTo("Muse"); // CommonParentId has to be set automatically by DefaultValueGenerator
                 museBackstage.TimeSlices.Any(ts => ts.Child.Name == "Joao").Should().BeTrue();
                 museBackstage.TimeSlices.Any(ts => ts.Child.Name == "Patricia").Should().BeTrue();
                 museBackstage.IsValid().Should().BeTrue();
@@ -50,8 +50,8 @@ namespace TimeSliceTests.EntityFrameworkExtensionTests
             using (ContextIsInUseSemaphore)
             {
                 var joaoBackstage = context.BackstageMeetings.Single().TimeSlices.Single(ts => ts.Child.Name == "Joao");
-                joaoBackstage.ChildId.ShouldBeEquivalentTo("Joao"); // ChildId has to be set automatically by DefaultValueGenerator
-                joaoBackstage.ParentId.ShouldBeEquivalentTo("Muse"); // ParentId has to be set automatically by DefaultValueGenerator
+                joaoBackstage.ChildId.Should().BeEquivalentTo("Joao"); // ChildId has to be set automatically by DefaultValueGenerator
+                joaoBackstage.ParentId.Should().BeEquivalentTo("Muse"); // ParentId has to be set automatically by DefaultValueGenerator
                 var joaoAtTheStage = context.Concerts.Single(c => c.Location == "rio" && c.CommonParent.Name == "Muse").TimeSlices.Single(ts => ts.Child.Name == "Joao");
                 joaoAtTheStage.Should().NotBe(joaoBackstage.Discriminator);
             }
