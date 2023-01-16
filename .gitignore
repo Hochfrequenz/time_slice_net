@@ -8,14 +8,17 @@ TimeSliceNet/TimeSlice/obj/
 TimeSliceNet/TimeSliceTests/obj/
 
 TimeSliceNet/TimeSliceTests/bin/Debug/net5.0/
+TimeSliceNet/TimeSliceTests/bin/Debug/net7.0/
 
 TimeSliceNet/TimeSlice/bin/Debug/net5.0/
+TimeSliceNet/TimeSlice/bin/Debug/net7.0/
 
 TimeSliceNet/TimeSliceNet.sln.DotSettings.user
 
 TimeSliceNet/.idea/config/
 
 TimeSliceNet/ExampleClasses/bin/Debug/net5.0/
+TimeSliceNet/ExampleClasses/bin/Debug/net7.0/
 
 *.cache
 
@@ -34,8 +37,10 @@ TimeSliceNet/ExampleClasses/obj/
 *.pdb
 
 TimeSliceNet/ExampleWebApplication/bin/Debug/net5.0/
+TimeSliceNet/ExampleWebApplication/bin/Debug/net7.0/
 
 TimeSliceNet/TimeSliceEntityFrameWorkExtensions/bin/Debug/net5.0/
+TimeSliceNet/TimeSliceEntityFrameWorkExtensions/bin/Debug/net7.0/
 
 TimeSliceNet/TimeSlice/bin/Debug/
 
