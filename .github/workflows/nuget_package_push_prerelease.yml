@@ -18,7 +18,7 @@ jobs:
           format: YYYYMMDDHHmmss
       - uses: actions/checkout@v5
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 7.0.100
       - uses: olegtarasov/get-tag@v2.1
