@@ -6,7 +6,7 @@ jobs:
   unittest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v5
         with:
@@ -18,7 +18,7 @@ jobs:
     needs: unittest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v5
         with:
