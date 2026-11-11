@@ -35,4 +35,4 @@ jobs:
         run: dotnet add package coverlet.msbuild
       - name: Measure Test Coverage
         working-directory: ./TimeSliceNet
-        run: dotnet test /p:Threshold=95 /p:Include=\"[*]TimeSlice.*,[*]TimeSliceEntityFrameworkExtensions.*\" /p:ThresholdType=line /p:CollectCoverage=true /p:SkipAutoProps=true /p:CoverletOutputFormat=lcov --configuration Release
+        run: dotnet test --framework net10.0 /p:Threshold=95 /p:Include=\"[*]TimeSlice.*,[*]TimeSliceEntityFrameworkExtensions.*\" /p:ThresholdType=line /p:CollectCoverage=true /p:SkipAutoProps=true /p:CoverletOutputFormat=lcov --configuration Release
