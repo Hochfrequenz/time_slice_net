@@ -2,7 +2,7 @@
 using System.Linq;
 using ExampleClasses.Festival;
 using NUnit.Framework;
-using FluentAssertions;
+using AwesomeAssertions;
 using TimeSlice;
 
 namespace TimeSliceTests

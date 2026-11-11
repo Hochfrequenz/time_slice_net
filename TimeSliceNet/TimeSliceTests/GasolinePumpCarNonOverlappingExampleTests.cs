@@ -1,6 +1,6 @@
 ﻿using System;
 using ExampleClasses.GasStation;
-using FluentAssertions;
+using AwesomeAssertions;
 using NUnit.Framework;
 using TimeSlice;
 

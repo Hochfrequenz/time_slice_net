@@ -4,7 +4,7 @@ using System.Data.Common;
 using System.Threading;
 using ExampleClasses.Festival;
 using ExampleWebApplication;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

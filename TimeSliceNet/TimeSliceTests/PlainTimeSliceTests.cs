@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using FluentAssertions;
+using AwesomeAssertions;
 using NUnit.Framework;
 using TimeSlice;
 

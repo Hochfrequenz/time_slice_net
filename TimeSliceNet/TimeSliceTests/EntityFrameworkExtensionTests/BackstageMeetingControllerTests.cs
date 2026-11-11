@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using ExampleClasses.Festival;
 using ExampleWebApplication;
 using ExampleWebApplication.Controllers;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
