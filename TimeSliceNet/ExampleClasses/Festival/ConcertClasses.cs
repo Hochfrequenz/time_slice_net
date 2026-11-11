@@ -26,7 +26,7 @@ namespace ExampleClasses.Festival
         /// <summary>
         ///     The <see cref="Name" /> is also the primary key in the musician table on the database. <inheritdoc cref="IHasKey{TKey}.Id" />
         /// </summary>
-        string IHasKey<string>.Id
+        public string Id
         {
             get => Name;
             set { }
@@ -49,7 +49,7 @@ namespace ExampleClasses.Festival
         /// <summary>
         ///     The <see cref="Name" /> is also the primary key of the listeners table on the database. <inheritdoc cref="IHasKey{TKey}.Id" />
         /// </summary>
-        string IHasKey<string>.Id
+        public string Id
         {
             get => Name;
             set { }
